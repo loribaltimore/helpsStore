@@ -9,13 +9,25 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@maptiler/sdk": "^1.0.12",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
     "autoprefixer": "10.4.14",
+    "axios": "^1.4.0",
+    "casual": "^1.6.2",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.4",
+    "mongoose": "^7.2.2",
     "next": "13.4.4",
+    "next-auth": "^4.22.1",
     "postcss": "8.4.24",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "socket.io": "^4.6.2",
+    "socket.io-client": "^4.6.2",
     "tailwindcss": "3.3.2"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.7",
+    "utf-8-validate": "^5.0.10"
   }
 }
