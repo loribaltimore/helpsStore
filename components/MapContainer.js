@@ -1,57 +1,51 @@
 "use client"
 import { useState, useRef, useEffect } from "react";
-import {Map, MapStyle, geocoding, Marker} from '@maptiler/sdk';
+import {Map, MapStyle, geocoding, Marker, config} from '@maptiler/sdk';
     
+config.apiKey = 'K34N8EzXnRm1QQbwcdOo';
 
-export default function MapContainer(props) {
-     const [location, setLocation] = useState(undefined);
+export default function MapContainer({ setEntered, location, setCoord }) {
     const mapContainer = useRef(null);
     
-    const handleClick = async () => {
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(async function success(pos) {
-                const crd = pos.coords;
-                //        const result = await geocoding.reverse([]);
-                // console.log(result)
-                    await fetch(`/api/user/location`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ lat: crd.latitude, lng: crd.longitude }),
-                    }).then(async data => {
-                        const res = await data.json();
-                        setLocation([res.location.data[0].longitude, res.location.data[0].latitude]);
-                    }).catch(err => console.log(err));
-            })
-        } else {
-            console.log("NO LOCATION AVAILABLE")
-        }
-    };
-    
     useEffect(() => {
-        if (location) {
-            const map = new Map({
-            container: mapContainer.current,
-            apiKey: 'K34N8EzXnRm1QQbwcdOo',
-            center: location,
-            zoom: 17,
-            MapStyle: MapStyle.STREETS,
-        });
-        const marker = new Marker()
-        .setLngLat({lng: location[0], lat: location[1]})
-            .addTo(map);
-        }
+console.log(location)
+        const asyncWrapper = async () => {
+            let finalLoc = location;
+            if (typeof location === 'string') {
+                const result = await geocoding.forward(location);
+                finalLoc = result.features[0].geometry.coordinates;
+            };
+            setTimeout(() => {
+                const map = new Map({
+                    container: mapContainer.current,
+                    apiKey: 'K34N8EzXnRm1QQbwcdOo',
+                    center: finalLoc,
+                    zoom: 17,
+                    MapStyle: MapStyle.STREETS,
+                });
+                const marker = new Marker()
+                    .setLngLat({ lng: finalLoc[0], lat: finalLoc[1] })
+                    .addTo(map);
+            }, 500);
+            setCoord(finalLoc);
+        };
+
+        asyncWrapper();
+        
     }, [location])
-    
+
     return (
-        <div className="h-screen">
-            <button
-                onClick={async() => await handleClick()}
-            >
-                Get Location
-            </button>
-            <div ref={mapContainer} className="w-1/2 h-1/2"></div>
+        <div className="h-[40rem] w-[40rem] ml-[19.5%] absolute bg-white rounded-lg p-5">
+            <div ref={mapContainer} className="w-full h-3/4 p-5"></div>
+            <h1 className="text-slate-800 text-center py-2">Is this your address?</h1>
+            <div className="flex p-5 w-1/2 mx-auto space-x-3">
+                <button className="bg-indigo-500 p-2 rounded text-sm h-full w-1/2"
+                onClick={() => setEntered('good')}
+                >Correct</button>
+                <button className="bg-indigo-500 p-2 rounded text-sm h-full w-1/2"
+                    onClick={() => setEntered(false)}
+                >Incorrect</button>
+            </div>
         </div>
         
     )

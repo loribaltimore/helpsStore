@@ -17,7 +17,7 @@ export default function ChatPanel({ activeUser, connection, setActiveConnections
               />
             </div>
             <div className="ml-4">
-              <h3 className="text-base font-semibold leading-6 text-gray-900">{currentUser.name.first + ' ' + currentUser.name.last}</h3>
+              <h3 className="text-base font-semibold leading-6 text-gray-900">{currentUser.name}</h3>
               <p className="text-sm text-gray-500">
               </p>
             </div>

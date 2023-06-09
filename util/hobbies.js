@@ -47,5 +47,6 @@ module.exports = [
   "Exercising",
   "Cycling",
   "Kayaking",
-  "Horseback Riding"
+  "Horse Riding",
+  "Caving"
 ];

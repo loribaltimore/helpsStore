@@ -1,15 +1,16 @@
 "use client"
+import Carousel from 'components/Carousel';
 
-export default function ProfileCard({user, setCounter, currentUserId}) {
+export default function ProfileCard({user, setCounter, currentUser, distance}) {
   const { name, age, description, hobbies } = user;
-
+const currentUserFormatted = JSON.parse(currentUser)
   const showedInterest = async (interested) => {
     await fetch('/api/user/connections', {
       method: 'POST',
       body: JSON.stringify({
         interested: interested,
         userId: user._id,
-        currentUserId
+        currentUserId: currentUserFormatted._id
       }),
       headers: {
         'Content-Type': 'application/json'
@@ -24,15 +25,13 @@ export default function ProfileCard({user, setCounter, currentUserId}) {
         <div className="m-auto mt-28 items-center overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 rounded-xl w-3/4">
           <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8">
             <div className="sm:col-span-4 lg:col-span-5">
-              <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100">
-                <img src="./guy.jpg" alt="Interior of light green canvas bag with padded laptop sleeve and internal organization pouch." className="object-fill object-center"/>
-              </div>
+            <Carousel photos={photos} />
               <p className="absolute left-4 top-4 text-center sm:static sm:mt-6">
                 <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">View full details</a>
               </p>
             </div>
           <div className="sm:col-span-8 lg:col-span-7">
-            <h2 className="text-black text-4xl">{name.first + ' ' + name.last}</h2>
+            <h2 className="text-black text-4xl">{name}</h2>
               <section aria-labelledby="information-heading" className="mt-4">
                 <h3 id="information-heading" className="sr-only">Product information</h3>
 
@@ -66,7 +65,7 @@ export default function ProfileCard({user, setCounter, currentUserId}) {
                   <svg className="h-5 w-5 flex-shrink-0 text-green-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                     <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clipRule="evenodd" />
                   </svg>
-                  <p className="ml-2 font-medium text-gray-500"> 4 Miles Away</p>
+                <p className="ml-2 font-medium text-gray-500">{distance} Miles Away</p>
                 </div>
                     </section>
                     <section className="p-2">

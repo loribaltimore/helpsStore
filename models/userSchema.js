@@ -5,12 +5,14 @@ const hobbies = require('../util/hobbies');
 
 
 const userSchema = new Schema({
-    name: {
-        first: String,
-        last: String
-    },
+    username: String,
+    name: String,
     age: Number,
     description: String,
+    email: String,
+    image: String,
+    emailVerified: Boolean,
+    photos: [String],
     hobbies: [
         {
             type: String,
@@ -19,7 +21,10 @@ const userSchema = new Schema({
     ],
     location: {
         geo: {
-            type: 'Point',
+            type: {
+                type: String,
+                default: 'Point'
+            } ,
             coordinates: [Number]
         }
     },
