@@ -11,12 +11,10 @@ export default function AllProfiles({ allMingles, currentUser }) {
     const currentUserFormatted = JSON.parse(currentUser);
     const currentMingle = allMingles[counter];
     const distance = calculateDistance(currentMingle.location.geo.coordinates, currentUserFormatted.location.geo.coordinates);
-    const photos = currentMingle.photos.map(photo => { 
-        
-    })
+
     return (
         <div>
-            <ProfileCard user={currentMingle} setCounter={setCounter} currentUser={currentUser} distance={distance} photos={photos} />
+            <ProfileCard user={currentMingle} setCounter={setCounter} currentUser={currentUser} distance={distance}  />
         </div>
     )
 };

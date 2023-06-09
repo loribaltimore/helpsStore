@@ -27,12 +27,13 @@ export async function PUT(request) {
 };
 
 export async function POST(request) {
-    const {interested, userId, currentUserId } = await request.json();
+    const {interested, userId, currentUserId, rating } = await request.json();
     const currentUser = await User.findById(currentUserId);
     const connection = await User.findById(userId);
   const preConnected = connection.connections.get(currentUserId);
-  
-
+  console.log(connection.rating);
+  await connection.rate(rating, userId);
+console.log(connection.rating)
     if (interested) {
         if (preConnected) {
             //if connection already liked currentUser
