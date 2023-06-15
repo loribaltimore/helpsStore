@@ -1,12 +1,12 @@
 "use client"
 import { useState } from 'react';
 import ProfileCard from './ProfileCard';
-import { useSession } from 'next-auth/react';
 import calculateDistance from '@/util/calculateDistance';
+import Matched from 'components/Matched';
 
 export default function AllProfiles({ allMingles, currentUser }) {
-    const { data: session } = useSession();
     const [counter, setCounter] = useState(0);
+    const [matched, setMatched] = useState(false);
     allMingles = JSON.parse(allMingles);
     const currentUserFormatted = JSON.parse(currentUser);
     const currentMingle = allMingles[counter];
@@ -14,7 +14,14 @@ export default function AllProfiles({ allMingles, currentUser }) {
 
     return (
         <div>
-            <ProfileCard user={currentMingle} setCounter={setCounter} currentUser={currentUser} distance={distance}  />
+            {
+                matched ?
+                    <Matched  />
+                        :
+                    <ProfileCard user={currentMingle} setCounter={setCounter}
+                        currentUser={currentUser} distance={distance} setMatched={setMatched} />
+
+        }
         </div>
     )
 };

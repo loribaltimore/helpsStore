@@ -1,11 +1,10 @@
 import Image from 'next/image'
 import database from 'models/database';
 import User from 'models/userSchema';
-import questions from '../../util/questions';
-import FullQuiz from '@/components/FullQuiz';
 import AllProfiles from '@/components/AllProfiles';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]/route';
+import Matched from 'components/Matched';
 
 async function getData() {
   await database();
@@ -18,14 +17,12 @@ async function getData() {
  return {allMingles, currentUser}
 }
 
-export default async function Pringle() {
+export default async function page() {
   const {allMingles, currentUser }= await getData().then(data => { return data }).catch(err => console.log(err));
-  const randomQuestions = questions.sort(() => Math.random() - 0.5).slice(0, 5);
 
   return (
     <div >
       <AllProfiles allMingles={JSON.stringify(allMingles)} currentUser={JSON.stringify(currentUser)} />
-      <FullQuiz randomQuestions={randomQuestions} />
     </div>
   )
 };

@@ -61,10 +61,16 @@ userSchema.method('rate', async function (rating, userId) {
     console.log("RATER IS WORKING")
     const User = models.User || model("User", userSchema);
     const currentUser = await User.findById(userId);
+    console.log('THIS IS CURRENTUSER');
     currentUser.rating.total += rating;
     currentUser.rating.count += 1;
     currentUser.rating.avg = currentUser.rating.total / currentUser.rating.count;
     await currentUser.save();
+});
+
+userSchema.method('icebreaker', async function (userId, arr) {
+    console.log("ICEBREAKER IS WORKING");
+    console.log(arr);
 })
 
 module.exports = models.User || model("User", userSchema);

@@ -27,27 +27,30 @@ export async function PUT(request) {
 };
 
 export async function POST(request) {
+  let isMatched = false;
     const {interested, userId, currentUserId, rating } = await request.json();
     const currentUser = await User.findById(currentUserId);
     const connection = await User.findById(userId);
   const preConnected = connection.connections.get(currentUserId);
-  console.log(connection.rating);
   await connection.rate(rating, userId);
-console.log(connection.rating)
     if (interested) {
         if (preConnected) {
             //if connection already liked currentUser
             if (preConnected.status === 'liked') {
                 connection.connections.set(currentUserId, { id: currentUserId, status: 'reciprocated', conversation: [] });
-                currentUser.connections.set(userId, { id: userId, status: 'reciprocated', conversation: [] });
+              currentUser.connections.set(userId, { id: userId, status: 'reciprocated', conversation: [] });
+              console.log("ITS A MATCH");
+              isMatched = true;
             } else {
-                connection.connections.delete(currentUserId);
+              connection.connections.delete(currentUserId);
             }
         } else {
             currentUser.connections.set(userId, { id: userId, status: 'liked', conversation: [] });
-            connection.connections.set(currentUserId, { id: currentUserId, status: 'pending', conversation: [] });
+          connection.connections.set(currentUserId, { id: currentUserId, status: 'pending', conversation: [] });
+          console.log('NOT A REJECTION, NOT A MATCH')
         }
     } else {
+      console.log("REJECTED OR REJECTION")
         if (preConnected) {
             //if connection already liked currentUser
                 connection.connections.delete(currentUserId);
@@ -55,10 +58,7 @@ console.log(connection.rating)
             currentUser.connections.set(userId, { id: userId, status: 'rejected', conversation: [] });
         }
     };
-    // await currentUser.save();
-    // await connection.save();
-    console.log(currentUser.connections);
-    console.log(connection.connections);
-
-    return NextResponse.json({ message: "Deleted" });
+    await currentUser.save();
+    await connection.save();
+    return NextResponse.json({ isMatched });
 }

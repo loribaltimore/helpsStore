@@ -3,7 +3,7 @@ import Carousel from 'components/Carousel';
 import { useEffect, useState } from 'react';
 import Rater from 'components/Rater';
 
-export default function ProfileCard({user, setCounter, currentUser, distance}) {
+export default function ProfileCard({user, setCounter, currentUser, distance, setMatched}) {
   const { name, age, description, hobbies, rating } = user;
   const currentUserFormatted = JSON.parse(currentUser);
   const [photos, setPhotos] = useState(undefined);
@@ -26,7 +26,6 @@ export default function ProfileCard({user, setCounter, currentUser, distance}) {
   }, [user])
 
   const showedInterest = async (interested) => {
-    console.log("CLICKED")
     await fetch('/api/user/connections', {
       method: 'POST',
       body: JSON.stringify({
@@ -40,10 +39,11 @@ export default function ProfileCard({user, setCounter, currentUser, distance}) {
       }
     }).then(async (data) => {
       const res = await data.json();
-      console.log(res);
+      const { isMatched } = res;
+      isMatched ? setMatched(true) : null;
     }).catch(err => console.log(err))
   };
-  const flooredRating = Math.floor(rating.total / rating.count);
+  const flooredRating = Math.round(rating.total / rating.count);
     return (
         <div className="m-auto mt-28 items-center overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 rounded-xl w-3/4">
           <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8">
@@ -124,14 +124,15 @@ export default function ProfileCard({user, setCounter, currentUser, distance}) {
                   <button className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
                   onClick={async () => {
                     await showedInterest(true);
-                    console.log("clicked");
+                    setRater(undefined)
                     setCounter(prev => prev + 1)
                   }}
                   >
                     I&apos;m Interested</button>
                   <button className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
                   onClick={async () =>{
-                    await showedInterest(false)
+                    await showedInterest(false);
+                    setRater(undefined)
                     setCounter(prev => prev + 1)
                   }
                   }
@@ -139,12 +140,10 @@ export default function ProfileCard({user, setCounter, currentUser, distance}) {
                     Pass</button>
                   </div> : null
               }
-                  
                   <div className="mt-6 text-center">
                     <a href="#" className="group inline-flex text-base font-medium">
                     </a>
                   </div>
-
               </section>
             </div>
           </div>

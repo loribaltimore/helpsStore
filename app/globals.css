@@ -38,3 +38,44 @@ body {
     opacity: 100;
   }
 }
+.matched {
+  animation: matched .25s linear;
+}
+
+
+@keyframes matched {
+  0% {
+    font-size: xx-small;
+    opactiy: 0%;
+  }
+
+  50% {
+  
+      opactiy: 50%;
+  }
+
+  100% {
+  
+      opactiy: 100%;
+  }
+}
+.icebreaker {
+  animation: icebreaker 3s linear;
+}
+
+
+@keyframes icebreaker {
+  0% {
+    opacity: 0%
+  }
+
+  50% {
+  
+      opactiy: 0%;
+  }
+
+  100% {
+  
+      opactiy: 100%;
+  }
+}

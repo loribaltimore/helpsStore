@@ -66,15 +66,17 @@ const seedUser = async () => {
 };
 
 const seedConnections = async () => {
-        await database();
+    await database();
+    const currentUser = await User.findOne({ username: 'Powerman5000' });
+    currentUser.connections = new Map();
     const users = await User.find({})
         .then(data => { return data }).catch(err => console.log(err));
-    for (let i = 1; i < 6; i++) {
-        users[0].connections.set(users[i].id, {id: users[i].id, status: 'reciprocated', conversation: []});
-        users[i].connections.set(users[0].id, {id: users[0].id, status: 'reciprocated', conversation: []});
+    for (let i = 1; i < 5; i++) {
+        users[i].connections = new Map();
+        users[i].connections.set(users[0].id, {id: currentUser._id, status: 'liked', conversation: []});
         await users[i].save();
     };
-    await users[0].save();
+    await currentUser.save();
 }
 
 //seed coordinates so I can use algorithm to find distance between users
@@ -96,9 +98,19 @@ const seedLoc = async () => {
         await user.save();
         console.log(user.location.geo.coordinates);
     })
-}
+};
+
+// const seedLikes = async () => {
+//     await database();
+//     const allUsers = await User.find({});
+//     allUsers.forEach(async (user, index) => {
+//         if (username !== 'Powerman5000') {
+//            user.
+//        }
+//     })
+// }
 
 // seedUser();
-// seedConnections();
-showResource();
+seedConnections();
+// showResource();
 // seedLoc();
