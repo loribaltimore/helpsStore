@@ -28,25 +28,27 @@ export async function PUT(request) {
 
 export async function POST(request) {
   let isMatched = false;
+  await database();
     const {interested, userId, currentUserId, rating } = await request.json();
     const currentUser = await User.findById(currentUserId);
     const connection = await User.findById(userId);
   const preConnected = connection.connections.get(currentUserId);
   await connection.rate(rating, userId);
+
     if (interested) {
         if (preConnected) {
             //if connection already liked currentUser
-            if (preConnected.status === 'liked') {
-                connection.connections.set(currentUserId, { id: currentUserId, status: 'reciprocated', conversation: [] });
-              currentUser.connections.set(userId, { id: userId, status: 'reciprocated', conversation: [] });
+          if (preConnected.status === 'liked') {
+              connection.connections.set(currentUserId, { id: currentUserId, status: 'reciprocated', conversation: [], trivia: {}, jokes: {} });
+              currentUser.connections.set(userId, { id: userId, status: 'reciprocated', conversation: [], trivia: {}, jokes: {} });
               console.log("ITS A MATCH");
               isMatched = true;
             } else {
               connection.connections.delete(currentUserId);
             }
         } else {
-            currentUser.connections.set(userId, { id: userId, status: 'liked', conversation: [] });
-          connection.connections.set(currentUserId, { id: currentUserId, status: 'pending', conversation: [] });
+            currentUser.connections.set(userId, { id: userId, status: 'liked', conversation: [], trivia: {}, jokes: {} });
+          connection.connections.set(currentUserId, { id: currentUserId, status: 'pending', conversation: [], trivia: {}, jokes: {} });
           console.log('NOT A REJECTION, NOT A MATCH')
         }
     } else {
@@ -55,10 +57,14 @@ export async function POST(request) {
             //if connection already liked currentUser
                 connection.connections.delete(currentUserId);
         } else {
-            currentUser.connections.set(userId, { id: userId, status: 'rejected', conversation: [] });
+            currentUser.connections.set(userId, { id: userId, status: 'rejected', conversation: [], trivia: {}, jokes: {} });
         }
     };
     await currentUser.save();
-    await connection.save();
+  await connection.save();
+  console.log('AFTER');
+  console.log(currentUser.connections.get(userId));
+  console.log(connection.connections.get(currentUserId));
+
     return NextResponse.json({ isMatched });
 }

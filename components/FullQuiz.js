@@ -2,8 +2,10 @@
 import Quiz from '../components/Quiz';
 import { useState } from 'react';
 import questions from '../util/questions';
+import { useSession } from 'next-auth/react';
 
-export default function FullQuiz({ }) {
+export default function FullQuiz({currentMingle}) {
+    const { data: session } = useSession();
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState([]);
     const randomQuestions = questions.sort(() => Math.random() - 0.5).slice(0, 6);
@@ -11,7 +13,11 @@ export default function FullQuiz({ }) {
     const handleClick = async () => {
         await fetch('/api/user/connections/quiz', {
             method: 'POST',
-            body: JSON.stringify({}),
+            body: JSON.stringify({
+                answers, 
+                activeUserId: session.userId,
+                connectionId: currentMingle._id
+            }),
             headers: {
                 'Content-Type': 'application/json',
             }
@@ -37,4 +43,4 @@ export default function FullQuiz({ }) {
     )
 };
 
-connect answers to connection in userSchema using a userSchema method called icebreaker. 
+// connect answers to connection in userSchema using a userSchema method called icebreaker. 

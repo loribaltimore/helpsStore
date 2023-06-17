@@ -4,7 +4,7 @@ import FullQuiz from '@/components/FullQuiz';
 
 import { useState } from 'react';
 
-export default function Matched({}) {
+export default function Matched({currentMingle}) {
     const [isTrivia, setIsTrivia] = useState(false);
     const [isJokes, setIsJokes] = useState(false);
 
@@ -12,7 +12,7 @@ export default function Matched({}) {
         <>
             {
                 isTrivia ?
-            <FullQuiz />
+                    <FullQuiz currentMingle={currentMingle} />
             :
             <MatchAction setIsTrivia={setIsTrivia} />
             }

@@ -1,4 +1,4 @@
-
+const database = require('./database');
 const mongoose = require("mongoose");
 const { Schema, model, models } = mongoose;
 const hobbies = require('../util/hobbies');
@@ -68,10 +68,43 @@ userSchema.method('rate', async function (rating, userId) {
     await currentUser.save();
 });
 
-userSchema.method('icebreaker', async function (userId, arr) {
+userSchema.method('icebreaker', async function (activeUserId, answers, connectionId) {
     console.log("ICEBREAKER IS WORKING");
-    console.log(arr);
+    await database();
+    const User = models.User || model("User", userSchema);
+    const currentUser = await User.findById(activeUserId);
+    const connection = await User.findById(connectionId);
+
+
+    const currentUserConnections = Object.fromEntries(currentUser.connections);
+    const connectionConnections = Object.fromEntries(connection.connections);
+    const myAnswers = currentUserConnections[connectionId].trivia.me;
+    const theirAnswers = connectionConnections[activeUserId].trivia.me;
+
+    currentUserConnections[connectionId].trivia = {
+        me: answers,
+        them: !theirAnswers ? false : connectionConnections[activeUserId].trivia.me
+    };
+
+    connectionConnections[activeUserId].trivia = {
+            me: connectionConnections[activeUserId].trivia.me || false,
+            them: answers,
+        }
+
+
+
+    currentUser.connections.set(connectionId, currentUserConnections[connectionId]);
+
+    connection.connections.set(activeUserId, connectionConnections[activeUserId]);
+
+    cocnsole.log(connection.connections.get(activeUserId));
+    console.log(currentUSer.connections.get(connectionId));
+
+    // await connection.save();
+    // await currentUser.save();
 })
 
 module.exports = models.User || model("User", userSchema);
 
+icebreaker working, matching seems to be working.
+have to format setters and getters

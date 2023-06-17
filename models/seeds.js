@@ -73,7 +73,7 @@ const seedConnections = async () => {
         .then(data => { return data }).catch(err => console.log(err));
     for (let i = 1; i < 5; i++) {
         users[i].connections = new Map();
-        users[i].connections.set(users[0].id, {id: currentUser._id, status: 'liked', conversation: []});
+        users[i].connections.set(currentUser._id, { id: currentUser._id, status: 'liked', conversation: [], trivia: {}, jokes: {} });
         await users[i].save();
     };
     await currentUser.save();
@@ -85,7 +85,7 @@ const showResource = async function () {
     await database();
     const users = await User.find({})
         .then(data => { return data }).catch(err => console.log(err));
-    console.log(users);
+    console.log(Object.fromEntries(users[2].connections)['64811cb221c21a50a0ee5ae5']);
 };
 
 const seedLoc = async () => {
