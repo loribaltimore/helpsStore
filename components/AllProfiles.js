@@ -16,7 +16,7 @@ export default function AllProfiles({ allMingles, currentUser }) {
         <div>
             {
                 matched ?
-                    <Matched currentMingle={currentMingle} />
+                    <Matched matched={matched} setMatched={setMatched} />
                         :
                     <ProfileCard user={currentMingle} setCounter={setCounter}
                         currentUser={currentUser} distance={distance} setMatched={setMatched} />

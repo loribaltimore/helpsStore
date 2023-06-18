@@ -73,7 +73,28 @@ const seedConnections = async () => {
         .then(data => { return data }).catch(err => console.log(err));
     for (let i = 1; i < 5; i++) {
         users[i].connections = new Map();
-        users[i].connections.set(currentUser._id, { id: currentUser._id, status: 'liked', conversation: [], trivia: {}, jokes: {} });
+        users[i].connections.set(currentUser._id, {
+            id: currentUser._id, status: 'liked', conversation: [], trivia: {
+                me: [
+                 {
+    question: "What is your favorite type of cuisine?",
+    answer: "Italian"
+  },
+  {
+    question: "What kind of music do you enjoy?",
+    answer: "Pop"
+  },
+  {
+    question: "Do you prefer coffee or tea?",
+    answers: "Coffee"
+  },
+  {
+    question: "What is your favorite outdoor activity?",
+    answers: "Hiking"
+                    },
+                ],
+        them: false
+        }, jokes: {} });
         await users[i].save();
     };
     await currentUser.save();
@@ -96,7 +117,6 @@ const seedLoc = async () => {
         user.location.geo.coordinates = coords[randCoord] || [-122.257935, 47.784021];
         user.hobbies = [hobbies[index], hobbies[index + 1], hobbies[index + 2], hobbies[index + 3], hobbies[index + 4], hobbies[index + 5]]
         await user.save();
-        console.log(user.location.geo.coordinates);
     })
 };
 
@@ -111,6 +131,11 @@ const seedLoc = async () => {
 // }
 
 // seedUser();
-seedConnections();
-// showResource();
+// seedConnections();
+showResource();
 // seedLoc();
+
+// Have to make sure that connections.trivia is saving and persisting after icebreaker and that 
+// that is also reflected in the chat panels
+// match => icebreaker => connection needs to see the show compatibility button on chat panels
+//     => based on connection.connections[activeUser._id] in the chat panel;

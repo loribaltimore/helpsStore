@@ -8,7 +8,6 @@ export async function POST(request) {
     const { activeUserId, answers, connectionId } = await request.json();
     await database();
     const activeUser = await User.findById(activeUserId);
-    // const activeSession = await Session.findById(sessionId);
     await activeUser.icebreaker(activeUserId, answers, connectionId);
-    return NextResponse.json({message: 'is working'})
+    return NextResponse.json({message: "Icebreaker Successful"})
 };

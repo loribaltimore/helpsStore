@@ -61,7 +61,6 @@ userSchema.method('rate', async function (rating, userId) {
     console.log("RATER IS WORKING")
     const User = models.User || model("User", userSchema);
     const currentUser = await User.findById(userId);
-    console.log('THIS IS CURRENTUSER');
     currentUser.rating.total += rating;
     currentUser.rating.count += 1;
     currentUser.rating.avg = currentUser.rating.total / currentUser.rating.count;
@@ -70,16 +69,15 @@ userSchema.method('rate', async function (rating, userId) {
 
 userSchema.method('icebreaker', async function (activeUserId, answers, connectionId) {
     console.log("ICEBREAKER IS WORKING");
+
     await database();
     const User = models.User || model("User", userSchema);
     const currentUser = await User.findById(activeUserId);
     const connection = await User.findById(connectionId);
 
-
     const currentUserConnections = Object.fromEntries(currentUser.connections);
     const connectionConnections = Object.fromEntries(connection.connections);
-    const myAnswers = currentUserConnections[connectionId].trivia.me;
-    const theirAnswers = connectionConnections[activeUserId].trivia.me;
+    const theirAnswers = connectionConnections[activeUserId].trivia.me !== undefined;
 
     currentUserConnections[connectionId].trivia = {
         me: answers,
@@ -91,20 +89,12 @@ userSchema.method('icebreaker', async function (activeUserId, answers, connectio
             them: answers,
         }
 
-
-
     currentUser.connections.set(connectionId, currentUserConnections[connectionId]);
-
     connection.connections.set(activeUserId, connectionConnections[activeUserId]);
 
-    cocnsole.log(connection.connections.get(activeUserId));
-    console.log(currentUSer.connections.get(connectionId));
+    await connection.save();
+    await currentUser.save();
 
-    // await connection.save();
-    // await currentUser.save();
 })
 
 module.exports = models.User || model("User", userSchema);
-
-icebreaker working, matching seems to be working.
-have to format setters and getters

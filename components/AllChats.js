@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 export default function AllChats({ activeUser, allConnections }) {
     const [activeConnections, setActiveConnections] = useState(undefined);
+    
     return (
         <div className='space-y-5'>
             {

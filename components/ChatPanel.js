@@ -4,6 +4,8 @@ import Link from "next/link";
 
 export default function ChatPanel({ activeUser, connection, setActiveConnections }) {
   const { currentUser } = connection;
+  const takeQuiz = currentUser.connections[activeUser._id] && currentUser.connections[activeUser._id].them && !currentUser.connections[activeUser._id].me;
+  console.log(currentUser.connections[activeUser._id]);
   return (
     <div className="w-3/4 mx-auto rounded-xl border-gray-200 bg-white px-4 py-5 sm:px-6 ">
       <div className=" p-5 -ml-4 -mt-4 flex flex-wrap items-center justify-between sm:flex-nowrap ">
@@ -23,7 +25,9 @@ export default function ChatPanel({ activeUser, connection, setActiveConnections
             </div>
           </div>
         </div>
-        <div className="ml-4 mt-4 flex flex-shrink-0 space-x-2">
+        {
+          !takeQuiz ?
+          <div className="ml-4 mt-4 flex flex-shrink-0 space-x-2">
           <button
             type="button"
             className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
@@ -35,7 +39,12 @@ export default function ChatPanel({ activeUser, connection, setActiveConnections
             <span>Chat</span>
           </Link>
           <PartWays activeUserId={activeUser._id} connection={connection} setActiveConnections={setActiveConnections} />
-        </div>
+            </div>
+            :
+            <button
+             className="relative inline-flex items-center rounded-md bg-red-400 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-red-500"
+            >Take Quiz</button>
+        }
       </div>
     </div>
     )

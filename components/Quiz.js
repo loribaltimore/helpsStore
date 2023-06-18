@@ -1,7 +1,7 @@
 "use client"
 import { useState } from 'react';
 
-export default function Quiz({ query, setCurrentQuestion, setAnswers }) {
+export default function Quiz({ query, setCurrentQuestion, setAnswers}) {
     const { question, answers } = query;
     const [isAnswered, setIsAnswered] = useState(false);
 

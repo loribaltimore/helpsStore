@@ -40,7 +40,8 @@ export default function ProfileCard({user, setCounter, currentUser, distance, se
     }).then(async (data) => {
       const res = await data.json();
       const { isMatched } = res;
-      isMatched ? setMatched(true) : null;
+      isMatched ? setMatched(isMatched) : null;
+      setCounter(prev => prev + 1);
     }).catch(err => console.log(err))
   };
   const flooredRating = Math.round(rating.total / rating.count);
@@ -125,7 +126,6 @@ export default function ProfileCard({user, setCounter, currentUser, distance, se
                   onClick={async () => {
                     await showedInterest(true);
                     setRater(undefined)
-                    setCounter(prev => prev + 1)
                   }}
                   >
                     I&apos;m Interested</button>

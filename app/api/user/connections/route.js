@@ -42,7 +42,7 @@ export async function POST(request) {
               connection.connections.set(currentUserId, { id: currentUserId, status: 'reciprocated', conversation: [], trivia: {}, jokes: {} });
               currentUser.connections.set(userId, { id: userId, status: 'reciprocated', conversation: [], trivia: {}, jokes: {} });
               console.log("ITS A MATCH");
-              isMatched = true;
+              isMatched = userId;
             } else {
               connection.connections.delete(currentUserId);
             }
