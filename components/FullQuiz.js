@@ -8,15 +8,16 @@ export default function FullQuiz({matched, setMatched}) {
     const { data: session } = useSession();
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState([]);
-    const randomQuestions = questions.sort(() => Math.random() - 0.5).slice(0, 6);
+    let connectionAnswers = matched.allTriviaAnswers ? matched.allTriviaAnswers.me : undefined;
+    const randomQuestions = connectionAnswers || questions.sort(() => Math.random() - 0.5).slice(0, 6);
 
     const handleClick = async () => {
         await fetch('/api/user/connections/quiz', {
             method: 'POST',
             body: JSON.stringify({
-                answers, 
+                answers,
                 activeUserId: session.userId,
-                connectionId: matched
+                connectionId: matched.currentUser._id
             }),
             headers: {
                 'Content-Type': 'application/json',
@@ -24,22 +25,17 @@ export default function FullQuiz({matched, setMatched}) {
         }).then(async data => {
             setMatched(false);
         }).catch(err => console.log(err));
-    }
+    };
     return (
         <div>
-            
             {
-                answers.length === randomQuestions.length - 1 && !showCompatibility ?
-                <button className='text-black bg-white' onClick={handleClick}>Submit</button>
-                    :
-                    !showCompatibility ?
-                    <Quiz query={randomQuestions[currentQuestion]}
-                setCurrentQuestion={setCurrentQuestion}
-                currentQuestion={currentQuestion}
-                setAnswers={setAnswers}
+                    <Quiz query={randomQuestions[currentQuestion] || false}
+                        setCurrentQuestion={setCurrentQuestion}
+                        currentQuestion={currentQuestion}
+                        setAnswers={setAnswers}
+                        allChosen={answers}
+                        matchedName={matched.currentUser.name}
                         />
-                        :
-                    <ShowCompatibility showCompatibility={showCompatibility} />
             }
         </div>
     )

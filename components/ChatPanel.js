@@ -2,10 +2,9 @@
 import PartWays from 'components/PartWays';
 import Link from "next/link";
 
-export default function ChatPanel({ activeUser, connection, setActiveConnections }) {
-  const { currentUser } = connection;
-  const takeQuiz = currentUser.connections[activeUser._id] && currentUser.connections[activeUser._id].them && !currentUser.connections[activeUser._id].me;
-  console.log(currentUser.connections[activeUser._id]);
+export default function ChatPanel({ activeUser, connection, setActiveConnections, setRenderQuiz }) {
+  const { currentUser, takeQuiz } = connection;
+
   return (
     <div className="w-3/4 mx-auto rounded-xl border-gray-200 bg-white px-4 py-5 sm:px-6 ">
       <div className=" p-5 -ml-4 -mt-4 flex flex-wrap items-center justify-between sm:flex-nowrap ">
@@ -42,10 +41,14 @@ export default function ChatPanel({ activeUser, connection, setActiveConnections
             </div>
             :
             <button
-             className="relative inline-flex items-center rounded-md bg-red-400 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-red-500"
+              className="relative inline-flex items-center rounded-md bg-indigo-400 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-indigo-500"
+              onClick={() => setRenderQuiz(connection)}
             >Take Quiz</button>
         }
       </div>
     </div>
     )
-}
+};
+
+// make it so that only show the take quiz button if you have not taken a quiz and they have;
+// right now its showing you the quiz even though you have taken it

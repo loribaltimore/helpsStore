@@ -40,7 +40,7 @@ export default function ProfileCard({user, setCounter, currentUser, distance, se
     }).then(async (data) => {
       const res = await data.json();
       const { isMatched } = res;
-      isMatched ? setMatched(isMatched) : null;
+      isMatched ? setMatched({currentUser: JSON.parse(isMatched)}) : null;
       setCounter(prev => prev + 1);
     }).catch(err => console.log(err))
   };

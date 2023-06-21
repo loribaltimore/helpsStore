@@ -64,6 +64,75 @@ const seedUser = async () => {
         console.log('User saved')
     };
 };
+const seedThemTrivia = async () => {
+    await database();
+    const currentUser = await User.findById('64811cb221c21a50a0ee5ae5');
+    currentUser.connections.set('6483673fec9f01df94986700', {
+        id: '6483673fec9f01df94986700', status: 'reciprocated', conversation: [], trivia: {
+            me: false,
+            them: [
+                {
+                    question: 'What kind of music do you enjoy?',
+                    answer: 'Pop'
+                },
+                {
+                    question: 'What is your favorite movie genre?',
+                    answer: 'Action'
+                },
+                {
+                    question: 'Are you an early bird or a night owl?',
+                    answer: 'Early bird'
+                },
+                {
+                    question: 'What is your favorite movie genre?',
+                    answer: 'Action'
+                },
+                {
+                    question: 'Do you prefer coffee or tea?',
+                    answer: 'Coffee'
+                }
+            ]
+        }, jokes: {}
+    });
+
+    const connection = await User.findById('6483673fec9f01df94986700');
+    connection.connections.set(currentUser._id, {
+        id: currentUser._id, status: 'reciprocated', conversation: [], trivia: {
+            them: false,
+            me: [
+                {
+                    question: 'What kind of music do you enjoy?',
+                    answers: ['Pop', 'Rock', 'Country', 'Rap'],
+                    chosen: 'Pop'
+                },
+                {
+                    question: 'What is your favorite movie genre?',
+                    answers: ['Action', 'Comedy', 'Drama', 'Horror'],
+                    chosen: 'Action'
+                },
+                {
+                    question: 'Are you an early bird or a night owl?',
+                    answers: ['Early bird', 'Night owl', 'Neither', 'Both'],
+                    chosen: 'Early bird'
+                },
+                {
+                    question: 'What is your favorite season?',
+                    answers: ['Summer', 'Winter', 'Spring', 'Fall'],
+                    chosen: 'Summer'
+                },
+                {
+                    question: 'Do you prefer coffee or tea?',
+                    answers: ['Coffee', 'Tea', 'Neither', 'Both'],
+                    chosen: 'Coffee'
+                }
+            ]
+        }, jokes: {}
+    });
+    
+    await connection.save();
+    await currentUser.save();
+console.log("THEM TRIVIA SEEDED")
+};
 
 const seedConnections = async () => {
     await database();
@@ -74,30 +143,11 @@ const seedConnections = async () => {
     for (let i = 1; i < 5; i++) {
         users[i].connections = new Map();
         users[i].connections.set(currentUser._id, {
-            id: currentUser._id, status: 'liked', conversation: [], trivia: {
-                me: [
-                 {
-    question: "What is your favorite type of cuisine?",
-    answer: "Italian"
-  },
-  {
-    question: "What kind of music do you enjoy?",
-    answer: "Pop"
-  },
-  {
-    question: "Do you prefer coffee or tea?",
-    answers: "Coffee"
-  },
-  {
-    question: "What is your favorite outdoor activity?",
-    answers: "Hiking"
-                    },
-                ],
-        them: false
-        }, jokes: {} });
+            id: currentUser._id, status: 'liked', conversation: [], trivia: {}, jokes: {} });
         await users[i].save();
     };
     await currentUser.save();
+    seedThemTrivia();
 }
 
 //seed coordinates so I can use algorithm to find distance between users
@@ -106,7 +156,9 @@ const showResource = async function () {
     await database();
     const users = await User.find({})
         .then(data => { return data }).catch(err => console.log(err));
-    console.log(Object.fromEntries(users[2].connections)['64811cb221c21a50a0ee5ae5']);
+    // console.log(Object.fromEntries(users[2].connections)['64811cb221c21a50a0ee5ae5']);
+    console.log(users[1].connections.get('64811cb221c21a50a0ee5ae5'));
+    console.log(users.map(user => { return { id: user._id, name: user.name, connections: user.connections } }));
 };
 
 const seedLoc = async () => {
@@ -125,17 +177,14 @@ const seedLoc = async () => {
 //     const allUsers = await User.find({});
 //     allUsers.forEach(async (user, index) => {
 //         if (username !== 'Powerman5000') {
-//            user.
+//             user.
 //        }
 //     })
-// }
+// };
+
+
 
 // seedUser();
-// seedConnections();
-showResource();
+seedConnections();
+// showResource();
 // seedLoc();
-
-// Have to make sure that connections.trivia is saving and persisting after icebreaker and that 
-// that is also reflected in the chat panels
-// match => icebreaker => connection needs to see the show compatibility button on chat panels
-//     => based on connection.connections[activeUser._id] in the chat panel;

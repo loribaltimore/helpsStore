@@ -67,34 +67,38 @@ userSchema.method('rate', async function (rating, userId) {
     await currentUser.save();
 });
 
-userSchema.method('icebreaker', async function (activeUserId, answers, connectionId) {
+userSchema.static('icebreaker', async function (activeUserId, answers, connectionId) {
     console.log("ICEBREAKER IS WORKING");
-
     await database();
-    const User = models.User || model("User", userSchema);
+    const User = models.User || model('User', userSchema);
     const currentUser = await User.findById(activeUserId);
     const connection = await User.findById(connectionId);
-
-    const currentUserConnections = Object.fromEntries(currentUser.connections);
+   
     const connectionConnections = Object.fromEntries(connection.connections);
     const theirAnswers = connectionConnections[activeUserId].trivia.me !== undefined;
 
-    currentUserConnections[connectionId].trivia = {
-        me: answers,
-        them: !theirAnswers ? false : connectionConnections[activeUserId].trivia.me
-    };
-
-    connectionConnections[activeUserId].trivia = {
-            me: connectionConnections[activeUserId].trivia.me || false,
-            them: answers,
-        }
-
-    currentUser.connections.set(connectionId, currentUserConnections[connectionId]);
-    connection.connections.set(activeUserId, connectionConnections[activeUserId]);
+    currentUser.connections.set(connectionId, { 
+        id: connectionId,
+        status: 'reciprocated',
+        conversation: [],
+        trivia: {
+            me: answers,
+            them: !theirAnswers ? false : connectionConnections[activeUserId].trivia.me
+        },
+        jokes: {}
+    });
+    connection.connections.set(activeUserId, {
+        id: activeUserId,
+        status: 'reciprocated',
+        conversation: [],
+            trivia: {
+                me: connectionConnections[activeUserId].trivia.me || false,
+                them: answers,
+            }
+        });
 
     await connection.save();
     await currentUser.save();
-
 })
 
 module.exports = models.User || model("User", userSchema);

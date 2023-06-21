@@ -4,7 +4,6 @@ import User from 'models/userSchema';
 import AllProfiles from '@/components/AllProfiles';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]/route';
-import Matched from 'components/Matched';
 
 async function getData() {
   await database();
