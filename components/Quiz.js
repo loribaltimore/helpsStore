@@ -1,13 +1,16 @@
 "use client"
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import ShowCompatibility from './ShowCompatibility';
 
-export default function Quiz({randomQuestions, currentQuestion, setCurrentQuestion, question, possibleAnswers, chosen}) {
+export default function Quiz({ randomQuestions, currentQuestion,
+    setCurrentQuestion, question, possibleAnswers, chosen, matched, setMatched}) {
     const { data: session } = useSession();
     const [isAnswered, setIsAnswered] = useState(false);
     const [answers, setAnswers] = useState([]);
     const [showChosen, setShowChosen] = useState(false);
     const [isClicked, setIsClicked] = useState(undefined);
+    const [isShowCompatibility, setIsShowCompatibility] = useState(false);
 
     const questions = randomQuestions.map(question => question.question);
     console.log(questions);
@@ -28,7 +31,6 @@ export default function Quiz({randomQuestions, currentQuestion, setCurrentQuesti
             setMatched(false);
         }).catch(err => console.log(err));
     };
-console.log(currentQuestion)
     const handleClick = (event) => {
         setShowChosen(true);
         setIsClicked(event.target.innerText);
@@ -74,17 +76,40 @@ console.log(currentQuestion)
                 }
                 </section>
                     </div> : 
-                    <div className='w-3/4 mx-auto block space-y-3'>
-                        <h1 className='w-1/2 block mx-auto text-4xl text-black'>Your Answers</h1>
+                    <div className='w-3/4 mx-auto block space-y-5'>
+                        {
+                            !isShowCompatibility ?
+                                <div className='space-y-3 p-3'>    
+                                <h1 className='w-1/2 block mx-auto text-4xl text-black'>Your Answers</h1>
+                                <div className='grid grid-rows-3 grid-flow-col gap-4'>
                         {
                             questions.map((question, index) => {
                                 const { chosen } = answers[index];
-                                return <div className=' space-x-3 mx-auto flex mb-3' key={index}>
-                                    <p className="text-black text-xl">{question}</p>
-                                     <p className="text-black text-xl">{chosen}</p> 
+                                const connectionChosen = chosen;
+                                return <div className='border-2 text-center' key={index}>
+                                    <p className='text-black text-sm'>Question:</p> 
+                                    <p className='text-black text-lf mb-2'>{question}</p>
+                                    <div className='flex  text-center mx-auto'>
+                                        <div className='block mx-auto'>
+                                            <p className='text-black text-sm'>You chose..</p>   
+                                            <p className='text-black text-md'>{chosen}</p> 
+                                            </div>
+                                            {
+                                                connectionChosen ?
+                                                 <div className='block mx-auto'>
+                                                        <p className='text-black text-sm'>{matched.currentUser.name} chose..</p>   
+                                                 <p className='text-black text-md'>{chosen}</p> 
+                                                </div> : null
+                                            }
+                                        </div>
                                     </div>
                             })
+                            }
+                                    </div>
+                                </div>
+                                    : <ShowCompatibility matched={matched} setMatched={setMatched} />
                         }
+                       
                         <button className='p-2 bg-indigo-400 block w-1/4 mx-auto rounded'
                         onClick={() => handleSubmit()}
                             >Submit</button>

@@ -1,6 +1,6 @@
 
 
-export default function ShowCompatibility({ShowCompatibility}) {
+export default function ShowCompatibility({}) {
 
     return (
         <div className="text-black">
@@ -8,3 +8,5 @@ export default function ShowCompatibility({ShowCompatibility}) {
         </div>
     )
 };
+
+add chart js from npm

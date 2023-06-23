@@ -124,6 +124,11 @@ const seedThemTrivia = async () => {
                     question: 'Do you prefer coffee or tea?',
                     answers: ['Coffee', 'Tea', 'Neither', 'Both'],
                     chosen: 'Coffee'
+                },
+                {
+                    question: 'Do you prefer forest or beack?',
+                    answers: ['Forest', 'Beach', 'Neither', 'Both'],
+                    chosen: 'Beach'
                 }
             ]
         }, jokes: {}

@@ -19,7 +19,7 @@ export default function FullQuiz({matched, setMatched}) {
 
     return (
         <div>
-            {
+            
                 <Quiz setCurrentQuestion={setCurrentQuestion}
                     chosen={chosen}
                     currentQuestion={currentQuestion}
@@ -29,7 +29,8 @@ export default function FullQuiz({matched, setMatched}) {
                     question={question || false}
                     possibleAnswers={answers}
                         />
-            }
+            <div> 
+            </div>
         </div>
     )
 };
