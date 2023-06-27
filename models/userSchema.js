@@ -99,6 +99,10 @@ userSchema.static('icebreaker', async function (activeUserId, answers, connectio
 
     await connection.save();
     await currentUser.save();
+
+    const isCompatability = currentUser.connections.get(connectionId).trivia.them !== undefined;
+
+    return isCompatability;
 })
 
 module.exports = models.User || model("User", userSchema);

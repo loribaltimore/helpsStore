@@ -3,6 +3,7 @@ import { useState } from 'react';
 import ProfileCard from './ProfileCard';
 import calculateDistance from '@/util/calculateDistance';
 import Matched from 'components/Matched';
+import QuizResults from 'components/QuizResults';
 
 export default function AllProfiles({ allMingles, currentUser }) {
     const [counter, setCounter] = useState(0);
@@ -21,7 +22,7 @@ export default function AllProfiles({ allMingles, currentUser }) {
                     <ProfileCard user={currentMingle} setCounter={setCounter}
                         currentUser={currentUser} distance={distance} setMatched={setMatched} />
 
-        }
+            }
         </div>
     )
 };

@@ -8,5 +8,3 @@ export default function ShowCompatibility({}) {
         </div>
     )
 };
-
-add chart js from npm
