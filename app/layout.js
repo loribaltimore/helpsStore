@@ -34,7 +34,7 @@ export default async function RootLayout({ children }){
              session && session.flash && session.flash.message ?
               <Flash flash={session.flash} /> : null
             }
-      {children}
+            {children}
           </Nav>
           </NextAuthProvider>
       </body>

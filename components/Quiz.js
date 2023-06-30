@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import QuizResults from 'components/QuizResults';
 
-export default function Quiz({ randomQuestions, currentQuestion,
-    setCurrentQuestion, question, possibleAnswers, chosen, matched, setMatched}) {
+export default function Quiz({ currentQuestion, setCurrentQuestion, question,
+    possibleAnswers, chosen, matched, setMatched }) {
     const { data: session } = useSession();
     const [isAnswered, setIsAnswered] = useState(false);
     const [answers, setAnswers] = useState([]);
@@ -88,7 +88,7 @@ export default function Quiz({ randomQuestions, currentQuestion,
             } 
                     </div> 
                     :
-                    <QuizResults />
+                    <QuizResults matched={matched} setMatched={setMatched} activeUserId={session.userId} />
 }
         </div>
     )

@@ -4,7 +4,7 @@ import User from 'models/userSchema';
 
 export async function PUT(request) {
   const { activeUserId, connection, isDelete } = await request.json();
-  if (isDelete) {
+   if (isDelete) {
   await database();
     const activeUser = await User.findById(activeUserId);
     const populatedConnection = await User.findById(connection.currentUser._id);
@@ -62,9 +62,6 @@ export async function POST(request) {
     };
     await currentUser.save();
   await connection.save();
-  console.log('AFTER');
-  console.log(currentUser.connections.get(userId));
-  console.log(connection.connections.get(currentUserId));
 
     return NextResponse.json({ isMatched });
 }

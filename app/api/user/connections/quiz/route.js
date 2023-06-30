@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import User from 'models/userSchema';
-import database from 'models/database';
 
 export async function POST(request) {
     console.log("ICEBREAKER IS WORKING");

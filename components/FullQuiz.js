@@ -19,7 +19,6 @@ export default function FullQuiz({matched, setMatched}) {
 
     return (
         <div>
-            
                 <Quiz setCurrentQuestion={setCurrentQuestion}
                     chosen={chosen}
                     currentQuestion={currentQuestion}
@@ -35,4 +34,3 @@ export default function FullQuiz({matched, setMatched}) {
     )
 };
 
-// connect answers to connection in userSchema using a userSchema method called icebreaker. 

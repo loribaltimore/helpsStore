@@ -1,34 +1,51 @@
 "use client"
 import ChatBubble from 'components/ChatBubble';
-// import messages from 'util/messages';
 import { io } from "socket.io-client";
-import axios from 'axios';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { usePathname } from 'next/navigation'
+let socket;
 
 export default function ChatWindow({ }) {
+   const pathname = usePathname();
+    const connectionId = pathname.split('/')[2];
+    const {data: session } =  useSession();
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const ref = useRef(null);
-    
-    const sendMessage = function () { 
+
+    useEffect(() => {
+        const asyncWrapper = async () => {
+
+            await fetch('/api/socket')
+                .then(data => console.log(data)).catch(err => console.log(err));
+           
+
+            socket = io(undefined, {
+                path: '/api/socket.io',
+            });
+
+            socket.on('connect', () => {
+                console.log('connected');
+            });
+        };
+        asyncWrapper();
+    } , [])
+
+    const sendMessage = function () {
         const newMessage = {
             text: input, date: Date.now(),
-            sender: '123', receiver: '456',
+            sender: session.userId, receiver: connectionId,
             read: false, delivered: true, liked: false
         }
+        socket.emit('message', {newMessage, connectionId, userId: session.userId});
         const updatedMessages = messages;
         updatedMessages.push(newMessage);
         setMessages(prev => updatedMessages);
         setInput('');
         ref.current ?
         ref.current.scrollTop = ref.current.scrollHeight : null
-    //     console.log('sending message')
-    // //   await axios.post('/chat', {})
-    // //         .then(data => {return data}).catch(err => console.log(err));
-    //     const Socket = io();
-    //     Socket.on("connect", () => {
-    // console.log(socket.id); // x8WIv7-mJelg7on_ALbx
     };
     return (
         <div className="relative  w-3/4 mx-auto rounded-xl border-gray-200 bg-white px-4 pt-2 sm:px-6 "
@@ -59,14 +76,11 @@ export default function ChatWindow({ }) {
                         return <ChatBubble message={message} key={index} index={index} />
                     })
                 }
-                
                     </div> :
                     <div className='w-3/4 mx-auto rounded-lg my-auto p-3 h-[32rem]'>
                         <h1 className="text-center text-6xl text-black">No Messages</h1>
                         </div>
-                    
             }
-            
             <div className="sticky bottom-0 flex mt-5 w-100 bg-white">
                     <div className='mx-auto w-1/2'>
                         <input placeholder="Type Message..." className="border-2 p-2 rounded w-3/4 text-black"
