@@ -72,7 +72,7 @@ const seedThemTrivia = async () => {
             me: false,
             them: [
                 {
-                    question: 'What kind of music do you enjoy?',
+                    question: 'What kind of music do you enjoy2?',
                     answer: 'Pop'
                 },
                 {
@@ -101,7 +101,7 @@ const seedThemTrivia = async () => {
             them: false,
             me: [
                 {
-                    question: 'What kind of music do you enjoy?',
+                    question: 'What kind of music do you enjoy1?',
                     answers: ['Pop', 'Rock', 'Country', 'Rap'],
                     chosen: 'Pop'
                 },
@@ -177,19 +177,85 @@ const seedLoc = async () => {
     })
 };
 
-// const seedLikes = async () => {
-//     await database();
-//     const allUsers = await User.find({});
-//     allUsers.forEach(async (user, index) => {
-//         if (username !== 'Powerman5000') {
-//             user.
-//        }
-//     })
-// };
+const seedSocketUser = async () => {
+    await database();
+    const socketUser = await User.findById('649f01847167490c3d622445');
+    const currentUser = await User.findById('64811cb221c21a50a0ee5ae5');
+
+    currentUser.connections.set('649f01847167490c3d622445', {
+        id: '649f01847167490c3d622445', status: 'reciprocated', conversation: [], trivia: {
+            me: false,
+            them: [
+                {
+                    question: 'What kind of music do you enjoy?',
+                    answer: 'Pop'
+                },
+                {
+                    question: 'What is your favorite movie genre?',
+                    answer: 'Action'
+                },
+                {
+                    question: 'Are you an early bird or a night owl?',
+                    answer: 'Early bird'
+                },
+                {
+                    question: 'What is your favorite movie genre?',
+                    answer: 'Action'
+                },
+                {
+                    question: 'Do you prefer coffee or tea?',
+                    answer: 'Coffee'
+                }
+            ]
+        }, jokes: {}
+    });
+
+    socketUser.connections.set('64811cb221c21a50a0ee5ae5', {
+        id: '64811cb221c21a50a0ee5ae5', status: 'reciprocated', conversation: [], trivia: {
+            them: false,
+            me: [
+                {
+                    question: 'What kind of music do you enjoy?',
+                    answers: ['Pop', 'Rock', 'Country', 'Rap'],
+                    chosen: 'Pop'
+                },
+                {
+                    question: 'What is your favorite movie genre?',
+                    answers: ['Action', 'Comedy', 'Drama', 'Horror'],
+                    chosen: 'Action'
+                },
+                {
+                    question: 'Are you an early bird or a night owl?',
+                    answers: ['Early bird', 'Night owl', 'Neither', 'Both'],
+                    chosen: 'Early bird'
+                },
+                {
+                    question: 'What is your favorite season?',
+                    answers: ['Summer', 'Winter', 'Spring', 'Fall'],
+                    chosen: 'Summer'
+                },
+                {
+                    question: 'Do you prefer coffee or tea?',
+                    answers: ['Coffee', 'Tea', 'Neither', 'Both'],
+                    chosen: 'Coffee'
+                },
+                {
+                    question: 'Do you prefer forest or beack?',
+                    answers: ['Forest', 'Beach', 'Neither', 'Both'],
+                    chosen: 'Beach'
+                }
+            ]
+        }, jokes: {}
+    });
+    await currentUser.save();
+    await socketUser.save();
+};
 
 
 
 // seedUser();
-seedConnections();
+// seedConnections();
+// seedSocketUser();
 // showResource();
 // seedLoc();
+seedThemTrivia();

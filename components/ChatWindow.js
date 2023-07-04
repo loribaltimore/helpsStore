@@ -7,21 +7,19 @@ import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation'
 let socket;
 
-export default function ChatWindow({ }) {
+export default function ChatWindow({history, connectionName }) {
    const pathname = usePathname();
     const connectionId = pathname.split('/')[2];
     const {data: session } =  useSession();
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState(history || []);
     const [input, setInput] = useState('');
     const ref = useRef(null);
-
+    console.log(history);
     useEffect(() => {
         const asyncWrapper = async () => {
 
-            await fetch('/api/socket')
+            await fetch('/api/socket', {method: 'GET'})
                 .then(data => console.log(data)).catch(err => console.log(err));
-           
-
             socket = io(undefined, {
                 path: '/api/socket.io',
             });
@@ -29,34 +27,43 @@ export default function ChatWindow({ }) {
             socket.on('connect', () => {
                 console.log('connected');
             });
+
+            socket.on('tester', (data) => {
+                setMessages(prev => [...prev, data]);
+            })
         };
         asyncWrapper();
     } , [])
-
-    const sendMessage = function () {
+    
+    const sendMessage = async function () {
         const newMessage = {
             text: input, date: Date.now(),
             sender: session.userId, receiver: connectionId,
             read: false, delivered: true, liked: false
         }
-        socket.emit('message', {newMessage, connectionId, userId: session.userId});
-        const updatedMessages = messages;
-        updatedMessages.push(newMessage);
-        setMessages(prev => updatedMessages);
+        socket.emit('message', { newMessage, connectionId, userId: session.userId });
+
+        await fetch('/api/socket', {
+            method: "POST",
+            body: JSON.stringify({message: newMessage}),
+            headers: {'Content-Type': 'application/json'}
+        }).then(async data => { const res = await data.json(); setMessages(res.messages)}).catch(err => console.log(err));
+
         setInput('');
         ref.current ?
         ref.current.scrollTop = ref.current.scrollHeight : null
     };
     return (
         <div className="relative  w-3/4 mx-auto rounded-xl border-gray-200 bg-white px-4 pt-2 sm:px-6 "
-        onKeyDown={(event) => {
+        onKeyDown={async (event) => {
             if (event.key === 'Enter'
             && input.length > 0) {
-                        sendMessage();
+                       await sendMessage();
                     }
                 }}
         >
-            <Link className='text-indigo-500 p-2 rounded flex'
+            <div className='flex '>
+        <Link className='text-indigo-500 p-2 rounded flex'
             href="/chat/all"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="indigo" width="24" height="24">
@@ -65,16 +72,44 @@ export default function ChatWindow({ }) {
                 </svg>
                 Back
                 </Link>
+
+                <div className='w-1/2 mx-auto text-center'>
+                    <h1 className="text-center text-2xl text-black">{connectionName}</h1>
+                </div>
+            </div>
+            
            
             {
-                messages.length ? 
+                messages.length || history.length? 
                     <div className="mx-auto block space-y-5 p-3 h-[32rem] overflow-scroll"
                 ref={ref}
             >
-                {
-                    messages.map((message, index) => {
-                        return <ChatBubble message={message} key={index} index={index} />
-                    })
+                        {
+                            session ?
+                                messages.length ?
+                            messages.map((message, index) => {
+                                const { userId } = session;
+                                const isLast = index === messages.length - 1 && message.sender === userId;
+                                const secondToLast = index === messages.length - 2 && message.sender === userId;
+                                const shouldRead = messages.length - 1 && !message.sender === userId;
+                                return <ChatBubble message={message}
+                                    key={index}
+                                    secondToLast={secondToLast}
+                                    isLast={isLast}
+                                    isCurrentUser={message.sender === userId} />
+                    }) : history.length ?
+                            history.map((message, index) => {
+                                const { userId } = session;
+                                 const isLast = index === history.length - 1 && message.sender === userId;
+                                const secondToLast = index === history.length - 2 && message.sender === userId;
+                                 const shouldRead = messages.length - 1 && !message.sender === userId;
+                                return <ChatBubble
+                                    message={message}
+                                    key={index}
+                                    secondToLast={secondToLast}
+                                    isLast={isLast}
+                                    isCurrentUser={message.sender === userId} />
+                    }) : null : null
                 }
                     </div> :
                     <div className='w-3/4 mx-auto rounded-lg my-auto p-3 h-[32rem]'>
@@ -95,3 +130,4 @@ export default function ChatWindow({ }) {
     </div>
 )
 }
+

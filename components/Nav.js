@@ -1,6 +1,9 @@
+"use client"
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
-export default function Nav({children}) {
+export default function Nav({ children }) {
+  const { data: session } = useSession();
 
     return (
 <div>
@@ -77,7 +80,7 @@ export default function Nav({children}) {
                   </li>
                 </ul>
               </li>
-              <li>
+              {/* <li>
                 <div className="text-xs font-semibold leading-6 text-gray-400">Your teams</div>
                 <ul role="list" className="-mx-2 mt-2 space-y-1">
                   <li>
@@ -99,7 +102,7 @@ export default function Nav({children}) {
                     </a>
                   </li>
                 </ul>
-              </li>
+              </li> */}
             </ul>
           </nav>
         </div>
@@ -149,12 +152,15 @@ export default function Nav({children}) {
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-white hover:bg-gray-800 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                <Link href={!session ? '/auth/signin' : '/auth/signout'} className="text-gray-400 hover:text-white hover:bg-gray-800 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
                   <svg className="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
-                  </svg>
-                  Documents
-                </a>
+                        </svg>
+                        {
+                          !session ?
+                            'Log In' : 'Logout'
+                        }
+                </Link>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white hover:bg-gray-800 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
@@ -162,13 +168,13 @@ export default function Nav({children}) {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" />
                   </svg>
-                  Reports
+                  {}
                 </a>
               </li>
             </ul>
           </li>
-          <li>
-            <div className="text-xs font-semibold leading-6 text-gray-400">Your teams</div>
+          {/* <li> */}
+            {/* <div className="text-xs font-semibold leading-6 text-gray-400">Your teams</div>
             <ul role="list" className="-mx-2 mt-2 space-y-1">
               <li>
                 <a href="#" className="text-gray-400 hover:text-white hover:bg-gray-800 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
@@ -189,7 +195,7 @@ export default function Nav({children}) {
                 </a>
               </li>
             </ul>
-                </li>
+                </li> */}
           <li className="-mx-6 mt-auto">
             <a href="#" className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800">
               <img className="h-8 w-8 rounded-full bg-gray-800" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt=""/>

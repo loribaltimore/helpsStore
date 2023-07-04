@@ -10,8 +10,9 @@ export default function AllProfiles({ allMingles, currentUser }) {
     const [matched, setMatched] = useState(false);
     allMingles = JSON.parse(allMingles);
     const currentUserFormatted = JSON.parse(currentUser);
-    const currentMingle = allMingles[counter];
-    const distance = calculateDistance(currentMingle.location.geo.coordinates, currentUserFormatted.location.geo.coordinates);
+    console.log(allMingles);
+    const currentMingle = allMingles[counter] || undefined;
+    const distance = calculateDistance(currentMingle.location.geo.coordinates, currentUserFormatted.location.geo.coordinates) || 5;
 
     return (
         <div>

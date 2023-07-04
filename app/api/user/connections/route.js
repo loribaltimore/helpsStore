@@ -1,9 +1,12 @@
 import { NextResponse} from "next/server";
 import database from 'models/database';
 import User from 'models/userSchema';
+import {getServerSession} from 'next-auth/next';
+import { authOptions } from 'app/api/auth/[...nextauth]/route';
+
 
 export async function PUT(request) {
-  const { activeUserId, connection, isDelete } = await request.json();
+  const { activeUserId, connection, isDelete, isRead, connectionId } = await request.json();
    if (isDelete) {
   await database();
     const activeUser = await User.findById(activeUserId);
@@ -23,7 +26,10 @@ export async function PUT(request) {
       message: "Deleted",
       allConnections: JSON.stringify(allConnections)
     });
-  }
+   } else if (isRead) {
+     const activeUser = await User.findById(activeUserId);
+     const connection = await User.findById(connectionId);
+   }
 };
 
 export async function POST(request) {
@@ -64,4 +70,19 @@ export async function POST(request) {
   await connection.save();
 
     return NextResponse.json({ isMatched });
+};
+
+
+export async function GET(request) {
+  await database();
+  const session = await getServerSession(authOptions);
+  console.log(request.url.split('=')[1])
+  const connectionId  = request.url.split('=')[1];
+  const currentUser = await User.findById(session.userId);
+  const connection = await User.findById(connectionId);
+  return NextResponse.json({
+    allMessages: currentUser.connections.get(connectionId).conversation,
+    connectionName: connection.name
+  })
 }
+

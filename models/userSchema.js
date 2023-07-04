@@ -77,7 +77,7 @@ userSchema.static('icebreaker', async function (activeUserId, answers, connectio
     const connectionConnections = Object.fromEntries(connection.connections);
     const theirAnswers = connectionConnections[activeUserId].trivia.me !== undefined;
 
-    currentUser.connections.set(connectionId, { 
+    currentUser.connections.set(connectionId, {
         id: connectionId,
         status: 'reciprocated',
         conversation: [],
@@ -91,11 +91,11 @@ userSchema.static('icebreaker', async function (activeUserId, answers, connectio
         id: activeUserId,
         status: 'reciprocated',
         conversation: [],
-            trivia: {
-                me: connectionConnections[activeUserId].trivia.me || false,
-                them: answers,
-            }
-        });
+        trivia: {
+            me: connectionConnections[activeUserId].trivia.me || false,
+            them: answers,
+        }
+    });
 
     await connection.save();
     await currentUser.save();
@@ -103,6 +103,13 @@ userSchema.static('icebreaker', async function (activeUserId, answers, connectio
     const isCompatability = currentUser.connections.get(connectionId).trivia.them !== undefined;
 
     return isCompatability;
+});
+
+userSchema.static('sendMessage', async (message) => {
+    await database();
+    const User = models.User || model('User', userSchema);
+
+
 })
 
 module.exports = models.User || model("User", userSchema);
