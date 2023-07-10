@@ -5,16 +5,16 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation'
+import DateInvite from 'components/DateInvite';
 let socket;
 
-export default function ChatWindow({history, connectionName }) {
+export default function ChatWindow({ history, connectionName, dateInvite }) {
    const pathname = usePathname();
     const connectionId = pathname.split('/')[2];
     const {data: session } =  useSession();
     const [messages, setMessages] = useState(history || []);
     const [input, setInput] = useState('');
     const ref = useRef(null);
-    console.log(history);
     useEffect(() => {
         const asyncWrapper = async () => {
 
@@ -116,8 +116,8 @@ export default function ChatWindow({history, connectionName }) {
                         <h1 className="text-center text-6xl text-black">No Messages</h1>
                         </div>
             }
-            <div className="sticky bottom-0 flex mt-5 w-100 bg-white">
-                    <div className='mx-auto w-1/2'>
+            <div className="sticky bottom-0 flex mt-5 w-100 bg-white space-x-5">
+                    <div className='mx-auto w-3/4'>
                         <input placeholder="Type Message..." className="border-2 p-2 rounded w-3/4 text-black"
                             value={input}
                             onChange={(event) => setInput(event.target.value)}
@@ -125,9 +125,16 @@ export default function ChatWindow({history, connectionName }) {
                         <button className="bg-indigo-500 p-2 rounded text-sm h-full"
                             onClick={() => sendMessage()}
                         >Send</button>
-                    </div>
+                </div>
+                <div>
+                    {
+                        session ?
+                        <DateInvite connectionId={connectionId} activeUserId={session.userId} dateInvite={dateInvite} />
+                        : null
+                    }
             </div>
-    </div>
+            </div>
+            </div>
 )
 }
 

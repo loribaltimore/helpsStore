@@ -12,8 +12,6 @@ export default function ChatBubble({ message, isCurrentUser, isLast, secondToLas
                 }
             }).then(async data => {console.log(await data.json())}).catch(err => console.log(err));
         }
-        
-            
         if (shouldRead) {
             asyncWrapper();
         }
@@ -23,8 +21,6 @@ export default function ChatBubble({ message, isCurrentUser, isLast, secondToLas
         true: 'bg-indigo-400',
         false: 'bg-blue-400'
     }
-    console.log(isLast);
-    console.log(secondToLast)
     return (
         <div className={`w-1/2  ${!isCurrentUser ? 'ml-auto' : null}`}>
             <div className={`rounded-lg  p-5 ${styles[isCurrentUser]}`}>
@@ -41,4 +37,9 @@ export default function ChatBubble({ message, isCurrentUser, isLast, secondToLas
                 </p>
         </div>
     )
-}
+};
+
+//finish read receipts
+//dashboard shows your reviews and interest/pass percentages
+//incorporate paid feature to see what someones date rating is.
+//ban phone number of users that don't let themselves be rated.

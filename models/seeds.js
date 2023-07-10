@@ -92,7 +92,7 @@ const seedThemTrivia = async () => {
                     answer: 'Coffee'
                 }
             ]
-        }, jokes: {}
+        }, review: {}
     });
 
     const connection = await User.findById('6483673fec9f01df94986700');
@@ -131,7 +131,7 @@ const seedThemTrivia = async () => {
                     chosen: 'Beach'
                 }
             ]
-        }, jokes: {}
+        }, review: {}
     });
     
     await connection.save();
@@ -148,7 +148,7 @@ const seedConnections = async () => {
     for (let i = 1; i < 5; i++) {
         users[i].connections = new Map();
         users[i].connections.set(currentUser._id, {
-            id: currentUser._id, status: 'liked', conversation: [], trivia: {}, jokes: {} });
+            id: currentUser._id, status: 'liked', conversation: [], trivia: {}, review: {} });
         await users[i].save();
     };
     await currentUser.save();
@@ -207,7 +207,7 @@ const seedSocketUser = async () => {
                     answer: 'Coffee'
                 }
             ]
-        }, jokes: {}
+        }, review: {}
     });
 
     socketUser.connections.set('64811cb221c21a50a0ee5ae5', {
@@ -245,7 +245,7 @@ const seedSocketUser = async () => {
                     chosen: 'Beach'
                 }
             ]
-        }, jokes: {}
+        }, review: {}
     });
     await currentUser.save();
     await socketUser.save();
@@ -255,7 +255,7 @@ const seedSocketUser = async () => {
 
 // seedUser();
 // seedConnections();
-// seedSocketUser();
+seedSocketUser();
 // showResource();
 // seedLoc();
-seedThemTrivia();
+// seedThemTrivia();

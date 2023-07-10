@@ -19,8 +19,8 @@ export default async function handler(req, res) {
       id: connectionMe.id,
       conversation: [...conversationMe, message],
       trivia: connectionMe.trivia,
-      jokes: {}, status:
-      connectionMe.status,
+      review: connectionMe.review,
+      status: connectionMe.status,
     }
     currentUser.connections.set(receiver, test);
     console.log('THIS IS UPDATED CONNECTION');
@@ -32,7 +32,8 @@ export default async function handler(req, res) {
       id: connectionThem.id,
       status: connectionThem.status,
       conversation: [...conversationThem, message],
-      trivia: connectionThem.trivia, jokes: {}
+      trivia: connectionThem.trivia,
+      review: connectionThem.review,
     });
 
     await currentUser.save().then(data => { console.log('THIS IS SAVED CONNECTION'); console.log(data.connections.get(receiver))}).catch(err => console.log(err));
@@ -59,6 +60,7 @@ export default async function handler(req, res) {
           socket.emit('tester', message.newMessage);
         })
       });
+    
     res.end();
     }
 }

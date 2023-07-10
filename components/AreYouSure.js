@@ -1,14 +1,14 @@
 "use client"
 import Link from 'next/link';
 
-export default function AreYouSure({ activeUserId, connection }) {    
+export default function AreYouSure({ connection }) {    
     const handleDelete = async () => {
         await fetch('/api/user/connections', {
             method: 'PUT',
             body: JSON.stringify(
                 {
-                    activeUserId,
-                    connection,
+                    activeUserId: connection[connection.activelyConnectedAs].id,
+                    activeConnectionId: connection._id,
                     isDelete: true
                 }
             ),

@@ -1,34 +1,53 @@
 import { NextResponse} from "next/server";
 import database from 'models/database';
 import User from 'models/userSchema';
+import Connection from 'models/connectionSchema';
 import {getServerSession} from 'next-auth/next';
 import { authOptions } from 'app/api/auth/[...nextauth]/route';
 
 
 export async function PUT(request) {
-  const { activeUserId, connection, isDelete, isRead, connectionId } = await request.json();
-   if (isDelete) {
-  await database();
-    const activeUser = await User.findById(activeUserId);
-    const populatedConnection = await User.findById(connection.currentUser._id);
-    activeUser.connections.delete(connection.currentUser._id);
-    populatedConnection.connections.delete(activeUser.id);
-  await activeUser.save();
+  const { activeUserId, activeConnectionId, isDelete, isRead, connectionId, dateInvite } = await request.json();
+         await database();
+  const activeUser = await User.findById(activeUserId);
+      const populatedConnection = await User.findById(connectionId || connection.currentUser._id);
+
+   
+  if (isDelete) {
+    activeUser.connections.reciprocated = activeUser.connections.reciprocated.filter(connection => connection.id !== activeConnectionId);
+    populatedConnection.connections.reciprocated = populatedConnection.connections.reciprocated.filter(connection => connection.id !== activeUserId);
+    await activeUser.save();
     await populatedConnection.save();
-    let allConnections = activeUser.connections;
-  allConnections = [...allConnections.values()];
-  allConnections = allConnections.filter(connection => connection.status === 'reciprocated');
-  allConnections = await Promise.all(allConnections.map(async (connection, index) => {
-  const populatedUser = await User.findById(connection.id);
-    return { currentUser: populatedUser, conversation: connection.conversation }
-  }))
+    await Connection.findByIdAndDelete(activeConnectionId);
+    let allConnections = activeUser.populate('connections.reciprocated');
     return NextResponse.json({
       message: "Deleted",
       allConnections: JSON.stringify(allConnections)
     });
-   } else if (isRead) {
-     const activeUser = await User.findById(activeUserId);
-     const connection = await User.findById(connectionId);
+  } else if (isRead) {
+    //update isRead to true
+  } else if (dateInvite) {
+    console.log('DATE INVITE IS ACTIVE')
+    const retrievedConnection = activeUser.connections.get(connectionId);
+    activeUser.connections.set(connectionId, {
+      id: connectionId,
+      status: 'reciprocated',
+      conversation: [...retrievedConnection.conversation],
+      trivia: retrievedConnection.trivia,
+      review: { dateInvite: true, date: Date.now().toString(), isShow: false }
+    });
+    // const connectionsConnection = populatedConnection.connections.get(activeUserId);
+    // connectionsConnection.review = { dateInvite: true, date: Date.now(), isShow: false };
+    // populatedConnection.connections.set(activeUserId, {
+    //   id: activeUserId,
+    //   status: connectionsConnection.status,
+    //   conversation: connectionsConnection.conversation,
+    //   trivia: connectionsConnection.trivia,
+    //   review: connectionsConnection.review
+    // });
+    await activeUser.save();
+    const inviteSent = !populatedConnection.connections.get(activeUserId).review.dateInvite;
+    return NextResponse.json({ inviteSent });
    }
 };
 
@@ -38,37 +57,33 @@ export async function POST(request) {
     const {interested, userId, currentUserId, rating } = await request.json();
     const currentUser = await User.findById(currentUserId);
     const connection = await User.findById(userId);
-  const preConnected = connection.connections.get(currentUserId);
+  const preConnected = currentUser.connections.pending.indexOf(userId);
   await connection.rate(rating, userId);
 
     if (interested) {
-        if (preConnected) {
+        if (preConnected > -1) {
             //if connection already liked currentUser
-          if (preConnected.status === 'liked') {
-              connection.connections.set(currentUserId, { id: currentUserId, status: 'reciprocated', conversation: [], trivia: {}, jokes: {} });
-              currentUser.connections.set(userId, { id: userId, status: 'reciprocated', conversation: [], trivia: {}, jokes: {} });
-              console.log("ITS A MATCH");
-              isMatched = JSON.stringify(connection);
-            } else {
-              connection.connections.delete(currentUserId);
-            }
+           const newConnection = await new currentConnection({
+            connection1:{name: currentUser.name, id: currentUser._id},
+            connection2: {name: connection.name, id: userId},
+           }).save();
+          currentUser.connections.pending = currentUser.connections.pending.filter(connection => connection !== userId);
+          currentUser.connections.reciprocated.push(newConnection.id);
+          connection.connections.recirpocated.push(newConnection.id);
+          console.log("ITS A MATCH");
+          isMatched = JSON.stringify(connection);
+          await currentUser.save();
+          await connection.save();
+          await currentConnection.save();
         } else {
-            currentUser.connections.set(userId, { id: userId, status: 'liked', conversation: [], trivia: {}, jokes: {} });
-          connection.connections.set(currentUserId, { id: currentUserId, status: 'pending', conversation: [], trivia: {}, jokes: {} });
-          console.log('NOT A REJECTION, NOT A MATCH')
+          console.log('JUST A LIKE');
+          connection.connections.pending.push(newConnection._id);
         }
-    } else {
-      console.log("REJECTED OR REJECTION")
-        if (preConnected) {
-            //if connection already liked currentUser
-                connection.connections.delete(currentUserId);
-        } else {
-            currentUser.connections.set(userId, { id: userId, status: 'rejected', conversation: [], trivia: {}, jokes: {} });
-        }
-    };
+  };
+
+  await User.interestAndPass(currentUserId, userId, interested ? 'interested' : 'pass');
     await currentUser.save();
   await connection.save();
-
     return NextResponse.json({ isMatched });
 };
 
@@ -76,13 +91,24 @@ export async function POST(request) {
 export async function GET(request) {
   await database();
   const session = await getServerSession(authOptions);
-  console.log(request.url.split('=')[1])
   const connectionId  = request.url.split('=')[1];
-  const currentUser = await User.findById(session.userId);
-  const connection = await User.findById(connectionId);
+  const connection = await Connection.findById(connectionId);
+  let activelyConnectedAs;
+  let activelyConnectedWith;
+  if (session.userId === connection.connection1.id) {
+    activelyConnectedAs = 'connection1';
+    activelyConnectedWith = 'connection2';
+  } else {
+    activelyConnectedAs = 'connection2';
+    activelyConnectedWith = 'connection1';
+  };
+  const updatedConnection = connection;
+  updatedConnection.activelyConnectedAs = activelyConnectedAs;
+  updatedConnection.activelyConnectedWith = activelyConnectedWith;
   return NextResponse.json({
-    allMessages: currentUser.connections.get(connectionId).conversation,
-    connectionName: connection.name
+    connection: JSON.stringify(updatedConnection),
   })
 }
 
+
+// make sure map saves on PUT request for connections.review change/

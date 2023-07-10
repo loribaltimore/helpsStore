@@ -3,9 +3,9 @@ import Quiz from '../components/Quiz';
 import { useState } from 'react';
 import questions from '../util/questions';
 
-export default function FullQuiz({matched, setMatched}) {
+export default function FullQuiz({connection, setConnection}) {
     const [currentQuestion, setCurrentQuestion] = useState(0);
-    let connectionAnswers = matched.allTriviaAnswers ? matched.allTriviaAnswers.me : undefined;
+    let connectionAnswers = connection.trivia[connection.activelyConnectedWith].length ? connection.trivia[connection.activelyConnectedWith].length : false;
     const randomQuestions = connectionAnswers || questions.sort(() => Math.random() - 0.5).slice(0, 6);
     let question = false;
     let answers;
@@ -23,8 +23,8 @@ export default function FullQuiz({matched, setMatched}) {
                     chosen={chosen}
                     currentQuestion={currentQuestion}
                     randomQuestions={randomQuestions}
-                    matched={matched}
-                    setMatched={setMatched}
+                    connection={connection}
+                    setConnection={setConnection}
                     question={question || false}
                     possibleAnswers={answers}
                         />

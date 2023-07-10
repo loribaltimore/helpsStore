@@ -13,16 +13,18 @@ async function getData() {
   const formattedId = userId.toString();
   const activeUser = await User.findById(formattedId)
     .then(data => {  return data }).catch(err => console.log(err));
-  let allConnections = activeUser.connections;
-  allConnections = [...allConnections.values()];
-  allConnections = allConnections.filter(connection => connection.status === 'reciprocated');
-  allConnections = await Promise.all(allConnections.map(async (connection, index) => {
-    const populatedUser = await User.findById(connection.id);
-    const conversation = connection.conversation;
-    const takeQuiz = !activeUser.connections.get(connection.id).trivia.me;
-    const allTriviaAnswers = populatedUser.connections.get(formattedId).trivia ? populatedUser.connections.get(formattedId).trivia : {};
-    return { currentUser: populatedUser, conversation, takeQuiz, allTriviaAnswers }
-  }))
+  const allConnections = activeUser.populate('connections.reciprocated');
+  // allConnections = await Promise.all(allConnections.map(async (connection, index) => {
+  //   const populatedUser = await User.findById(connection.id);
+  //   const conversation = connection.conversation;
+  //   const takeQuiz = !activeUser.connections.get(connection.id).trivia.me;
+  //   const allTriviaAnswers = populatedUser.connections.get(formattedId).trivia ? populatedUser.connections.get(formattedId).trivia : {};
+  //   const canReview = populatedUser.connections.get(formattedId).review.isShow === true
+  //     && activeUser.connections.get(connection.id).review.isShow === true;
+  //   const isInvited = populatedUser.connections.get(formattedId).review.dateInvite === true
+  //     && activeUser.connections.get(connection.id).review.dateInvite === false;
+  //   return { currentUser: populatedUser, conversation, takeQuiz, allTriviaAnswers, canReview, isInvited }
+  // }))
  return {activeUser, allConnections}
 }
 
@@ -30,6 +32,8 @@ export default async function All(props) {
   const { activeUser, allConnections } = await getData();
 
   return (
-      <AllChats allConnections={JSON.stringify(allConnections)} activeUser={JSON.stringify(activeUser)} />
+    <AllChats allConnections={JSON.stringify(allConnections)}
+      activeUser={JSON.stringify(activeUser)}
+    />
   )
 };

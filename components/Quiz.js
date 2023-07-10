@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import QuizResults from 'components/QuizResults';
 
 export default function Quiz({ currentQuestion, setCurrentQuestion, question,
-    possibleAnswers, chosen, matched, setMatched }) {
+    possibleAnswers, chosen, connection, setConnection}) {
     const { data: session } = useSession();
     const [isAnswered, setIsAnswered] = useState(false);
     const [answers, setAnswers] = useState([]);
@@ -17,8 +17,8 @@ export default function Quiz({ currentQuestion, setCurrentQuestion, question,
             method: 'POST',
             body: JSON.stringify({
                 answers,
-                activeUserId: session.userId,
-                connectionId: matched.currentUser._id
+                activeUserId: connection[connection.activelyConnectedAs].id,
+                connectionId: connection[connection.activelyConnectedWith].id
             }),
             headers: {
                 'Content-Type': 'application/json',
@@ -46,7 +46,6 @@ export default function Quiz({ currentQuestion, setCurrentQuestion, question,
             }, 1000)
         },  1750);
     }
-    console.log(answers.length)
     return (
            <div className={`m-auto mt-28 items-center overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 rounded-xl w-3/4 ${isAnswered ? 'answered' : null}`}>
             {
@@ -59,7 +58,7 @@ export default function Quiz({ currentQuestion, setCurrentQuestion, question,
                             <div className={`h-[1rem]`}>
                                 {
                                 chosen === answer && showChosen?
-                                    <h1 className='text-black text-sm'>{matched.currentUser.name} chose...</h1>
+                                    <h1 className='text-black text-sm'>{connection[connection.activelyConnectedWith].name} chose...</h1>
                                         :
                                         isClicked === answer ? 
                                             <h1 className='text-black text-sm'>You chose...</h1>
@@ -88,7 +87,7 @@ export default function Quiz({ currentQuestion, setCurrentQuestion, question,
             } 
                     </div> 
                     :
-                    <QuizResults matched={matched} setMatched={setMatched} activeUserId={session.userId} />
+                    <QuizResults connection={connection} setConnection={setConnection} />
 }
         </div>
     )

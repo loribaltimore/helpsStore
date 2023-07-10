@@ -27,7 +27,7 @@ export default function AllChats({ activeUser, allConnections }) {
                      />
                  })
                     :
-                <FullQuiz matched={renderQuiz} setMatched={setRenderQuiz} />
+                <FullQuiz connection={renderQuiz} setConnection={setRenderQuiz} />
         }
     </div>
 )
