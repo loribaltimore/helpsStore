@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const database = require('./database');
 const User = require('./userSchema');
+const Connection = require('./connectionSchema');
 const hobbies = require('../util/hobbies');
 const casual = require('casual');
 const fs = require('fs');
@@ -15,7 +16,7 @@ const { GridFSBucket } = require('mongodb');
 
 const seedUser = async () => {
     const client = await database();
-    await User.deleteMany({username: {$ne: 'Powerman5000'}});
+    await User.deleteMany({});
     for (let i = 0; i < 5; i++){
         const randHobby = Math.floor(Math.random() * (hobbies.length / 2));
         const randAge = Math.floor(Math.random() * 30);
@@ -141,19 +142,56 @@ console.log("THEM TRIVIA SEEDED")
 
 const seedConnections = async () => {
     await database();
-    const currentUser = await User.findOne({ username: 'Powerman5000' });
-    currentUser.connections = new Map();
+    const currentUser = await User.findById('64ad69466aad9c85233adcc6');
+    console.log(currentUser);
     const users = await User.find({})
         .then(data => { return data }).catch(err => console.log(err));
+    currentUser.connections.reciprocated = [];
     for (let i = 1; i < 5; i++) {
-        users[i].connections = new Map();
-        users[i].connections.set(currentUser._id, {
-            id: currentUser._id, status: 'liked', conversation: [], trivia: {}, review: {} });
-        await users[i].save();
+        if (currentUser._id !== users[i]._id) {
+            // const newConnection = await new Connection({
+            //     connection1: users[i]._id,
+            //     trivia: {
+            //         connection1: [
+            //             {
+            //                 question: 'What kind of music do you enjoy1?',
+            //                 answers: ['Pop', 'Rock', 'Country', 'Rap'],
+            //                 chosen: 'Pop'
+            //             },
+            //             {
+            //                 question: 'What is your favorite movie genre?',
+            //                 answers: ['Action', 'Comedy', 'Drama', 'Horror'],
+            //                 chosen: 'Action'
+            //             },
+            //             {
+            //                 question: 'Are you an early bird or a night owl?',
+            //                 answers: ['Early bird', 'Night owl', 'Neither', 'Both'],
+            //                 chosen: 'Early bird'
+            //             },
+            //             {
+            //                 question: 'What is your favorite season?',
+            //                 answers: ['Summer', 'Winter', 'Spring', 'Fall'],
+            //                 chosen: 'Summer'
+            //             },
+            //             {
+            //                 question: 'Do you prefer coffee or tea?',
+            //                 answers: ['Coffee', 'Tea', 'Neither', 'Both'],
+            //                 chosen: 'Coffee'
+            //             },
+            //             {
+            //                 question: 'Do you prefer forest or beack?',
+            //                 answers: ['Forest', 'Beach', 'Neither', 'Both'],
+            //                 chosen: 'Beach'
+            //             }
+            //         ]
+            //     }
+            // }).save();
+            // currentUser.connections.pending.push(users[i]._id);
+        }
     };
     await currentUser.save();
-    seedThemTrivia();
-}
+    // seedThemTrivia();
+};
 
 //seed coordinates so I can use algorithm to find distance between users
 
@@ -254,8 +292,8 @@ const seedSocketUser = async () => {
 
 
 // seedUser();
-// seedConnections();
-seedSocketUser();
+seedConnections();
+// seedSocketUser();
 // showResource();
 // seedLoc();
 // seedThemTrivia();

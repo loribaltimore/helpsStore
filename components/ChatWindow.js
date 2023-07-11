@@ -8,7 +8,8 @@ import { usePathname } from 'next/navigation'
 import DateInvite from 'components/DateInvite';
 let socket;
 
-export default function ChatWindow({ history, connectionName, dateInvite }) {
+export default function ChatWindow({ history, connection, dateInvite }) {
+    console.log(connection);
    const pathname = usePathname();
     const connectionId = pathname.split('/')[2];
     const {data: session } =  useSession();
@@ -73,9 +74,9 @@ export default function ChatWindow({ history, connectionName, dateInvite }) {
                 Back
                 </Link>
 
-                <div className='w-1/2 mx-auto text-center'>
-                    <h1 className="text-center text-2xl text-black">{connectionName}</h1>
-                </div>
+                {/* <div className='w-1/2 mx-auto text-center'>
+                    <h1 className="text-center text-2xl text-black">{connection[connection.activelyConnectedWith]}</h1>
+                </div> */}
             </div>
             
            
@@ -129,7 +130,7 @@ export default function ChatWindow({ history, connectionName, dateInvite }) {
                 <div>
                     {
                         session ?
-                        <DateInvite connectionId={connectionId} activeUserId={session.userId} dateInvite={dateInvite} />
+                            <DateInvite connection={connection} dateInvite={dateInvite} />
                         : null
                     }
             </div>

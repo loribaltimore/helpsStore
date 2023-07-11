@@ -1,8 +1,14 @@
-import { Schema, model, models } from 'mongoose';
+const { Schema, model, models } = require('mongoose');
 
 const connectionSchema = new Schema({
-    connection1: String,
-    connection2: String,
+    connection1: {
+        name: String,
+        id: String
+    },
+    connection2: {
+        name: String,
+        id: String
+    },
     conversation: [
         {
             text: String,
@@ -47,6 +53,10 @@ const connectionSchema = new Schema({
             sentBy: String,
             sentTo: String,
             date: Date,
+            accepted: {
+                type: Boolean,
+                default: false
+            }
         },
         shown: {
             connection1: Date,
@@ -69,4 +79,4 @@ const connectionSchema = new Schema({
     },
 });
 
-export default models.Connection || model('Connection', connectionSchema);
+module.exports =  models.Connection || model('Connection', connectionSchema);

@@ -2,6 +2,7 @@
 // import Image from 'next/image'
 import database from 'models/database';
 import User from 'models/userSchema';
+import Connection from 'models/connectionSchema';
 import AllChats from 'components/AllChats';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../api/auth/[...nextauth]/route';
@@ -13,7 +14,8 @@ async function getData() {
   const formattedId = userId.toString();
   const activeUser = await User.findById(formattedId)
     .then(data => {  return data }).catch(err => console.log(err));
-  const allConnections = activeUser.populate('connections.reciprocated');
+  const allConnections = await activeUser.populate('connections.reciprocated').then(data => { return data.connections.reciprocated }).catch(err => console.log(err));
+  console.log('allConnections' , allConnections)
   // allConnections = await Promise.all(allConnections.map(async (connection, index) => {
   //   const populatedUser = await User.findById(connection.id);
   //   const conversation = connection.conversation;

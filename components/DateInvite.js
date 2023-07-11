@@ -1,7 +1,7 @@
 "use client"
 import { useState } from 'react';
 
-export default function DateInvite({ connectionId, activeUserId, dateInvite }) {
+export default function DateInvite({connection, dateInvite }) {
     const [isInvited, setIsInvited] = useState(false);
 
    const sendDateInvite = async () => {
@@ -9,8 +9,8 @@ export default function DateInvite({ connectionId, activeUserId, dateInvite }) {
            method: 'PUT',
            body: JSON.stringify({
                dateInvite: true,
-               connectionId,
-               activeUserId,
+               connectionId: connection[connection[activelyConnectedWith]].id,
+               activeUserId: connection[connection[activelyConnectedAs]].id,
            }),
            headers: {
                'Content-Type': 'application/json'
@@ -22,19 +22,22 @@ export default function DateInvite({ connectionId, activeUserId, dateInvite }) {
            method: 'PUT',
            body: JSON.stringify({
                isShow: true,
-               connectionId,
-               activeUserId,
+               connectionId: connection[connection[activelyConnectedWith]].id,
+               activeUserId: connection[connection[activelyConnectedAs]].id,
            }),
            headers: {
                'Content-Type': 'application/json'
            }
        }).then(data => console.log(data)).catch(err => console.log(err));
    };
-    
+    //dateInvite = true = accept date
+    //dateInvite = false  = you sent request
+    //dateInvite = 'accepted' = date accepted
+    //dateInvite = 0 = date request not sent
     return (
         <div>
             {
-                !dateInvite.me  && !dateInvite.them && !isInvited?
+               typeof dateInvite === 'Number' ?
                     <button className="bg-indigo-500 px-3 py-2 rounded text-sm h-full"
                         //then create an isShow button in chat panel.
                         //create message that says something like "if your date refuses to acknowledge that they showed, leave the date."
@@ -43,15 +46,15 @@ export default function DateInvite({ connectionId, activeUserId, dateInvite }) {
                         onClick={() => {sendDateInvite()}}
                         >Date</button>
                     :
-                    dateInvite.me === true && !dateInvite.them || isInvited?
+                    !dateInvite?
                         <button className="bg-orange-500 px-3 py-2 rounded text-sm h-full"
                         >Pending</button>
                         :
-                        !dateInvite.me && dateInvite.them ?
+                        dateInvite ?
                             <button className="bg-green-500 px-3 py-2 rounded text-sm h-full"
                             >Accept Date</button>
                             :
-                            dateInvite.me && dateInvite.them ?
+                            typeof dateInvite === 'String' ?
                                 <button className="bg-pink-500 px-3 py-2 rounded text-sm h-full"
                                 >Showed</button>
                                 : null
@@ -60,6 +63,3 @@ export default function DateInvite({ connectionId, activeUserId, dateInvite }) {
     </div>
     )
 }
-
-
-dateInvite takes in the dateInvite prop from ChatWindow. reformat that prop with informtion necessary to maintain functionality

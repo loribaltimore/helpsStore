@@ -63,21 +63,21 @@ export async function POST(request) {
     if (interested) {
         if (preConnected > -1) {
             //if connection already liked currentUser
-           const newConnection = await new currentConnection({
+           const newConnection = await new Connection({
             connection1:{name: currentUser.name, id: currentUser._id},
             connection2: {name: connection.name, id: userId},
            }).save();
           currentUser.connections.pending = currentUser.connections.pending.filter(connection => connection !== userId);
           currentUser.connections.reciprocated.push(newConnection.id);
-          connection.connections.recirpocated.push(newConnection.id);
+          connection.connections.reciprocated.push(newConnection.id);
           console.log("ITS A MATCH");
           isMatched = JSON.stringify(connection);
           await currentUser.save();
           await connection.save();
-          await currentConnection.save();
+          await newConnection.save();
         } else {
           console.log('JUST A LIKE');
-          connection.connections.pending.push(newConnection._id);
+          connection.connections.pending.push(userId);
         }
   };
 
@@ -95,6 +95,7 @@ export async function GET(request) {
   const connection = await Connection.findById(connectionId);
   let activelyConnectedAs;
   let activelyConnectedWith;
+  console.log('connection', connectionId)
   if (session.userId === connection.connection1.id) {
     activelyConnectedAs = 'connection1';
     activelyConnectedWith = 'connection2';
@@ -105,6 +106,7 @@ export async function GET(request) {
   const updatedConnection = connection;
   updatedConnection.activelyConnectedAs = activelyConnectedAs;
   updatedConnection.activelyConnectedWith = activelyConnectedWith;
+  console.log('updatedConnection', updatedConnection);
   return NextResponse.json({
     connection: JSON.stringify(updatedConnection),
   })

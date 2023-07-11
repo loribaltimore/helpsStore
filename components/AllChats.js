@@ -6,7 +6,8 @@ import FullQuiz from 'components/FullQuiz';
 export default function AllChats({ activeUser, allConnections }) {
     const [activeConnections, setActiveConnections] = useState(undefined);
     const [renderQuiz, setRenderQuiz] = useState(false);
-
+    const formattedConnections = JSON.parse(allConnections);
+    console.log(typeof formattedConnections)
     return (
         <div className='space-y-5'>
             {
@@ -19,7 +20,7 @@ export default function AllChats({ activeUser, allConnections }) {
                   setRenderQuiz={setRenderQuiz}
                 />
           }) :
-                 JSON.parse(allConnections).map((connection, index) => {
+                 formattedConnections.map((connection, index) => {
                      return <ChatPanel connection={connection}
                          key={index} activeUser={JSON.parse(activeUser)}
                          setActiveConnections={setActiveConnections}
