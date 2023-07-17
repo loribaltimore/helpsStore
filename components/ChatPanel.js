@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function ChatPanel({ activeUser, connection, setActiveConnections, setRenderQuiz }) {
   let activelyConnectedAs;
   let activelyConnectedWith;
-  if (activeUser === connection.connection1.Id) {
+  if (activeUser._id === connection.connection1.Id) {
     activelyConnectedAs = 'connection1';
     activelyConnectedWith = 'connection2';
   } else {
@@ -36,7 +36,7 @@ export default function ChatPanel({ activeUser, connection, setActiveConnections
           </div>
         </div>
         {
-          connection.trivia[activelyConnectedAs].length ?
+          connection.trivia[activelyConnectedAs] ?
           <div className="ml-4 mt-4 flex flex-shrink-0 space-x-2">
           <button
             type="button"
@@ -65,5 +65,5 @@ export default function ChatPanel({ activeUser, connection, setActiveConnections
     )
 };
 
-// make it so that only show the take quiz button if you have not taken a quiz and they have;
-// right now its showing you the quiz even though you have taken it
+// make sure all chatting works
+// start filtering users based on user preferences

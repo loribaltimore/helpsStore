@@ -16,13 +16,14 @@ export default function All(props) {
         method: 'GET'
       })
         .then(async data => {
-          const { connection } = await data.json();
+          let { connection } = await data.json();
+          connection = JSON.parse(connection);
           console.log(connection)
           setAllMessages(connection.conversation);
           setConnection(connection);
-          if (!connection.accepted) {
-            if (connection.date.date) {
-              if (connection.date.sentBy !== connection[connection[activelyConnectedAs]].id) {
+          if (!connection.date.invite.accepted) {
+            if (connection.date.invite.date) {
+              if (connection.date.sentBy !== connection[connection.activelyConnectedAs].id) {
                 // date invite sent by other user
             setDateInvite(true)
               } else {
@@ -38,7 +39,7 @@ export default function All(props) {
         }).catch(err => console.log(err));
     };
     asyncWrapper();
-  }, [connectionId, allMessages]);
+  }, []);
 
     return (
       <ChatWindow

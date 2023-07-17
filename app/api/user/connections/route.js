@@ -7,7 +7,7 @@ import { authOptions } from 'app/api/auth/[...nextauth]/route';
 
 
 export async function PUT(request) {
-  const { activeUserId, activeConnectionId, isDelete, isRead, connectionId, dateInvite } = await request.json();
+  const { activeUserId, activeConnectionId, isDelete, isRead, connectionId, dateInvite, connectionObject } = await request.json();
          await database();
   const activeUser = await User.findById(activeUserId);
       const populatedConnection = await User.findById(connectionId || connection.currentUser._id);
@@ -27,26 +27,18 @@ export async function PUT(request) {
   } else if (isRead) {
     //update isRead to true
   } else if (dateInvite) {
-    console.log('DATE INVITE IS ACTIVE')
-    const retrievedConnection = activeUser.connections.get(connectionId);
-    activeUser.connections.set(connectionId, {
-      id: connectionId,
-      status: 'reciprocated',
-      conversation: [...retrievedConnection.conversation],
-      trivia: retrievedConnection.trivia,
-      review: { dateInvite: true, date: Date.now().toString(), isShow: false }
-    });
-    // const connectionsConnection = populatedConnection.connections.get(activeUserId);
-    // connectionsConnection.review = { dateInvite: true, date: Date.now(), isShow: false };
-    // populatedConnection.connections.set(activeUserId, {
-    //   id: activeUserId,
-    //   status: connectionsConnection.status,
-    //   conversation: connectionsConnection.conversation,
-    //   trivia: connectionsConnection.trivia,
-    //   review: connectionsConnection.review
-    // });
-    await activeUser.save();
-    const inviteSent = !populatedConnection.connections.get(activeUserId).review.dateInvite;
+        const retrievedConnection = await Connection.findById(connectionObject);
+    let inviteSent = false;
+      if (typeof dataInvite !== 'number') {
+        console.log('DATE INVITE IS ACTIVE')
+        inviteSent = true
+    retrievedConnection.date.invite.date = Date.now().toString();
+    retrievedConnection.date.invite.sentBy = activeUserId;
+    retrievedConnection.date.invite.sentTo = connectionId;
+      } else {
+        retrievedConnection.date.invite.accepted = true;
+    }
+        await retrievedConnection.save();
     return NextResponse.json({ inviteSent });
    }
 };
@@ -71,10 +63,10 @@ export async function POST(request) {
           currentUser.connections.reciprocated.push(newConnection.id);
           connection.connections.reciprocated.push(newConnection.id);
           console.log("ITS A MATCH");
-          isMatched = JSON.stringify(connection);
           await currentUser.save();
           await connection.save();
           await newConnection.save();
+          isMatched = JSON.stringify({connection: newConnection, connectedAs: 'connection1', connectedWith: 'connection2'});
         } else {
           console.log('JUST A LIKE');
           connection.connections.pending.push(userId);
@@ -97,13 +89,16 @@ export async function GET(request) {
   let activelyConnectedWith;
   console.log('connection', connectionId)
   if (session.userId === connection.connection1.id) {
+    console.log("IS")
     activelyConnectedAs = 'connection1';
     activelyConnectedWith = 'connection2';
   } else {
+    console.log("IS NOT")
     activelyConnectedAs = 'connection2';
     activelyConnectedWith = 'connection1';
   };
-  const updatedConnection = connection;
+  let updatedConnection = JSON.stringify(connection);
+  updatedConnection = JSON.parse(updatedConnection);
   updatedConnection.activelyConnectedAs = activelyConnectedAs;
   updatedConnection.activelyConnectedWith = activelyConnectedWith;
   console.log('updatedConnection', updatedConnection);
@@ -112,5 +107,3 @@ export async function GET(request) {
   })
 }
 
-
-// make sure map saves on PUT request for connections.review change/

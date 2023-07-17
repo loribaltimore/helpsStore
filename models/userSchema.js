@@ -87,43 +87,7 @@ userSchema.method('rate', async function (rating, userId) {
     await currentUser.save();
 });
 
-userSchema.static('icebreaker', async function (activeUserId, answers, connectionId) {
-    console.log("ICEBREAKER IS WORKING");
-    await database();
-    const User = models.User || model('User', userSchema);
-    const currentUser = await User.findById(activeUserId);
-    const connection = await User.findById(connectionId);
-   
-    const connectionConnections = Object.fromEntries(connection.connections);
-    const theirAnswers = connectionConnections[activeUserId].trivia.me !== undefined;
 
-    currentUser.connections.set(connectionId, {
-        id: connectionId,
-        status: 'reciprocated',
-        conversation: [],
-        trivia: {
-            me: answers,
-            them: !theirAnswers ? false : connectionConnections[activeUserId].trivia.me
-        },
-        jokes: {}
-    });
-    connection.connections.set(activeUserId, {
-        id: activeUserId,
-        status: 'reciprocated',
-        conversation: [],
-        trivia: {
-            me: connectionConnections[activeUserId].trivia.me || false,
-            them: answers,
-        }
-    });
-
-    await connection.save();
-    await currentUser.save();
-
-    const isCompatability = currentUser.connections.get(connectionId).trivia.them !== undefined;
-
-    return isCompatability;
-});
 
 userSchema.static('sendMessage', async (message) => {
     await database();

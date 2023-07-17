@@ -9,13 +9,13 @@ import DateInvite from 'components/DateInvite';
 let socket;
 
 export default function ChatWindow({ history, connection, dateInvite }) {
-    console.log(connection);
    const pathname = usePathname();
     const connectionId = pathname.split('/')[2];
     const {data: session } =  useSession();
     const [messages, setMessages] = useState(history || []);
     const [input, setInput] = useState('');
     const ref = useRef(null);
+
     useEffect(() => {
         const asyncWrapper = async () => {
 
@@ -39,7 +39,9 @@ export default function ChatWindow({ history, connection, dateInvite }) {
     const sendMessage = async function () {
         const newMessage = {
             text: input, date: Date.now(),
-            sender: session.userId, receiver: connectionId,
+            sender: session.userId,
+            receiver: connectionId,
+            connection: connection._id,
             read: false, delivered: true, liked: false
         }
         socket.emit('message', { newMessage, connectionId, userId: session.userId });
@@ -74,17 +76,18 @@ export default function ChatWindow({ history, connection, dateInvite }) {
                 Back
                 </Link>
 
-                {/* <div className='w-1/2 mx-auto text-center'>
-                    <h1 className="text-center text-2xl text-black">{connection[connection.activelyConnectedWith]}</h1>
-                </div> */}
+                {
+                    connection ?
+                        <div className='w-1/2 mx-auto text-center'>
+                    <h1 className="text-center text-2xl text-black">{connection[connection.activelyConnectedWith].name}</h1>
+                </div> : ''
+                }
             </div>
-            
-           
+
             {
-                messages.length || history.length? 
+               history || messages.length ? 
                     <div className="mx-auto block space-y-5 p-3 h-[32rem] overflow-scroll"
-                ref={ref}
-            >
+                ref={ref} >
                         {
                             session ?
                                 messages.length ?

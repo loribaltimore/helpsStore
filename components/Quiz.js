@@ -11,14 +11,14 @@ export default function Quiz({ currentQuestion, setCurrentQuestion, question,
     const [showChosen, setShowChosen] = useState(false);
     const [isClicked, setIsClicked] = useState(undefined);
     const [isShowCompatibility, setIsShowCompatibility] = useState(false);
-
+console.log('QUIZ', connection)
     const handleSubmit = async () => {
         await fetch('/api/user/connections/quiz', {
             method: 'POST',
             body: JSON.stringify({
                 answers,
-                activeUserId: connection[connection.activelyConnectedAs].id,
-                connectionId: connection[connection.activelyConnectedWith].id
+                activeUser: connection.activelyConnectedAs,
+                connectionId: connection._id
             }),
             headers: {
                 'Content-Type': 'application/json',

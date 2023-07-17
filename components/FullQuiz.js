@@ -5,8 +5,12 @@ import questions from '../util/questions';
 
 export default function FullQuiz({connection, setConnection}) {
     const [currentQuestion, setCurrentQuestion] = useState(0);
-    let connectionAnswers = connection.trivia[connection.activelyConnectedWith].length ? connection.trivia[connection.activelyConnectedWith].length : false;
+    let connectionAnswers = false;
+    if (connection.trivia) {
+        connectionAnswers = connection.trivia[connection.activelyConnectedWith].length 
+    };
     const randomQuestions = connectionAnswers || questions.sort(() => Math.random() - 0.5).slice(0, 6);
+    console.log(randomQuestions);
     let question = false;
     let answers;
     let chosen;
@@ -23,7 +27,7 @@ export default function FullQuiz({connection, setConnection}) {
                     chosen={chosen}
                     currentQuestion={currentQuestion}
                     randomQuestions={randomQuestions}
-                    connection={connection}
+                    connection={connection.connection}
                     setConnection={setConnection}
                     question={question || false}
                     possibleAnswers={answers}

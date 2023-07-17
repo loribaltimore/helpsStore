@@ -3,7 +3,7 @@ import Carousel from 'components/Carousel';
 import { useEffect, useState } from 'react';
 import Rater from 'components/Rater';
 
-export default function ProfileCard({user, setCounter, currentUser, distance, setMatched}) {
+export default function ProfileCard({user, setCounter, currentUser, distance, setConnection}) {
   const { name, age, description, hobbies, rating } = user;
   const currentUserFormatted = JSON.parse(currentUser);
   const [photos, setPhotos] = useState(undefined);
@@ -40,7 +40,15 @@ export default function ProfileCard({user, setCounter, currentUser, distance, se
     }).then(async (data) => {
       const res = await data.json();
       const { isMatched } = res;
-      isMatched ? setMatched({currentUser: JSON.parse(isMatched)}) : null;
+      if (isMatched) {
+        const parsedMatch = JSON.parse(isMatched);
+        console.log(isMatched)
+        let parsedConnection = parsedMatch.connection;
+        parsedConnection.activelyConnectedAs = parsedMatch.connectedAs;
+        parsedConnection.activelyConnectedWith = parsedMatch.connectedWith;
+        console.log(parsedConnection);
+        setConnection(parsedConnection);
+      }
       setCounter(prev => prev + 1);
     }).catch(err => console.log(err))
   };

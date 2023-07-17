@@ -3,11 +3,10 @@ import { useState } from 'react';
 import ProfileCard from './ProfileCard';
 import calculateDistance from '@/util/calculateDistance';
 import Matched from 'components/Matched';
-import QuizResults from 'components/QuizResults';
 
 export default function AllProfiles({ allMingles, currentUser }) {
     const [counter, setCounter] = useState(0);
-    const [matched, setMatched] = useState(false);
+    const [connection, setConnection] = useState(false);
     allMingles = JSON.parse(allMingles);
     const currentUserFormatted = JSON.parse(currentUser);
     console.log(allMingles);
@@ -17,11 +16,11 @@ export default function AllProfiles({ allMingles, currentUser }) {
     return (
         <div>
             {
-                matched ?
-                    <Matched matched={matched} setMatched={setMatched} />
+                connection ?
+                    <Matched connection={connection} setConnection={setConnection} />
                         :
                     <ProfileCard user={currentMingle} setCounter={setCounter}
-                        currentUser={currentUser} distance={distance} setMatched={setMatched} />
+                        currentUser={currentUser} distance={distance} setConnection={setConnection} />
 
             }
         </div>

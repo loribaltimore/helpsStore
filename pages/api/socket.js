@@ -1,6 +1,7 @@
 import { Server } from 'socket.io';
 import { NextResponse } from 'next/server';
 import User from 'models/userSchema';
+import Connection from 'models/connectionSchema';
 import database from 'models/database';
 
 export default async function handler(req, res) {
@@ -11,36 +12,13 @@ export default async function handler(req, res) {
 
    const currentUser = await User.findById(sender);
     const connectedUser = await User.findById(receiver);
-
-    const connectionMe = currentUser.connections.get(receiver);
-    let conversationMe = connectionMe.conversation;
-
-    let test = {
-      id: connectionMe.id,
-      conversation: [...conversationMe, message],
-      trivia: connectionMe.trivia,
-      review: connectionMe.review,
-      status: connectionMe.status,
-    }
-    currentUser.connections.set(receiver, test);
-    console.log('THIS IS UPDATED CONNECTION');
-    console.log(currentUser.connections.get(receiver));
-
-    let connectionThem = connectedUser.connections.get(sender);
-    let conversationThem = connectionThem.conversation;
-    connectedUser.connections.set(sender, {
-      id: connectionThem.id,
-      status: connectionThem.status,
-      conversation: [...conversationThem, message],
-      trivia: connectionThem.trivia,
-      review: connectionThem.review,
-    });
-
-    await currentUser.save().then(data => { console.log('THIS IS SAVED CONNECTION'); console.log(data.connections.get(receiver))}).catch(err => console.log(err));
-    await connectedUser.save();
-    return res.json({ messages: conversationMe });
+    const connection = await Connection.findById(message.connection);
+    connection.conversation.push(message);
+    await connection.save();
+    return res.json({ messages: connection.conversation });
 
   } else {
+    
     if (res.socket.server.io) {
     } else {
       const io = new Server(res.socket.server, {

@@ -1,4 +1,5 @@
 const { Schema, model, models } = require('mongoose');
+const database = require('./database');
 
 const connectionSchema = new Schema({
     connection1: {
@@ -18,6 +19,7 @@ const connectionSchema = new Schema({
             },
             sender: String,
             receiver: String,
+            connection: String,
             read: {
                 type: Boolean,
                 default: false
@@ -77,6 +79,22 @@ const connectionSchema = new Schema({
             }
         }
     },
+});
+
+
+connectionSchema.static('icebreaker', async function (activeUser, answers, connectionId) {
+    console.log("ICEBREAKER IS WORKING");
+    await database();
+    const Connection = models.Connection || model('Connection', connectionSchema);
+    const connection = await Connection.findById(connectionId);
+    connection.trivia[activeUser] = answers;
+    let isCompatibility;
+    if (activeUser === 'connection1') {
+        isCompatibility = connection.trivia.connection2 !== undefined;
+    } else {
+        isCompatibility = connection.trivia.connection1 !== undefined;
+    }
+    return isCompatibility;
 });
 
 module.exports =  models.Connection || model('Connection', connectionSchema);

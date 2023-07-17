@@ -3,14 +3,15 @@ import { useState } from 'react';
 
 export default function DateInvite({connection, dateInvite }) {
     const [isInvited, setIsInvited] = useState(false);
-
-   const sendDateInvite = async () => {
+console.log(connection)
+    const sendDateInvite = async (type) => {
        await fetch('/api/user/connections', {
            method: 'PUT',
            body: JSON.stringify({
-               dateInvite: true,
-               connectionId: connection[connection[activelyConnectedWith]].id,
-               activeUserId: connection[connection[activelyConnectedAs]].id,
+               dateInvite: type,
+               connectionObject: connection._id,
+               connectionId: connection[connection.activelyConnectedWith].id,
+               activeUserId: connection[connection.activelyConnectedAs].id,
            }),
            headers: {
                'Content-Type': 'application/json'
@@ -22,8 +23,8 @@ export default function DateInvite({connection, dateInvite }) {
            method: 'PUT',
            body: JSON.stringify({
                isShow: true,
-               connectionId: connection[connection[activelyConnectedWith]].id,
-               activeUserId: connection[connection[activelyConnectedAs]].id,
+               connectionId: connection[connection.activelyConnectedWith].id,
+               activeUserId: connection[connection.activelyConnectedAs].id,
            }),
            headers: {
                'Content-Type': 'application/json'
@@ -37,24 +38,26 @@ export default function DateInvite({connection, dateInvite }) {
     return (
         <div>
             {
-               typeof dateInvite === 'Number' ?
+               typeof dateInvite === 'number' ?
                     <button className="bg-indigo-500 px-3 py-2 rounded text-sm h-full"
                         //then create an isShow button in chat panel.
                         //create message that says something like "if your date refuses to acknowledge that they showed, leave the date."
                         //create a message that says "never meet somebody that refuses to accept your date request in the chat"
                         //if isShow is clicked by both parties, allow a review to be left.
-                        onClick={() => {sendDateInvite()}}
+                        onClick={() => {sendDateInvite(true)}}
                         >Date</button>
                     :
-                    !dateInvite?
+                    dateInvite || isInvited?
                         <button className="bg-orange-500 px-3 py-2 rounded text-sm h-full"
                         >Pending</button>
                         :
-                        dateInvite ?
+                        !dateInvite ?
                             <button className="bg-green-500 px-3 py-2 rounded text-sm h-full"
-                            >Accept Date</button>
+                                onClick={() => sendDataInvite(1)}
+                            >Accept Date
+                            </button>
                             :
-                            typeof dateInvite === 'String' ?
+                            typeof dateInvite === 'string' ?
                                 <button className="bg-pink-500 px-3 py-2 rounded text-sm h-full"
                                 >Showed</button>
                                 : null

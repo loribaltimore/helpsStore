@@ -9,7 +9,8 @@ const coords = [[-122.201939, 47.730431],
 [-122.229937, 47.757226],
 [-122.257935, 47.784021],
 [-122.285932, 47.810817],
-[-122.313930, 47.837613]
+[-122.313930, 47.837613],
+
 ];
 const { GridFSBucket } = require('mongodb');
 
@@ -143,7 +144,6 @@ console.log("THEM TRIVIA SEEDED")
 const seedConnections = async () => {
     await database();
     const currentUser = await User.findById('64ad69466aad9c85233adcc6');
-    console.log(currentUser);
     const users = await User.find({})
         .then(data => { return data }).catch(err => console.log(err));
     currentUser.connections.reciprocated = [];
@@ -186,7 +186,7 @@ const seedConnections = async () => {
             //         ]
             //     }
             // }).save();
-            // currentUser.connections.pending.push(users[i]._id);
+            currentUser.connections.pending.push(users[i]._id);
         }
     };
     await currentUser.save();
@@ -291,8 +291,8 @@ const seedSocketUser = async () => {
 
 
 
-// seedUser();
-seedConnections();
+seedUser();
+// seedConnections();
 // seedSocketUser();
 // showResource();
 // seedLoc();
