@@ -62,6 +62,8 @@ export async function POST(request) {
           currentUser.connections.pending = currentUser.connections.pending.filter(connection => connection !== userId);
           currentUser.connections.reciprocated.push(newConnection.id);
           connection.connections.reciprocated.push(newConnection.id);
+          currentUser.connections.matched.push(userId);
+          connection.connections.matched.push(currentUserId);
           console.log("ITS A MATCH");
           await currentUser.save();
           await connection.save();
@@ -69,9 +71,14 @@ export async function POST(request) {
           isMatched = JSON.stringify({connection: newConnection, connectedAs: 'connection1', connectedWith: 'connection2'});
         } else {
           console.log('JUST A LIKE');
-          connection.connections.pending.push(userId);
+          connection.connections.pending.push(currentUserId);
+          currentUser.connections.liked.push(userId);
         }
-  };
+    } else {
+      console.log('USER REJECTED');
+      connection.connections.rejectedBy.push(currentUserId);
+      currentUser.connections.rejected.push(userId);
+  }
 
   await User.interestAndPass(currentUserId, userId, interested ? 'interested' : 'pass');
     await currentUser.save();
@@ -87,13 +94,10 @@ export async function GET(request) {
   const connection = await Connection.findById(connectionId);
   let activelyConnectedAs;
   let activelyConnectedWith;
-  console.log('connection', connectionId)
   if (session.userId === connection.connection1.id) {
-    console.log("IS")
     activelyConnectedAs = 'connection1';
     activelyConnectedWith = 'connection2';
   } else {
-    console.log("IS NOT")
     activelyConnectedAs = 'connection2';
     activelyConnectedWith = 'connection1';
   };
@@ -101,7 +105,6 @@ export async function GET(request) {
   updatedConnection = JSON.parse(updatedConnection);
   updatedConnection.activelyConnectedAs = activelyConnectedAs;
   updatedConnection.activelyConnectedWith = activelyConnectedWith;
-  console.log('updatedConnection', updatedConnection);
   return NextResponse.json({
     connection: JSON.stringify(updatedConnection),
   })

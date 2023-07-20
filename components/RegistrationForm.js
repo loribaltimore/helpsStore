@@ -23,7 +23,10 @@ export default function RegistrationForm() {
     const [location, setLocation] = useState(undefined);
     const [manualLoc, setManualLoc] = useState(false);
     const [age, setAge] = useState('');
-    const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState([]);
+  const [preferredAge, setPreferredAge] = useState('');
+  const [preferredGender, setPreferredGender] = useState('');
+  const [preferredDistance, setPreferredDistance] = useState('');
     const {data: session, update } = useSession();
     const router = useRouter();
     // console.log(session);
@@ -71,6 +74,9 @@ export default function RegistrationForm() {
         formData.append('zip', zip);
         formData.append('coordinates', coord);
         formData.append('username', username);
+        formData.append('preferredAge', preferredAge);
+        formData.append('preferredGender', preferredGender);
+        formData.append('preferredDistance', preferredDistance);
         
         files.forEach(file => {
             const reader = new FileReader();
@@ -277,7 +283,59 @@ export default function RegistrationForm() {
               </div>
             </div>
           </div>
-        </div>
+          </div>
+          <div className='space-y-1'>
+<h1 className='text-center text-black text-xl'>Preferences</h1>
+          <div className="sm:grid sm:grid-cols-1 sm:items-start sm:gap-4 sm:py-6">
+              <label htmlFor="age" className="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+               Preferred Age
+              </label>
+              <div className="mt-2 sm:col-span-2 sm:mt-0">
+                <input
+                  type="text"
+                  name="preferredAge"
+                id="preferredAge"
+                value={preferredAge}
+                  autoComplete="given-name"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                     onChange={(event) => setPreferredAge(event.target.value)}
+                                />
+              </div>
+          </div>
+          <div className="sm:grid sm:grid-cols-1 sm:items-start sm:gap-2 sm:py-2">
+              <label htmlFor="age" className="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+               Preferred Distance
+              </label>
+              <div className="mt-2 sm:col-span-2 sm:mt-0">
+                <input
+                  type="text"
+                  name="preferredDistance"
+                id="preferredDistance"
+                value={preferredDistance}
+                  autoComplete="given-name"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                     onChange={(event) => setPreferredDistance(event.target.value)}
+                                />
+              </div>
+          </div>
+          <div className="sm:grid sm:grid-cols-1 sm:items-start sm:gap-4 sm:py-6">
+              <label htmlFor="age" className="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+               Preferred Gender Identity
+              </label>
+              <div className="mt-2 sm:col-span-2 sm:mt-0">
+                <input
+                  type="text"
+                  name="preferredGender"
+                id="preferredGender"
+                value={preferredGender}
+                  autoComplete="given-name"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                     onChange={(event) => setPreferredGender(event.target.value)}
+                                />
+              </div>
+            </div>
+          </div>
+          
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
                     <button type="button" className="text-sm font-semibold leading-6 text-gray-900"
@@ -295,8 +353,9 @@ export default function RegistrationForm() {
                 >
           Save
         </button>
-            </div>
-      </div>
+          </div>
+        </div>
             </div>
   )
 }
+

@@ -2,7 +2,7 @@ function toRadians(coord) {
   return (coord * Math.PI) / 180;
 }
 
-export default function calculateDistance(coord1, coord2) {
+module.exports = function calculateDistance(coord1, coord2) {
   const [lon1, lat1] = coord1.map((coord) => toRadians(coord));
   const [lon2, lat2] = coord2.map((coord) => toRadians(coord));
 
@@ -16,4 +16,4 @@ export default function calculateDistance(coord1, coord2) {
 
   const distance = radius * c;
   return Math.ceil(distance);
-}
+};

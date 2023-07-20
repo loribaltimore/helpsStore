@@ -46,14 +46,26 @@ const userSchema = new Schema({
             coordinates: [Number]
         }
     },
+    preferences: {
+        range: Number,
+        gender: {
+            type: String,
+            enum: ['male', 'female', 'non-binary', 'all']
+        },
+        age: Number
+    },
     connections: {
         pending: [String],
+        rejected: [String],
+        rejectedBy: [String],
+        matched: [String],
+        liked: [String],
         reciprocated: [
             {
                 type: Schema.Types.ObjectId,
                 ref: 'Connection'
             }
-        ]
+        ],
     },
     memberSince: {
         type: Date,
@@ -104,6 +116,13 @@ userSchema.static('interestAndPass', async (currentUserId, connectionId, isInter
     
     connection.interestAndPass[isInterested].count += 1;
     isInterested === 'interested' ? connection.interestAndPass.interested.total += currentUser.rating.avg : null;
-})
+});
+
+userSchema.virtual('dontQueue', async (currentUserId) => { 
+    await database();
+    const User = models.User || model('User', userSchema);
+    const currentUser = await User.findById(currentUserId);
+    return [...currentUser.connections.pending, ...currentUser.connections.rejected, ...currentUser.connections.matched];
+});
 
 module.exports = models.User || model("User", userSchema);

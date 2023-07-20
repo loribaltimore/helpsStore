@@ -4,35 +4,41 @@ const User = require('./userSchema');
 const Connection = require('./connectionSchema');
 const hobbies = require('../util/hobbies');
 const casual = require('casual');
+const coords = require('../util/coords');
+const userSorting = require('../lib/userSorting');
 const fs = require('fs');
-const coords = [[-122.201939, 47.730431],
-[-122.229937, 47.757226],
-[-122.257935, 47.784021],
-[-122.285932, 47.810817],
-[-122.313930, 47.837613],
-
-];
 const { GridFSBucket } = require('mongodb');
+
+const sortingCheck = async () => {
+    await database();
+    const results = await userSorting('male', 20, 5, [-122.257935, 47.784021], "64b6950daa27fe5fa6c399d7");
+    console.log(results.length);
+};
 
 
 const seedUser = async () => {
     const client = await database();
-    await User.deleteMany({});
-    for (let i = 0; i < 5; i++){
+    // await User.deleteMany({});
+    for (let i = 0; i < 100; i++){
         const randHobby = Math.floor(Math.random() * (hobbies.length / 2));
         const randAge = Math.floor(Math.random() * 30);
-        const randCoord = Math.floor(Math.random() * 5);
+        const randCoord = Math.floor(Math.random() * coords.length -1);
 
        const currentUser = await new User({
         username: casual.username,
         name: casual.first_name,
         description: casual.sentences(n = 4),
-            hobbies: hobbies.slice(randHobby, randHobby + 6),
+           hobbies: hobbies.slice(randHobby, randHobby + 6),
             location: {
                 geo: {
                 coordinates: coords[randCoord] || [-122.257935, 47.784021]
         }
-            },
+           },
+            preferences: {
+        range: Math.floor(Math.random() * 30),
+        gender: randAge % 2 === 0 ? 'female' : 'male',
+        age: randAge + 18
+    },
             genderId: randAge % 2 === 0 ? 'female' : 'male',
         age: randAge + 18
        })
@@ -41,7 +47,6 @@ const seedUser = async () => {
             if (err) {
                 throw err;
             };
-            console.log(data)
             const buffer = Buffer.from(data);
             const db = client.useDb('datr');
             const bucket = new GridFSBucket(db);
@@ -143,11 +148,12 @@ console.log("THEM TRIVIA SEEDED")
 
 const seedConnections = async () => {
     await database();
-    const currentUser = await User.findById('64ad69466aad9c85233adcc6');
+    const currentUser = await User.findById('64b54f8fbe97568fcecd02d2');
     const users = await User.find({})
         .then(data => { return data }).catch(err => console.log(err));
     currentUser.connections.reciprocated = [];
-    for (let i = 1; i < 5; i++) {
+    for (let i = 1; i < 98; i++) {
+        const rand = Math.floor(Math.random() * 2);
         if (currentUser._id !== users[i]._id) {
             // const newConnection = await new Connection({
             //     connection1: users[i]._id,
@@ -186,7 +192,9 @@ const seedConnections = async () => {
             //         ]
             //     }
             // }).save();
-            currentUser.connections.pending.push(users[i]._id);
+            if (rand % 2 === 0) {
+                            currentUser.connections.pending.push(users[i]._id);
+            }
         }
     };
     await currentUser.save();
@@ -290,7 +298,7 @@ const seedSocketUser = async () => {
 };
 
 
-
+// sortingCheck();
 seedUser();
 // seedConnections();
 // seedSocketUser();

@@ -36,6 +36,12 @@ export async function POST(request) {
        currentUser.location.geo.coordinates = value.split(',');
       } else if (name === 'hobbies') {
           currentUser.hobbies = value.split(',');
+      } else if (name === 'preferredAge') {
+        currentUser.preferences.age = value;
+      } else if (name === 'preferredDistance') {
+        currentUser.preferences.range = value;
+      } else if (name === 'preferredGender') {
+          currentUser.preferences.gender = value;
       } else {
           currentUser[name] = value;
       };

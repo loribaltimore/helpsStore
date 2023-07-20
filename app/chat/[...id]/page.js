@@ -18,7 +18,6 @@ export default function All(props) {
         .then(async data => {
           let { connection } = await data.json();
           connection = JSON.parse(connection);
-          console.log(connection)
           setAllMessages(connection.conversation);
           setConnection(connection);
           if (!connection.date.invite.accepted) {
