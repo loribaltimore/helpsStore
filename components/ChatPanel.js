@@ -2,10 +2,22 @@
 import PartWays from 'components/PartWays';
 import Link from "next/link";
 
-export default function ChatPanel({ activeUser, connection, setActiveConnections, setRenderQuiz }) {
+export default function ChatPanel({ activeUser, connection, setActiveConnections, setRenderQuiz, setBankConnection, setShowUpgrade}) {
+  
+  const handleClick = async () => {
+    await fetch(`/api/user/connections?connectionId=${connection._id}`, {
+      method: 'GET',
+    }).then(async data => {
+      console.log('WORKING');
+      const response = await data.json();
+      setBankConnection(JSON.parse(response.connectedTo));
+      setShowUpgrade(true);
+    }).catch (err => console.log(err));
+  };
+
   let activelyConnectedAs;
   let activelyConnectedWith;
-  if (activeUser._id === connection.connection1.Id) {
+  if (activeUser._id === connection.connection1.id) {
     activelyConnectedAs = 'connection1';
     activelyConnectedWith = 'connection2';
   } else {
@@ -14,8 +26,8 @@ export default function ChatPanel({ activeUser, connection, setActiveConnections
   };
   const updatedConnection = connection;
   updatedConnection.activelyConnectedWith = activelyConnectedWith;
-  updatedConnection.activelyConnectedAs = activelyConnectedAs;
-
+  updatedConnection.activelyConnectedAs = activelyConnectedAs;  
+  
   return (
     <div className="w-3/4 mx-auto rounded-xl border-gray-200 bg-white px-4 py-5 sm:px-6 ">
       <div className=" p-5 -ml-4 -mt-4 flex flex-wrap items-center justify-between sm:flex-nowrap ">
@@ -38,12 +50,18 @@ export default function ChatPanel({ activeUser, connection, setActiveConnections
         {
           connection.trivia[activelyConnectedAs] ?
           <div className="ml-4 mt-4 flex flex-shrink-0 space-x-2">
-          <button
-            type="button"
-            className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-          >
-            <span>Poke</span>
-          </button>
+              {
+                activeUser.membershipType === 'pro'
+                  // && connection.date.shown.bothShown
+                  ?
+                <button
+                    type="button"
+                    className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    onClick={async () => { await handleClick() }}
+                  >
+            Profile
+                  </button> : null
+          }
               <Link className="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                 href={`/chat/${connection._id}`}>
             <span>Chat</span>

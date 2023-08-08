@@ -297,9 +297,17 @@ const seedSocketUser = async () => {
     await socketUser.save();
 };
 
+const populatePending = async () => {
+    await database();
+    const currentUser = await User.findById('64bc0a7fc7e160fea8472f7c');
+    currentUser.membershipType = 'pro';
+    // currentUser.connections.pending = currentUser.connections.pending.slice(0, 30);
+    await currentUser.save();
+}
 
+populatePending();
 // sortingCheck();
-seedUser();
+// seedUser();
 // seedConnections();
 // seedSocketUser();
 // showResource();

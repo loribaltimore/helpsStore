@@ -66,7 +66,8 @@ const connectionSchema = new Schema({
             bothShown: {
                 type: Boolean,
                 default: false
-            }
+            },
+            bothShownDate: Date
         },
         review: {
             connection1: {

@@ -27,7 +27,7 @@ export default async function RootLayout({ children }){
   
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} bg-white overflow-hidden` }>
         <NextAuthProvider session={session}>
           <Nav>
             {

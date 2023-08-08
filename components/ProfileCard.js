@@ -3,11 +3,13 @@ import Carousel from 'components/Carousel';
 import { useEffect, useState } from 'react';
 import Rater from 'components/Rater';
 
-export default function ProfileCard({user, setCounter, currentUser, distance, setConnection}) {
+export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUser, distance,
+  setConnection, isBank, setShowUpgrade, isRev, setShowReviews }) {
   const { name, age, description, hobbies, rating } = user;
   const currentUserFormatted = JSON.parse(currentUser);
   const [photos, setPhotos] = useState(undefined);
   const [rater, setRater] = useState(undefined);
+  const [newAllLikedBy, setNewAllLikedBy] = useState(undefined);
 
   useEffect(() => {
     const asyncWrapper = async () => {
@@ -42,12 +44,12 @@ export default function ProfileCard({user, setCounter, currentUser, distance, se
       const { isMatched } = res;
       if (isMatched) {
         const parsedMatch = JSON.parse(isMatched);
-        console.log(isMatched)
         let parsedConnection = parsedMatch.connection;
         parsedConnection.activelyConnectedAs = parsedMatch.connectedAs;
         parsedConnection.activelyConnectedWith = parsedMatch.connectedWith;
-        console.log(parsedConnection);
         setConnection(parsedConnection);
+      } else if (isBank) {
+        setNewAllLikedBy(res.isBank)
       }
       setCounter(prev => prev + 1);
     }).catch(err => console.log(err))
@@ -55,7 +57,7 @@ export default function ProfileCard({user, setCounter, currentUser, distance, se
   const flooredRating = Math.round(rating.total / rating.count);
     return (
         <div className="m-auto mt-28 items-center overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 rounded-xl w-3/4">
-          <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8">
+        <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8">
             <div className="sm:col-span-4 lg:col-span-5">
             <Carousel photos={photos} />
               <p className="absolute left-4 top-4 text-center sm:static sm:mt-6">
@@ -113,16 +115,32 @@ export default function ProfileCard({user, setCounter, currentUser, distance, se
                     <section className="p-2">
               <p className="text-gray-500">{description}</p>
             </section>
+            <div className='w-100 flex space-x-12'>
             <section className="grid grid-rows-2 grid-flow-col gap-1 w-1/2">
               {
                 hobbies.map((hobby, index) => {
                   return <div key={index} className="text-white bg-indigo-600 text-xs text-center p-1 rounded-full">{hobby}</div>
                 })
               }
-            </section>
-
-              <section aria-labelledby="options-heading" className="mt-6">
-              <Rater rating={rating.total / rating.count} setRater={setRater} />
+              </section>
+              <button className='bg-orange-400 rounded-lg w-1/4 h-1/4 my-auto p-0 flex text-center'
+                onClick={() => setShowReviews(true)}
+              >
+                <span className='block mx-auto'>
+                  <section className='flex'>
+                Reviews
+                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 m-0">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                  </section>
+                </span>
+              </button>
+            </div>
+            <section aria-labelledby="options-heading" className="mt-6">
+              {
+                !isRev ?
+              <Rater rating={rating.total / rating.count} setRater={setRater} /> : null
+              }
                   <div className="mt-4 flex">
                     <a href="#" className="group flex text-sm text-gray-500 hover:text-gray-700">
                     </a>
@@ -154,7 +172,20 @@ export default function ProfileCard({user, setCounter, currentUser, distance, se
                   </div>
               </section>
             </div>
-          </div>
+        </div>
+        {
+          isBank || isRev?
+            <button
+              className='bg-indigo-500 mx-auto block px-5 py-2 rounded-lg'
+              onClick={() => {
+                setShowUpgrade(false);
+                if (setAllLikedBy) {
+                setAllLikedBy(newAllLikedBy);
+                }
+              }}
+            >close</button>
+                    : null
+        }
         </div>
     )
-}
+};

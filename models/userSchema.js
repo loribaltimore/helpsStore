@@ -55,7 +55,12 @@ const userSchema = new Schema({
         age: Number
     },
     connections: {
-        pending: [String],
+        pending: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            }
+        ],
         rejected: [String],
         rejectedBy: [String],
         matched: [String],
@@ -71,11 +76,17 @@ const userSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    membershipType: {
+        type: String,
+        enum: ['basic', 'pro'],
+        default: 'basic'
+    },
     reviews: [
         {
             rating: Number,
             text: String,
             reviewerId: String,
+            connectionId: String
         }
     ],
     interestAndPass: {

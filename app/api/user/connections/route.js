@@ -4,6 +4,7 @@ import User from 'models/userSchema';
 import Connection from 'models/connectionSchema';
 import {getServerSession} from 'next-auth/next';
 import { authOptions } from 'app/api/auth/[...nextauth]/route';
+import mongoose from 'mongoose';
 
 
 export async function PUT(request) {
@@ -78,12 +79,21 @@ export async function POST(request) {
       console.log('USER REJECTED');
       connection.connections.rejectedBy.push(currentUserId);
       currentUser.connections.rejected.push(userId);
-  }
+      if (preConnected > -1) {
+        currentUser.connections.pending = currentUser.connections.pending.filter((connection, index) => {
+          if (connection.toString() !== userId) {
+            return connection;
+          }
+        });
+      };
+  };
 
   await User.interestAndPass(currentUserId, userId, interested ? 'interested' : 'pass');
     await currentUser.save();
   await connection.save();
-    return NextResponse.json({ isMatched });
+  const updatedLikedBy = await currentUser.populate('connections.pending')
+    .then(data => { return data.connections.pending }).catch(err => console.log(err));
+    return NextResponse.json({ isMatched, isBank: updatedLikedBy });
 };
 
 
@@ -94,10 +104,13 @@ export async function GET(request) {
   const connection = await Connection.findById(connectionId);
   let activelyConnectedAs;
   let activelyConnectedWith;
-  if (session.userId === connection.connection1.id) {
+  let connectedTo;
+  if (session.userId.toString() === connection.connection1.id) {
+    connectedTo = await User.findById(connection.connection2.id);
     activelyConnectedAs = 'connection1';
     activelyConnectedWith = 'connection2';
   } else {
+    connectedTo = await User.findById(connection.connection1.id);
     activelyConnectedAs = 'connection2';
     activelyConnectedWith = 'connection1';
   };
@@ -107,6 +120,7 @@ export async function GET(request) {
   updatedConnection.activelyConnectedWith = activelyConnectedWith;
   return NextResponse.json({
     connection: JSON.stringify(updatedConnection),
+    connectedTo: JSON.stringify(connectedTo)
   })
 }
 
