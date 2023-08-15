@@ -2,13 +2,13 @@
 import PartWays from 'components/PartWays';
 import Link from "next/link";
 
-export default function ChatPanel({ activeUser, connection, setActiveConnections, setRenderQuiz, setBankConnection, setShowUpgrade}) {
-  
+export default function ChatPanel({ activeUser, connection, setActiveConnections, setRenderQuiz, setBankConnection, setShowUpgrade, setCurrentMongoConnection}) {
+
   const handleClick = async () => {
+      setCurrentMongoConnection(connection);
     await fetch(`/api/user/connections?connectionId=${connection._id}`, {
       method: 'GET',
     }).then(async data => {
-      console.log('WORKING');
       const response = await data.json();
       setBankConnection(JSON.parse(response.connectedTo));
       setShowUpgrade(true);
@@ -73,10 +73,6 @@ export default function ChatPanel({ activeUser, connection, setActiveConnections
               className="relative inline-flex items-center rounded-md bg-indigo-400 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-indigo-500"
               onClick={() => setRenderQuiz(updatedConnection)}
             >Take Quiz</button>
-        }
-        {
-          connection.date.shown.bothShown ? 
-            <button>Review</button> : null
         }
       </div>
     </div>

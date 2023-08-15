@@ -4,7 +4,6 @@ import User from 'models/userSchema';
 import Connection from 'models/connectionSchema';
 import {getServerSession} from 'next-auth/next';
 import { authOptions } from 'app/api/auth/[...nextauth]/route';
-import mongoose from 'mongoose';
 
 
 export async function PUT(request) {

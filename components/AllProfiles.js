@@ -11,8 +11,14 @@ export default function AllProfiles({ allMingles, setAllLikedBy, currentUser, is
     allMingles = JSON.parse(allMingles);
     const currentUserFormatted = typeof currentUser === 'String' ? JSON.parse(currentUser) : currentUser;
     const currentMingle = isBankConnection || allMingles[counter] || undefined;
-    const distance = currentMingle ?
-        calculateDistance(currentMingle.location.geo.coordinates, currentUserFormatted.location.geo.coordinates) : null;
+    
+    if (currentMingle) {
+        console.log(currentMingle.location.geo.coordinates)
+        calculateDistance(currentMingle.location.geo.coordinates, currentUserFormatted.location.geo.coordinates);
+    } else {
+        console.log(currentMingle)
+    }
+
     return (
         <div>
             {

@@ -13,25 +13,28 @@ export default function AllChats({ activeUser, allConnections }) {
     const [bankConnection, setBankConnection] = useState(undefined);
     const [showUpgrade, setShowUpgrade] = useState(false);
     const [showReviews, setShowReviews] = useState(false);
+    const [currentMongoConnection, setCurrentMongoConnection] = useState(undefined);
     return (
         <div className='space-y-5'>
-             <div className='absolute w-100 h-100 z-40 grid grid-cols-3 gap-4 mx-12'>
+             <div className='absolute w-100 h-100 z-40 gap-4 mx-12'>
                         <div className=''></div>
                 {
                     bankConnection && showUpgrade?
                     activeUser.membershipType === 'pro'?
                             <Upgrade /> :
-                            !showReviews ?
-                                <div className='fixed z-40'>
-                                <AllProfiles allMingles={[JSON.stringify(formattedConnections)]}
-                                    currentUser={JSON.parse(activeUser)}
-                                    isBank={false}
-                                    isRev={true}
-                                    setShowUpgrade={setShowUpgrade}
-                                    isBankConnection={bankConnection}
-                                    setShowReviews={setShowReviews}
-                                    />
-                                </div> : <Reviews /> : null
+                            <div className={`${!showReviews ? 'fixed': ''} z-40`}>
+                                {!showReviews ?
+                                    <AllProfiles allMingles={[JSON.stringify(formattedConnections)]}
+                                        currentUser={JSON.parse(activeUser)}
+                                        isBank={false}
+                                        isRev={true}
+                                        setShowUpgrade={setShowUpgrade}
+                                        isBankConnection={bankConnection}
+                                        setShowReviews={setShowReviews}
+                                    /> : <Reviews setShowReviews={setShowReviews}
+                                        currentMongoConnection={currentMongoConnection}
+                                        connection={JSON.stringify(bankConnection)} />}
+                                </div>  : null
                         }
                 <div className=''></div>
             </div>
@@ -45,6 +48,7 @@ export default function AllChats({ activeUser, allConnections }) {
                   setRenderQuiz={setRenderQuiz}
                   setBankConnection={setBankConnection}
                   setShowUpgrade={setShowUpgrade}
+                  setCurrentMongoConnection={setCurrentMongoConnection}
                 />
           }) :
                  formattedConnections.map((connection, index) => {
@@ -54,6 +58,7 @@ export default function AllChats({ activeUser, allConnections }) {
                          setRenderQuiz={setRenderQuiz}
                          setBankConnection={setBankConnection}
                          setShowUpgrade={setShowUpgrade}
+                         setCurrentMongoConnection={setCurrentMongoConnection}
                      />
                  })
                     :

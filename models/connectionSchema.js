@@ -71,13 +71,29 @@ const connectionSchema = new Schema({
         },
         review: {
             connection1: {
-                rating: Number,
-                text: String,
+            rating: Number,
+            text: String,
+            reviewerId: String,
+            image: String,
+            from: String,
+            date: {
+                type: Date,
+                default: Date.now
             },
+            connectionId: String
+        },
             connection2: {
-                rating: Number,
-                text: String
-            }
+            rating: Number,
+            text: String,
+            reviewerId: String,
+            image: String,
+            from: String,
+            date: {
+                type: Date,
+                default: Date.now
+            },
+            connectionId: String
+        }
         }
     },
 });

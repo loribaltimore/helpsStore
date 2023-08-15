@@ -86,6 +86,12 @@ const userSchema = new Schema({
             rating: Number,
             text: String,
             reviewerId: String,
+            image: String,
+            from: String,
+            date: {
+                type: Date,
+                default: Date.now
+            },
             connectionId: String
         }
     ],
