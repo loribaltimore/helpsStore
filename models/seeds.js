@@ -8,6 +8,7 @@ const coords = require('../util/coords');
 const userSorting = require('../lib/userSorting');
 const fs = require('fs');
 const { GridFSBucket } = require('mongodb');
+const {sortFunction} = require('../lib/userSorting');
 
 const sortingCheck = async () => {
     await database();
@@ -15,10 +16,9 @@ const sortingCheck = async () => {
     console.log(results.length);
 };
 
-
 const seedUser = async () => {
     const client = await database();
-    // await User.deleteMany({});
+    await User.deleteMany({});
     for (let i = 0; i < 100; i++){
         const randHobby = Math.floor(Math.random() * (hobbies.length / 2));
         const randAge = Math.floor(Math.random() * 30);
@@ -148,7 +148,7 @@ console.log("THEM TRIVIA SEEDED")
 
 const seedConnections = async () => {
     await database();
-    const currentUser = await User.findById('64b54f8fbe97568fcecd02d2');
+    const currentUser = await User.findById("64e623928bf066c08d588973");
     const users = await User.find({})
         .then(data => { return data }).catch(err => console.log(err));
     currentUser.connections.reciprocated = [];
@@ -299,10 +299,18 @@ const seedSocketUser = async () => {
 
 const populatePending = async () => {
     await database();
-    const currentUser = await User.findById('64bc0a7fc7e160fea8472f7c');
-    currentUser.membershipType = 'pro';
+    const currentUser = await User.findOne({ username: "Powerman5000" });
+    await sortFunction(currentUser._id).then(data => { console.log(data) }).catch(err => console.log(err));
+    // console.log(currentUser.membershipType);
+    // const currentConnection = await Connection.findById("64e6343960d64b74d51ee28c");
+    
+    // currentConnection.date.invite.accepted = true;
+    // currentConnection.date.shown.bothShown = true;
+    // currentConnection.date.review = { connection1: {}, connection2: {} };
+    // await currentConnection.save();
+    // console.log(currentConnection);
     // currentUser.connections.pending = currentUser.connections.pending.slice(0, 30);
-    await currentUser.save();
+    // await currentUser.save();
 }
 
 populatePending();

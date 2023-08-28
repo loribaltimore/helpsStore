@@ -1,21 +1,22 @@
 "use client"
 import Carousel from 'components/Carousel';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import Rater from 'components/Rater';
+import { ReviewContext } from 'components/ReviewContext';
 
 export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUser, distance,
-  setConnection, isBank, setShowUpgrade, isRev, setShowReviews }) {
+  setConnection, isBank, setShowUpgrade, isRev }) {
+  const { setShowReviews } = useContext(ReviewContext);
   const { name, age, description, hobbies, rating } = user;
   const currentUserFormatted = JSON.parse(currentUser);
   const [photos, setPhotos] = useState(undefined);
   const [rater, setRater] = useState(undefined);
   const [newAllLikedBy, setNewAllLikedBy] = useState(undefined);
-
   useEffect(() => {
     const asyncWrapper = async () => {
       const searchParams = new URLSearchParams();
-       user.photos.forEach(photo => { 
-         searchParams.append('photos[]', photo);
+      user.photos.forEach(photo => {
+        searchParams.append('photos[]', photo);
       })
       const url = `http://localhost:3000/api/user/photos?${searchParams.toString()}`;
       await fetch(url, {
@@ -25,7 +26,7 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUs
       }).catch(err => console.log(err));
     }
     asyncWrapper();
-  }, [user])
+  }, [user]);
 
   const showedInterest = async (interested) => {
     await fetch('/api/user/connections', {
@@ -49,12 +50,13 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUs
         parsedConnection.activelyConnectedWith = parsedMatch.connectedWith;
         setConnection(parsedConnection);
       } else if (isBank) {
-        setNewAllLikedBy(res.isBank)
+        console.log(res.isBank);
+        setAllLikedBy(res.isBank)
       }
       setCounter(prev => prev + 1);
     }).catch(err => console.log(err))
   };
-  const flooredRating = Math.round(rating.total / rating.count);
+  const flooredRating = Math.round(rating.looks.total / rating.looks.count);
     return (
         <div className="m-auto mt-28 items-center overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 rounded-xl w-3/4">
         <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8">
@@ -139,7 +141,7 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUs
             <section aria-labelledby="options-heading" className="mt-6">
               {
                 !isRev ?
-              <Rater rating={rating.total / rating.count} setRater={setRater} /> : null
+              <Rater rating={rating.looks.total / rating.looks.count} setRater={setRater} /> : null
               }
                   <div className="mt-4 flex">
                     <a href="#" className="group flex text-sm text-gray-500 hover:text-gray-700">
@@ -179,9 +181,10 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUs
               className='bg-indigo-500 mx-auto block px-5 py-2 rounded-lg'
               onClick={() => {
                 setShowUpgrade(false);
-                if (setAllLikedBy) {
-                setAllLikedBy(newAllLikedBy);
-                }
+                console.log('working')
+                // if (setAllLikedBy) {
+                // setAllLikedBy(newAllLikedBy);
+                // }
               }}
             >close</button>
                     : null

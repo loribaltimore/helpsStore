@@ -1,6 +1,7 @@
 const path = require("path");
 
 module.exports = {
+  
   entry: "./index.js",
   target: "node",
   mode: "production",
@@ -19,6 +20,7 @@ module.exports = {
 };
 
 module.exports = {
+
     entry: "./index.js",
     target: "node",
   output: {
@@ -29,5 +31,5 @@ module.exports = {
   externals: {
     bufferutil: "bufferutil",
     "utf-8-validate": "utf-8-validate",
-  },
+  }
 };

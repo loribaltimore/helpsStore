@@ -1,32 +1,53 @@
 "use client"
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
+import { ReviewContext } from 'components/ReviewContext';
 import ProfileCard from './ProfileCard';
 import calculateDistance from '@/util/calculateDistance';
 import Matched from 'components/Matched';
-import Reviews from 'components/Reviews';
 
-export default function AllProfiles({ allMingles, setAllLikedBy, currentUser, isBank, setShowUpgrade, isBankConnection, isRev, setShowReviews,}) {
-    const [counter, setCounter] = useState(0);
-    const [connection, setConnection] = useState(false);
-    allMingles = JSON.parse(allMingles);
-    const currentUserFormatted = typeof currentUser === 'String' ? JSON.parse(currentUser) : currentUser;
-    const currentMingle = isBankConnection || allMingles[counter] || undefined;
+export default function AllProfiles({ allMingles, setAllLikedBy, currentUser, isBank,
+    setShowUpgrade, isBankConnection, isRev }) {
+        const [counter, setCounter] = useState(0);
     
-    if (currentMingle) {
-        console.log(currentMingle.location.geo.coordinates)
-        calculateDistance(currentMingle.location.geo.coordinates, currentUserFormatted.location.geo.coordinates);
-    } else {
-        console.log(currentMingle)
-    }
+    useEffect(() => {
+        // const asyncWrapper = async () => {
+        //     await fetch('/api/user/mingles', {
+        //         method: 'GET',
+        //         headers: {
+        //         'Content-Type': 'application/json'
+        //         }
+        //     }).then(async data => {
+        //         const { allMingles } = await data.json();
+        //         console.log(allMingles)
+        //         // setFetchedMingles(allMingles);
+        //     }).catch(err => console.log(err));
+        // };
+        // if (counter === 1) {
+        //     console.log('SPARKY');
+            // asyncWrapper();
+        // } else {
+        //     console.log('NOT SPARKY');
+        // console.log(allMingles.length, counter - 1);
+        // }
+    }, []);
 
+    const { setShowReviews } = useContext(ReviewContext);
+    const [connection, setConnection] = useState(false);
+    allMingles =  JSON.parse(allMingles);
+    const currentUserFormatted = typeof currentUser === 'string' ? JSON.parse(currentUser) : currentUser;
+    const currentMingle = isBankConnection || allMingles[counter] || undefined;
+    let distance;
+    if (currentMingle) {
+        calculateDistance(currentMingle.location.geo.coordinates, currentUserFormatted.location.geo.coordinates);
+    };
     return (
-        <div>
+        <div className='w-100'>
             {
                 connection ?
                     <Matched connection={connection} setConnection={setConnection} />
                     :
                         <ProfileCard user={currentMingle} setCounter={setCounter}
-                            currentUser={typeof currentUser === 'String' ? currentUser : JSON.stringify(currentUser)} distance={distance}
+                            currentUser={typeof currentUser === 'string' ? currentUser : JSON.stringify(currentUser)} distance={distance}
                             setConnection={setConnection}
                             isBank={isBank}
                             isRev={isRev}

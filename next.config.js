@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 // next.config.js
-const nextConfig = {};
+const nextConfig = {
+    experimental: { appDir: true },
+  webpack(config) {
+    config.experiments = { ...config.experiments, topLevelAwait: true }
+    return config
+  },
+};
 module.exports = nextConfig;
 // module.exports = {
 //   async headers() {

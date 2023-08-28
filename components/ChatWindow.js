@@ -16,25 +16,24 @@ export default function ChatWindow({ history, connection, dateInvite }) {
     const [input, setInput] = useState('');
     const ref = useRef(null);
 
-    useEffect(() => {
-        const asyncWrapper = async () => {
+    // useEffect(() => {
+    //     const asyncWrapper = async () => {
+    //         await fetch('/api/socket', {method: 'GET'})
+    //             .then(async data => console.log(await data.json())).catch(err => console.log(err));
+    //         socket = io(undefined, {
+    //             path: '/api/socket.io',
+    //         });
 
-            await fetch('/api/socket', {method: 'GET'})
-                .then(data => console.log(data)).catch(err => console.log(err));
-            socket = io(undefined, {
-                path: '/api/socket.io',
-            });
+    //         socket.on('connect', () => {
+    //             console.log('connected');
+    //         });
 
-            socket.on('connect', () => {
-                console.log('connected');
-            });
-
-            socket.on('tester', (data) => {
-                setMessages(prev => [...prev, data]);
-            })
-        };
-        asyncWrapper();
-    } , [])
+    //         socket.on('tester', (data) => {
+    //             setMessages(prev => [...prev, data]);
+    //         })
+    //     };
+    //     asyncWrapper();
+    // } , [])
     
     const sendMessage = async function () {
         const newMessage = {

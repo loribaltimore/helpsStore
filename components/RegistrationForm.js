@@ -29,7 +29,6 @@ export default function RegistrationForm() {
   const [preferredDistance, setPreferredDistance] = useState('');
     const {data: session, update } = useSession();
     const router = useRouter();
-    // console.log(session);
 
     useEffect(() => {
         if (entered === 'good') {

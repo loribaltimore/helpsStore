@@ -1,16 +1,16 @@
 "use client"
 export default function PartWays({ activeUserId, connection, setActiveConnections }) {
-    console.log('PART WAYS');
     const partWays = async () => {
         const res = await fetch(`/api/user/connections`, {
             method: "PUT",
             headers: {
             "Content-Type": "application/json",
             },
-            body: JSON.stringify({ activeUserId, connection, isDelete: true}),
+            body: JSON.stringify({ activeUserId, activeConnectionId: connection._id, connectionId: connection[connection["activelyConnectedWith"]].id, isDelete: true}),
         }).then( data => {return data}).catch(err => console.log(err));
         const data = await res.json();
         const formattedConnections = JSON.parse(data.allConnections);
+        console.log(formattedConnections);
         setActiveConnections(formattedConnections);
     };
 

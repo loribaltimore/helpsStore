@@ -17,6 +17,7 @@ export default function AreYouSure({ connection }) {
             }
         }).then(data => {
             const res = data.json();
+            console.log(res);
         }).catch(err => console.log(err));
     }
     

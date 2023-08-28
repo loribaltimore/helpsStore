@@ -6,13 +6,14 @@ function classNames(...classes) {
 }
 
 export default function ReviewPanel({ connection, updatedReviews }) {
+  console.log(connection);
     const reviews = updatedReviews.length ? updatedReviews : JSON.parse(connection).reviews;
   return (
     <div className="bg-white p-4 rounded-md mb-10 ">
       <div className=''>
         <div className="-my-10 border p-4">
                   {
-                        reviews.length ?
+                        reviews && reviews.length ?
                       reviews.map((review, reviewIdx) => (
             <div key={reviewIdx} className="flex space-x-4 text-sm text-gray-500">
               <div className="flex-none py-10">

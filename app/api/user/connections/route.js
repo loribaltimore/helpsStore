@@ -4,22 +4,22 @@ import User from 'models/userSchema';
 import Connection from 'models/connectionSchema';
 import {getServerSession} from 'next-auth/next';
 import { authOptions } from 'app/api/auth/[...nextauth]/route';
-
+import { getPhotos } from 'lib/getPhotos';
 
 export async function PUT(request) {
   const { activeUserId, activeConnectionId, isDelete, isRead, connectionId, dateInvite, connectionObject } = await request.json();
          await database();
-  const activeUser = await User.findById(activeUserId);
-      const populatedConnection = await User.findById(connectionId || connection.currentUser._id);
-
-   
+  const activeUser = await User.findById(activeUserId).populate('connections.reciprocated')
+    .then(data => data).catch(err => console.log(err));
+  const populatedConnection = await User.findById(connectionId || connection.currentUser._id);
+  
   if (isDelete) {
     activeUser.connections.reciprocated = activeUser.connections.reciprocated.filter(connection => connection.id !== activeConnectionId);
     populatedConnection.connections.reciprocated = populatedConnection.connections.reciprocated.filter(connection => connection.id !== activeUserId);
     await activeUser.save();
     await populatedConnection.save();
     await Connection.findByIdAndDelete(activeConnectionId);
-    let allConnections = activeUser.populate('connections.reciprocated');
+    let allConnections = await activeUser.populate('connections.reciprocated').then(data => {  return [...data.connections.reciprocated]}).catch(err => console.log(err));
     return NextResponse.json({
       message: "Deleted",
       allConnections: JSON.stringify(allConnections)
@@ -30,7 +30,6 @@ export async function PUT(request) {
         const retrievedConnection = await Connection.findById(connectionObject);
     let inviteSent = false;
       if (typeof dataInvite !== 'number') {
-        console.log('DATE INVITE IS ACTIVE')
         inviteSent = true
     retrievedConnection.date.invite.date = Date.now().toString();
     retrievedConnection.date.invite.sentBy = activeUserId;
@@ -51,7 +50,6 @@ export async function POST(request) {
     const connection = await User.findById(userId);
   const preConnected = currentUser.connections.pending.indexOf(userId);
   await connection.rate(rating, userId);
-
     if (interested) {
         if (preConnected > -1) {
             //if connection already liked currentUser
@@ -59,7 +57,7 @@ export async function POST(request) {
             connection1:{name: currentUser.name, id: currentUser._id},
             connection2: {name: connection.name, id: userId},
            }).save();
-          currentUser.connections.pending = currentUser.connections.pending.filter(connection => connection !== userId);
+          currentUser.connections.pending = currentUser.connections.pending.filter(connection => connection.toString() !== userId);
           currentUser.connections.reciprocated.push(newConnection.id);
           connection.connections.reciprocated.push(newConnection.id);
           currentUser.connections.matched.push(userId);
@@ -90,8 +88,15 @@ export async function POST(request) {
   await User.interestAndPass(currentUserId, userId, interested ? 'interested' : 'pass');
     await currentUser.save();
   await connection.save();
-  const updatedLikedBy = await currentUser.populate('connections.pending')
+  let updatedLikedBy = await currentUser.populate('connections.pending')
     .then(data => { return data.connections.pending }).catch(err => console.log(err));
+  const allPhotos = updatedLikedBy.map((element, index) => {
+        return element.photos[0];
+    })
+    const allUserPhotos = await getPhotos(allPhotos);
+    updatedLikedBy = updatedLikedBy.map((element, index) => {
+        return {user: element, photoUrl: allUserPhotos[index]}
+    })
     return NextResponse.json({ isMatched, isBank: updatedLikedBy });
 };
 

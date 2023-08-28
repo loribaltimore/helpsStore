@@ -1,9 +1,11 @@
 "use client"
 import PartWays from 'components/PartWays';
 import Link from "next/link";
+import { useContext } from 'react';
+import { ReviewContext } from 'components/ReviewContext';
 
-export default function ChatPanel({ activeUser, connection, setActiveConnections, setRenderQuiz, setBankConnection, setShowUpgrade, setCurrentMongoConnection}) {
-
+export default function ChatPanel({ activeUser, connection, setActiveConnections, setRenderQuiz, setBankConnection, setShowUpgrade}) {
+  const { setCurrentMongoConnection } = useContext(ReviewContext);
   const handleClick = async () => {
       setCurrentMongoConnection(connection);
     await fetch(`/api/user/connections?connectionId=${connection._id}`, {

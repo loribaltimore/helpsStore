@@ -1,10 +1,11 @@
 "use client"
 import ChatPanel from 'components/ChatPanel';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import FullQuiz from 'components/FullQuiz';
 import Upgrade from 'components/Upgrade';
 import AllProfiles from 'components/AllProfiles';
 import Reviews from 'components/Reviews';
+import { ReviewContext } from 'components/ReviewContext';
 
 export default function AllChats({ activeUser, allConnections }) {
     const [activeConnections, setActiveConnections] = useState(undefined);
@@ -12,8 +13,9 @@ export default function AllChats({ activeUser, allConnections }) {
     const formattedConnections = JSON.parse(allConnections);
     const [bankConnection, setBankConnection] = useState(undefined);
     const [showUpgrade, setShowUpgrade] = useState(false);
-    const [showReviews, setShowReviews] = useState(false);
     const [currentMongoConnection, setCurrentMongoConnection] = useState(undefined);
+    const { setShowReviews, showReviews } = useContext(ReviewContext);
+
     return (
         <div className='space-y-5'>
              <div className='absolute w-100 h-100 z-40 gap-4 mx-12'>
@@ -23,7 +25,8 @@ export default function AllChats({ activeUser, allConnections }) {
                     activeUser.membershipType === 'pro'?
                             <Upgrade /> :
                             <div className={`${!showReviews ? 'fixed': ''} z-40`}>
-                                {!showReviews ?
+                                {
+                                    !showReviews ?
                                     <AllProfiles allMingles={[JSON.stringify(formattedConnections)]}
                                         currentUser={JSON.parse(activeUser)}
                                         isBank={false}

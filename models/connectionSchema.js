@@ -78,7 +78,6 @@ const connectionSchema = new Schema({
             from: String,
             date: {
                 type: Date,
-                default: Date.now
             },
             connectionId: String
         },

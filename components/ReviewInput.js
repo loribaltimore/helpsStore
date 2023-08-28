@@ -4,7 +4,7 @@ import { StarIcon } from '@heroicons/react/20/solid'
 export default function ReviewInput({ connection, setUpdatedReviews, currentMongoConnection}) {
     const [review, setReview] = useState('');
     const [parsedConnection, setParsedConnection] = useState(JSON.parse(connection));
-    const [isRating, setIsRating] = useState(1);
+  const [isRating, setIsRating] = useState(1);
     const rate = [0, 1, 2, 3, 4]
     const handleClick = async () => { 
         await fetch('/api/user/connections/review', {
@@ -18,7 +18,6 @@ export default function ReviewInput({ connection, setUpdatedReviews, currentMong
             setUpdatedReviews(newReviews.allReviews); 
         }).catch(err => console.log(err));
     };
-
   return (
     <div className="flex items-start space-x-4 mt-2">
       <div className="flex-shrink-0">
@@ -33,10 +32,10 @@ export default function ReviewInput({ connection, setUpdatedReviews, currentMong
                   {
                   rate.map((element, index) => {
                       return  <StarIcon
-                      key={index}
-                          className={`${isRating <= index? 'text-gray-400': 'text-yellow-400'} h-5 w-5 flex-shrink-0 cursor-pointer hover:scale-150`}
-                          aria-hidden="true"
-                          onMouseEnter={() => setIsRating(index + 1)}
+                        key={index}
+                        className={`${isRating <= index  ? 'text-gray-400' : 'text-yellow-400'} h-5 w-5 flex-shrink-0 cursor-pointer hover:scale-150`}
+                        aria-hidden="true"
+                        onMouseEnter={() => setIsRating(index + 1)}
                     />
                   })
               }

@@ -9,16 +9,13 @@ export default function Matched(connection, setConnection) {
     const [isJokes, setIsJokes] = useState(false);
 
     return (
-        <>
+        <div className='min-w-3/4 items-center px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 rounded-xl '>
             {
                 isTrivia ?
                     <FullQuiz connection={connection} setConnection={setConnection} />
             :
             <MatchAction setIsTrivia={setIsTrivia} />
             }
-        </>
+        </div>
     )
 };
-
-// allProfiles => ProfileCard => Matched => FullQuiz is waiting for connection data, not user data to determine answers.
-// after a user is liked in ProfileCard, isMatched returns a user. Have it return the connection instead

@@ -20,12 +20,16 @@ export default function Bank({ }) {
         };
         asyncWrapper();
     }, []);
-
+    console.log(allLikedBy);
     return (
-        <div className='relative'>
+        <div className='relative w-100'>
             {
                 allLikedBy ?
-                    <AllThumbnails allLikedBy={allLikedBy} setAllLikedBy={setAllLikedBy} membershipType={membershipType} currentUser={currentUser} />
+                    <AllThumbnails allLikedBy={allLikedBy}
+                        setAllLikedBy={setAllLikedBy}
+                        membershipType={membershipType}
+                        currentUser={currentUser}
+                    />
                     : null
             }
         </div>

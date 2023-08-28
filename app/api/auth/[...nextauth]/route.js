@@ -21,16 +21,13 @@ export const authOptions = {
 
   ],
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      console.log('signin is happening');
-      
+    async signIn({ user, account, profile, email, credentials }) {      
       return true
     },
     async redirect({ url, baseUrl }) {
       return baseUrl
     },
     async session({ session, user, token, trigger, newSession }) {
-      console.log('Session is happening');
       await database();
       const currentUser = await User.findOne({ email: user.email }).then(data => {
         {return data}
@@ -59,5 +56,4 @@ export const authOptions = {
 
 // export NextAuth object with options as parameter
 const handler = NextAuth(authOptions)
-
 export {handler as GET, handler as POST}

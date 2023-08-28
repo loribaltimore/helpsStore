@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const { Schema, model, models } = mongoose;
 const hobbies = require('../util/hobbies');
 
-
 const userSchema = new Schema({
     username: String,
     name: String,
@@ -13,7 +12,8 @@ const userSchema = new Schema({
     image: String,
     emailVerified: Boolean,
     rating: {
-        total: {
+    looks: {
+            total: {
             type: Number,
             default: 5
         },
@@ -25,6 +25,21 @@ const userSchema = new Schema({
             type: Number,
             default: 5
         }
+        },
+    date: {
+            total: {
+            type: Number,
+            default: 5
+        },
+        count: {
+            type: Number,
+            default:1
+        },
+        avg: {
+            type: Number,
+            default: 5
+        }
+    }
     },
     photos: [String],
     genderId: {

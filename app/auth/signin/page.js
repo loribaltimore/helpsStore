@@ -3,8 +3,6 @@ import SigninBtn from 'components/SigninBtn';
 
 export default async function Signin(props) {
     const providers = await getProviders();
-    console.log(providers);
-    
     return (
         <div className="w-1/2 border-2 h-1/2 mx-auto ">
             {

@@ -5,13 +5,11 @@ import QuizResults from 'components/QuizResults';
 
 export default function Quiz({ currentQuestion, setCurrentQuestion, question,
     possibleAnswers, chosen, connection, setConnection}) {
-    const { data: session } = useSession();
     const [isAnswered, setIsAnswered] = useState(false);
     const [answers, setAnswers] = useState([]);
     const [showChosen, setShowChosen] = useState(false);
     const [isClicked, setIsClicked] = useState(undefined);
     const [isShowCompatibility, setIsShowCompatibility] = useState(false);
-console.log('QUIZ', connection)
     const handleSubmit = async () => {
         await fetch('/api/user/connections/quiz', {
             method: 'POST',
@@ -47,10 +45,10 @@ console.log('QUIZ', connection)
         },  1750);
     }
     return (
-           <div className={`m-auto mt-28 items-center overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 rounded-xl w-3/4 ${isAnswered ? 'answered' : null}`}>
+           <div className={`w-100 items-center bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 rounded-xl  ${isAnswered ? 'answered' : null}`}>
             {
                 !isShowCompatibility ?
-            <div className="block">
+            <div className="block ">
                 <h1 className="text-black text-4xl text-center p-5">{question}</h1>
                 <section className="grid grid-rows-2 grid-flow-col gap-2 p-5">
                     {possibleAnswers.map((answer, index) => {
