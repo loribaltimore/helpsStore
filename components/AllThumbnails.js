@@ -7,10 +7,8 @@ import { ReviewContext } from 'components/ReviewContext';
 import { useState, useContext } from 'react';
 
 export default function AllThumbnails({ allLikedBy, setAllLikedBy, membershipType, currentUser }) {
-    const [showUpgrade, setShowUpgrade] = useState(false);
     const [bankConnection, setBankConnection] = useState();
-    const [bankConnectionUser, setBankConnectionUser] = useState('');
-    const { showReviews } = useContext(ReviewContext);
+    const { showReviews, setShowUpgrade, showUpgrade } = useContext(ReviewContext);
     const formattedLikedBy = allLikedBy.map((element, index) => {
         return element.user;
     });
@@ -28,7 +26,6 @@ export default function AllThumbnails({ allLikedBy, setAllLikedBy, membershipTyp
                                         setAllLikedBy={setAllLikedBy}
                                         currentUser={typeof currentUser !== 'string' ? JSON.stringify(currentUser) : currentUser}
                                         isBank={true}
-                                        setShowUpgrade={setShowUpgrade}
                                         isBankConnection={bankConnection}
                                     /> : <Reviews connection={bankConnection} />
                                 }

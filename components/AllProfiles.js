@@ -4,11 +4,12 @@ import { ReviewContext } from 'components/ReviewContext';
 import ProfileCard from './ProfileCard';
 import calculateDistance from '@/util/calculateDistance';
 import Matched from 'components/Matched';
+import Reviews from 'components/Reviews';
 
 export default function AllProfiles({ allMingles, setAllLikedBy, currentUser, isBank,
     setShowUpgrade, isBankConnection, isRev }) {
         const [counter, setCounter] = useState(0);
-    
+
     useEffect(() => {
         // const asyncWrapper = async () => {
         //     await fetch('/api/user/mingles', {
@@ -31,7 +32,7 @@ export default function AllProfiles({ allMingles, setAllLikedBy, currentUser, is
         // }
     }, []);
 
-    const { setShowReviews } = useContext(ReviewContext);
+    const {  showReviews} = useContext(ReviewContext);
     const [connection, setConnection] = useState(false);
     allMingles =  JSON.parse(allMingles);
     const currentUserFormatted = typeof currentUser === 'string' ? JSON.parse(currentUser) : currentUser;
@@ -46,15 +47,14 @@ export default function AllProfiles({ allMingles, setAllLikedBy, currentUser, is
                 connection ?
                     <Matched connection={connection} setConnection={setConnection} />
                     :
+                    !showReviews ?
                         <ProfileCard user={currentMingle} setCounter={setCounter}
                             currentUser={typeof currentUser === 'string' ? currentUser : JSON.stringify(currentUser)} distance={distance}
                             setConnection={setConnection}
                             isBank={isBank}
                             isRev={isRev}
-                            setShowUpgrade={setShowUpgrade}
                             setAllLikedBy={setAllLikedBy}
-                            setShowReviews={setShowReviews}
-                    /> 
+                        /> : <Reviews connection={currentMingle} />
             }
         </div>
     )

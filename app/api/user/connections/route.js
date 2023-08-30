@@ -49,7 +49,7 @@ export async function POST(request) {
     const currentUser = await User.findById(currentUserId);
     const connection = await User.findById(userId);
   const preConnected = currentUser.connections.pending.indexOf(userId);
-  await connection.rate(rating, userId);
+  await connection.rate(rating, userId, currentUser.rating.avg);
     if (interested) {
         if (preConnected > -1) {
             //if connection already liked currentUser

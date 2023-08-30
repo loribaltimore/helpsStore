@@ -1,5 +1,8 @@
 import { useSession } from 'next-auth/react';
 import { CheckIcon } from '@heroicons/react/20/solid';
+import { useContext } from 'react';
+import { ReviewContext } from './ReviewContext';
+
 const tier = {
     name: 'Pro',
     href: '#',
@@ -21,8 +24,8 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 export default function Upgrade() {
-const {data: session} = useSession();
-  console.log(session);
+  const { data: session } = useSession();
+  const { setShowUpgrade } = useContext(ReviewContext);
   const handleClick = async () => {
     await fetch('api/checkout_sessions', {
       method: 'POST',
@@ -36,16 +39,24 @@ const {data: session} = useSession();
   }
     return (
         <div className='rounded-2xl bg-white text-black w-full h-[30rem] sticky top-36  p-8 border border-2 border-indigo-500 '>
-               <div className="flex items-center justify-between gap-x-4">
-                <h3
+        
+        <div className="flex items-center justify-between gap-x-4 w-100">
+          <span className='flex w-100'>
+              <h3
                   id={tier.id}
                   className={classNames(
                     tier.mostPopular ? 'text-indigo-600' : 'text-gray-900',
-                    'text-lg font-semibold leading-8 text-indigo-600'
+                    'text-lg text-left w-1/2 font-semibold leading-8 text-indigo-600'
                   )}
                 >
                   {tier.name}
-                </h3>
+          </h3>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6"
+              onClick={() => setShowUpgrade(false)}
+            >
+  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" className=' w-1/2 align-right hover:translate-105 cursor-pointer'/>
+</svg>
+          </span>
                 {tier.mostPopular ? (
                   <p className="rounded-full bg-indigo-600/10 px-2.5 py-1 text-xs font-semibold leading-5 text-indigo-600">
                     Most popular

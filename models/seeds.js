@@ -300,7 +300,7 @@ const seedSocketUser = async () => {
 const populatePending = async () => {
     await database();
     const currentUser = await User.findOne({ username: "Powerman5000" });
-    await sortFunction(currentUser._id).then(data => { console.log(data) }).catch(err => console.log(err));
+    await sortFunction(currentUser._id).then(data => { console.log(data.map(x => x.name)) }).catch(err => console.log(err));
     // console.log(currentUser.membershipType);
     // const currentConnection = await Connection.findById("64e6343960d64b74d51ee28c");
     

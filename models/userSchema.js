@@ -121,11 +121,10 @@ const userSchema = new Schema({
     }
 });
 
-userSchema.method('rate', async function (rating, userId) {
-    console.log("RATER IS WORKING")
+userSchema.method('rate', async function (rating, userId, relativeUserRating) {
     const User = models.User || model("User", userSchema);
     const currentUser = await User.findById(userId);
-    currentUser.rating.total += rating;
+    currentUser.rating.total += rating + Math.abs(rating - relativeUserRating) * .25;
     currentUser.rating.count += 1;
     currentUser.rating.avg = currentUser.rating.total / currentUser.rating.count;
     await currentUser.save();

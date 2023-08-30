@@ -3,15 +3,16 @@ import Carousel from 'components/Carousel';
 import { useEffect, useState, useContext } from 'react';
 import Rater from 'components/Rater';
 import { ReviewContext } from 'components/ReviewContext';
+import Upgrade from 'components/Upgrade';
 
 export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUser, distance,
-  setConnection, isBank, setShowUpgrade, isRev }) {
-  const { setShowReviews } = useContext(ReviewContext);
+  setConnection, isBank, isRev }) {
+  const { setShowReviews, setShowUpgrade, showUpgrade} = useContext(ReviewContext);
   const { name, age, description, hobbies, rating } = user;
   const currentUserFormatted = JSON.parse(currentUser);
   const [photos, setPhotos] = useState(undefined);
   const [rater, setRater] = useState(undefined);
-  const [newAllLikedBy, setNewAllLikedBy] = useState(undefined);
+
   useEffect(() => {
     const asyncWrapper = async () => {
       const searchParams = new URLSearchParams();
@@ -65,12 +66,16 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUs
               <p className="absolute left-4 top-4 text-center sm:static sm:mt-6">
                 <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">Click Photo</a>
               </p>
-            </div>
+          </div>
+          {
+            showUpgrade ?
+            <div className='absolute bg-white z-40'>
+              <Upgrade />
+            </div> : null
+          }
           <div className="sm:col-span-8 lg:col-span-7">
-
             <div className="flex items-center">
             <div className='w-1/2'>
-
               <h2 className="text-black text-4xl">{name}</h2>
               <section aria-labelledby="information-heading" className="mt-4">
                 <h3 id="information-heading" className="sr-only">Product information</h3>
@@ -126,7 +131,15 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUs
               }
               </section>
               <button className='bg-orange-400 rounded-lg w-1/4 h-1/4 my-auto p-0 flex text-center'
-                onClick={() => setShowReviews(true)}
+                onClick={() => {
+                  if (currentUser.membershipType === 'pro') {
+                     setShowReviews(true);
+                  } else {
+                    console.log('NEGATIVE')
+                    setShowUpgrade(true);
+                  }
+                }
+                }
               >
                 <span className='block mx-auto'>
                   <section className='flex'>
@@ -181,10 +194,6 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUs
               className='bg-indigo-500 mx-auto block px-5 py-2 rounded-lg'
               onClick={() => {
                 setShowUpgrade(false);
-                console.log('working')
-                // if (setAllLikedBy) {
-                // setAllLikedBy(newAllLikedBy);
-                // }
               }}
             >close</button>
                     : null
