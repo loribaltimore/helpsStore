@@ -5,13 +5,15 @@ import {
   LinearScale,
   PointElement,
   Tooltip,
-  Legend,
+    Legend,
+  ArcElement
 } from 'chart.js';
 import { Bubble } from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 
-ChartJS.register(LinearScale, PointElement, Tooltip, Legend);
+ChartJS.register(LinearScale, PointElement, Tooltip, Legend, ArcElement);
 
-export const options = {
+export const bubbleOptions = {
   scales: {
     y: {
           beginAtZero: true,
@@ -35,25 +37,50 @@ export const options = {
 
 
 
-export default function DashboardWidget({ looksMetrics }) {
-    const data = {
+export default function DashboardWidget({ looksMetrics, likeRatio }) {
+    console.log(likeRatio)
+    const bubbleData = {
   datasets: [
             {
                 label: 'Red dataset',
-                data: Array.from(looksMetrics).map(([key, value]) => ({
+                data: looksMetrics ? Array.from(looksMetrics).map(([key, value]) => ({
                     x: parseInt(key),
                     y: Math.round(value.total / value.count),
-                }))
+                })) : null
             }
+  ],
+    };
+    const doughnutData = {
+  labels: ['liked', 'passed'],
+  datasets: [
+    {
+      label: '# of Votes',
+      data: likeRatio ?[ likeRatio.liked, likeRatio.passed] : null,
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+      ],
+      borderWidth: 1,
+    },
   ],
 };
     return (
         <div>
+            {looksMetrics ? 
             <Bubble
-  options={options}
-  data={data}
-
-/>
+            options={bubbleOptions}
+                data={bubbleData}
+                /> : null}
+            {
+                likeRatio ? 
+                    <div className='w-100'>
+                        <Doughnut data={doughnutData} /> 
+                        </div>: null
+            }
         </div>
     )
 }

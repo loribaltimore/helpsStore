@@ -156,6 +156,8 @@ const seedConnections = async () => {
     currentUser.rating.looks.total = 5;
     currentUser.rating.looks.avg = 5;
     currentUser.rating.looks.metricsByAge = new Map();
+    currentUser.connections.pending = [];
+    currentUser.connections.matched = [];
     currentUser.rating.looks.metricsByAge.set(currentUser.age.toString(), { total: 5, count: 1 });
         await currentUser.save();
 
@@ -203,11 +205,10 @@ const seedConnections = async () => {
             // }).save();
             if (rand % 2 === 0) {
                 currentUser.connections.pending.push(users[i]._id);
-            };
-            const rand2 = Math.floor(Math.random() * 75);
-            if (currentUser) {
-                
+            } else {
+                currentUser.connections.rejectedBy.push(users[i]._id);
             }
+            const rand2 = Math.floor(Math.random() * 75);
             const choices = { 0: 1 * Math.abs(users[i].rating.looks.avg - currentUser.rating.looks.avg) , 1: -.5 * Math.abs(users[i].rating.looks.avg - currentUser.rating.looks.avg) , 2: 0 };
             currentUser.rating.looks.count+=1;
             currentUser.rating.looks.total += currentUser.rating.looks.avg + choices[rand2 <= 25 ? '0' : rand2 > 50 ? '1' : '2']; 
