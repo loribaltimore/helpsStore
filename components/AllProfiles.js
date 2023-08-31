@@ -39,7 +39,7 @@ export default function AllProfiles({ allMingles, setAllLikedBy, currentUser, is
     const currentMingle = isBankConnection || allMingles[counter] || undefined;
     let distance;
     if (currentMingle) {
-        calculateDistance(currentMingle.location.geo.coordinates, currentUserFormatted.location.geo.coordinates);
+       distance =  calculateDistance(currentMingle.location.geo.coordinates, currentUserFormatted.location.geo.coordinates);
     };
     return (
         <div className='w-100'>
@@ -49,12 +49,14 @@ export default function AllProfiles({ allMingles, setAllLikedBy, currentUser, is
                     :
                     !showReviews ?
                         <ProfileCard user={currentMingle} setCounter={setCounter}
-                            currentUser={typeof currentUser === 'string' ? currentUser : JSON.stringify(currentUser)} distance={distance}
+                            currentUser={typeof currentUser === 'string' ? currentUser : JSON.stringify(currentUser)}
+                            distance={distance}
                             setConnection={setConnection}
                             setBankConnection={setBankConnection}
                             isBank={isBank}
                             isRev={isRev}
                             setAllLikedBy={setAllLikedBy}
+
                         /> : <Reviews connection={currentMingle} />
             }
         </div>

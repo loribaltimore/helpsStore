@@ -18,8 +18,8 @@ const sortingCheck = async () => {
 
 const seedUser = async () => {
     const client = await database();
-    await User.deleteMany({});
-    for (let i = 0; i < 100; i++){
+    await User.deleteMany({username: {$ne: 'Powerman5000'}});
+    for (let i = 0; i < 500; i++){
         const randHobby = Math.floor(Math.random() * (hobbies.length / 2));
         const randAge = Math.floor(Math.random() * 30);
         const randCoord = Math.floor(Math.random() * coords.length -1);
@@ -152,7 +152,16 @@ const seedConnections = async () => {
     const users = await User.find({})
         .then(data => { return data }).catch(err => console.log(err));
     currentUser.connections.reciprocated = [];
-    for (let i = 1; i < 98; i++) {
+    currentUser.rating.looks.count = 1;
+    currentUser.rating.looks.total = 5;
+    currentUser.rating.looks.avg = 5;
+    currentUser.rating.looks.metricsByAge = new Map();
+    currentUser.rating.looks.metricsByAge.set(currentUser.age.toString(), { total: 5, count: 1 });
+        await currentUser.save();
+
+    for (let i = 1; i < 498; i++) {
+        users[i].rating.looks.avg = Math.floor(Math.random() * 7 + 3);
+        await users[i].save();
         const rand = Math.floor(Math.random() * 2);
         if (currentUser._id !== users[i]._id) {
             // const newConnection = await new Connection({
@@ -195,19 +204,31 @@ const seedConnections = async () => {
             if (rand % 2 === 0) {
                 currentUser.connections.pending.push(users[i]._id);
             };
-            const rand2 = Math.floor(Math.random() * 2);
-            const choices = {0: 1, 1: -1}
-            currentUser.rating.looks.count++;
-            currentUser.rating.looks.total += currentUser.rating.looks.avg + choices[rand2]; 
-            currentUser.rating.looks.avg = Math.floor(currentUser.rating.looks.total / currentUser.rating.looks.count);
-            console.log(currentUser.rating.looks.avg + choices[rand2]);
+            const rand2 = Math.floor(Math.random() * 75);
+            if (currentUser) {
+                
+            }
+            const choices = { 0: 1 * Math.abs(users[i].rating.looks.avg - currentUser.rating.looks.avg) , 1: -.5 * Math.abs(users[i].rating.looks.avg - currentUser.rating.looks.avg) , 2: 0 };
+            currentUser.rating.looks.count+=1;
+            currentUser.rating.looks.total += currentUser.rating.looks.avg + choices[rand2 <= 25 ? '0' : rand2 > 50 ? '1' : '2']; 
+            currentUser.rating.looks.avg = Math.round(currentUser.rating.looks.total / currentUser.rating.looks.count);
+            console.log(Math.abs(users[i].rating.looks.avg - currentUser.rating.looks.avg), 'DIFFERENCE');
+            console.log(rand2)
+            console.log(currentUser.rating.looks.avg, 'AVERAGE');
+            console.log('PLUS')
+            console.log(choices[rand2 <= 25 ? '0' : rand2 > 50 ? '1' : '2'], 'RaND');
+            console.log('EQUALS')
+            console.log(currentUser.rating.looks.avg + choices[rand2 <= 25 ? '0' : rand2 > 50 ? '1' : '2']);
             currentUser.rating.looks.avg = Math.floor(currentUser.rating.looks.total / currentUser.rating.looks.count);
             currentUser.rating.looks.metricsByAge.get(users[i].age.toString()) ?
-                currentUser.rating.looks.metricsByAge.set(users[i].age.toString(), {total: currentUser.rating.looks.metricsByAge.get(users[i].age.toString()).total  + Math.floor(currentUser.rating.looks.avg) + choices[rand2], count: currentUser.rating.looks.metricsByAge.get(users[i].age.toString()).count + 1 })
-                : currentUser.rating.looks.metricsByAge.set(users[i].age.toString(), {total: currentUser.rating.looks.avg + currentUser.rating.looks.avg + choices[rand2], count: 2});
+                currentUser.rating.looks.metricsByAge.set(users[i].age.toString(), {total: currentUser.rating.looks.metricsByAge.get(users[i].age.toString()).total  + Math.floor(currentUser.rating.looks.avg) + choices[rand2 <= 25 ? '0' : rand2 > 50 ? '1' : '2'], count: currentUser.rating.looks.metricsByAge.get(users[i].age.toString()).count + 1 })
+                : currentUser.rating.looks.metricsByAge.set(users[i].age.toString(), {total: currentUser.rating.looks.avg + choices[rand2 <= 25 ? '0' : rand2 > 50 ? '1' : '2'], count: 1});
             await currentUser.save();
         }
+
     };
+    console.log(currentUser.rating.looks.metricsByAge);
+    console.log(currentUser.rating.looks);
     // seedThemTrivia();
 };
 
@@ -237,7 +258,6 @@ const seedSocketUser = async () => {
     await database();
     const socketUser = await User.findById('649f01847167490c3d622445');
     const currentUser = await User.findById('64811cb221c21a50a0ee5ae5');
-
     currentUser.connections.set('649f01847167490c3d622445', {
         id: '649f01847167490c3d622445', status: 'reciprocated', conversation: [], trivia: {
             me: false,
@@ -335,10 +355,10 @@ const populatePending = async () => {
     // await currentUser.save();
 }
 
-populatePending();
+// populatePending();
 // sortingCheck();
 // seedUser();
-// seedConnections();
+seedConnections();
 // seedSocketUser();
 // showResource();
 // seedLoc();

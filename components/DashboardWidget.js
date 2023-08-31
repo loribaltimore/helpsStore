@@ -24,7 +24,7 @@ export const options = {
         x: {
             beginAtZero: false,
             min: 18,
-            max: 100,
+            max: 50,
             ticks: {
                 stepSize: 5
             }
@@ -42,7 +42,7 @@ export default function DashboardWidget({ looksMetrics }) {
                 label: 'Red dataset',
                 data: Array.from(looksMetrics).map(([key, value]) => ({
                     x: parseInt(key),
-                    y: Math.floor(value.total / value.count),
+                    y: Math.round(value.total / value.count),
                 }))
             }
   ],
