@@ -13,7 +13,7 @@ export default function ChatPanel({ activeUser, connection, setActiveConnections
     }).then(async data => {
       const response = await data.json();
       setBankConnection(JSON.parse(response.connectedTo));
-      setShowUpgrade(true);
+      // setShowUpgrade(true);
     }).catch (err => console.log(err));
   };
 
@@ -52,18 +52,13 @@ export default function ChatPanel({ activeUser, connection, setActiveConnections
         {
           connection.trivia[activelyConnectedAs] ?
           <div className="ml-4 mt-4 flex flex-shrink-0 space-x-2">
-              {
-                activeUser.membershipType === 'pro'
-                  // && connection.date.shown.bothShown
-                  ?
                 <button
                     type="button"
                     className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                     onClick={async () => { await handleClick() }}
                   >
             Profile
-                  </button> : null
-          }
+                  </button>
               <Link className="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                 href={`/chat/${connection._id}`}>
             <span>Chat</span>

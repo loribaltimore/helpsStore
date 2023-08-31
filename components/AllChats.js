@@ -12,16 +12,15 @@ export default function AllChats({ activeUser, allConnections }) {
     const [renderQuiz, setRenderQuiz] = useState(false);
     const formattedConnections = JSON.parse(allConnections);
     const [bankConnection, setBankConnection] = useState(undefined);
-    const [showUpgrade, setShowUpgrade] = useState(false);
     const [currentMongoConnection, setCurrentMongoConnection] = useState(undefined);
-    const { setShowReviews, showReviews } = useContext(ReviewContext);
+    const { showReviews, setShowUpgrade } = useContext(ReviewContext);
 
     return (
         <div className='space-y-5'>
              <div className='absolute w-100 h-100 z-40 gap-4 mx-12'>
                         <div className=''></div>
                 {
-                    bankConnection && showUpgrade?
+                    bankConnection ?
                     activeUser.membershipType === 'pro'?
                             <Upgrade /> :
                             <div className={`${!showReviews ? 'fixed': ''} z-40`}>
@@ -30,11 +29,10 @@ export default function AllChats({ activeUser, allConnections }) {
                                     <AllProfiles allMingles={[JSON.stringify(formattedConnections)]}
                                         currentUser={JSON.parse(activeUser)}
                                         isBank={false}
-                                        isRev={true}
-                                        setShowUpgrade={setShowUpgrade}
+                                            isRev={true}
+                                            setBankConnection={setBankConnection}
                                         isBankConnection={bankConnection}
-                                        setShowReviews={setShowReviews}
-                                    /> : <Reviews setShowReviews={setShowReviews}
+                                    /> : <Reviews 
                                         currentMongoConnection={currentMongoConnection}
                                         connection={JSON.stringify(bankConnection)} />}
                                 </div>  : null

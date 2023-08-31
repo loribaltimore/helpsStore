@@ -7,7 +7,7 @@ import Matched from 'components/Matched';
 import Reviews from 'components/Reviews';
 
 export default function AllProfiles({ allMingles, setAllLikedBy, currentUser, isBank,
-    setShowUpgrade, isBankConnection, isRev }) {
+    setBankConnection, isBankConnection, isRev }) {
         const [counter, setCounter] = useState(0);
 
     useEffect(() => {
@@ -51,6 +51,7 @@ export default function AllProfiles({ allMingles, setAllLikedBy, currentUser, is
                         <ProfileCard user={currentMingle} setCounter={setCounter}
                             currentUser={typeof currentUser === 'string' ? currentUser : JSON.stringify(currentUser)} distance={distance}
                             setConnection={setConnection}
+                            setBankConnection={setBankConnection}
                             isBank={isBank}
                             isRev={isRev}
                             setAllLikedBy={setAllLikedBy}

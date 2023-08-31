@@ -43,14 +43,14 @@ export default function ChatWindow({ history, connection, dateInvite }) {
             connection: connection._id,
             read: false, delivered: true, liked: false
         }
-        socket.emit('message', { newMessage, connectionId, userId: session.userId });
+        // socket.emit('message', { newMessage, connectionId, userId: session.userId });
 
-        await fetch('/api/socket', {
-            method: "POST",
-            body: JSON.stringify({message: newMessage}),
-            headers: {'Content-Type': 'application/json'}
-        }).then(async data => { const res = await data.json(); setMessages(res.messages)}).catch(err => console.log(err));
-
+        // await fetch('/api/socket', {
+        //     method: "POST",
+        //     body: JSON.stringify({message: newMessage}),
+        //     headers: {'Content-Type': 'application/json'}
+        // }).then(async data => { const res = await data.json(); setMessages(res.messages)}).catch(err => console.log(err));
+        setMessages(prev => [...prev, newMessage])
         setInput('');
         ref.current ?
         ref.current.scrollTop = ref.current.scrollHeight : null

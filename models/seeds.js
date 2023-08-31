@@ -148,7 +148,7 @@ console.log("THEM TRIVIA SEEDED")
 
 const seedConnections = async () => {
     await database();
-    const currentUser = await User.findById("64e623928bf066c08d588973");
+    const currentUser = await User.findOne({username: 'Powerman5000'});
     const users = await User.find({})
         .then(data => { return data }).catch(err => console.log(err));
     currentUser.connections.reciprocated = [];
@@ -193,11 +193,21 @@ const seedConnections = async () => {
             //     }
             // }).save();
             if (rand % 2 === 0) {
-                            currentUser.connections.pending.push(users[i]._id);
-            }
+                currentUser.connections.pending.push(users[i]._id);
+            };
+            const rand2 = Math.floor(Math.random() * 2);
+            const choices = {0: 1, 1: -1}
+            currentUser.rating.looks.count++;
+            currentUser.rating.looks.total += currentUser.rating.looks.avg + choices[rand2]; 
+            currentUser.rating.looks.avg = Math.floor(currentUser.rating.looks.total / currentUser.rating.looks.count);
+            console.log(currentUser.rating.looks.avg + choices[rand2]);
+            currentUser.rating.looks.avg = Math.floor(currentUser.rating.looks.total / currentUser.rating.looks.count);
+            currentUser.rating.looks.metricsByAge.get(users[i].age.toString()) ?
+                currentUser.rating.looks.metricsByAge.set(users[i].age.toString(), {total: currentUser.rating.looks.metricsByAge.get(users[i].age.toString()).total  + Math.floor(currentUser.rating.looks.avg) + choices[rand2], count: currentUser.rating.looks.metricsByAge.get(users[i].age.toString()).count + 1 })
+                : currentUser.rating.looks.metricsByAge.set(users[i].age.toString(), {total: currentUser.rating.looks.avg + currentUser.rating.looks.avg + choices[rand2], count: 2});
+            await currentUser.save();
         }
     };
-    await currentUser.save();
     // seedThemTrivia();
 };
 
@@ -299,8 +309,20 @@ const seedSocketUser = async () => {
 
 const populatePending = async () => {
     await database();
+    // const currentConnection = await Connection.findById("64ef77dc767dc5b2675e7748");
+    // currentConnection.date.shown.bothShown = true;
+
+    // await currentConnection.save();
+    // const allUsers = await User.find({});
+    // allUsers.forEach(async (user, index) => { 
+    //     await user.save();
+    // })
+    console.log('DONE!')
     const currentUser = await User.findOne({ username: "Powerman5000" });
-    await sortFunction(currentUser._id).then(data => { console.log(data.map(x => x.name)) }).catch(err => console.log(err));
+    console.log(currentUser.rating.looks.metricsByAge);
+    // currentUser.membershipType = 'pro';
+    // await currentUser.save();
+    // await sortFunction(currentUser._id).then(data => { console.log(data.map(x => x.name)) }).catch(err => console.log(err));
     // console.log(currentUser.membershipType);
     // const currentConnection = await Connection.findById("64e6343960d64b74d51ee28c");
     

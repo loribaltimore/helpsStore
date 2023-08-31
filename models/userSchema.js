@@ -24,6 +24,11 @@ const userSchema = new Schema({
         avg: {
             type: Number,
             default: 5
+            },
+            metricsByAge: {
+                type: Map,
+                of: Object,
+                default: new Map(),
         }
         },
     date: {
@@ -121,12 +126,12 @@ const userSchema = new Schema({
     }
 });
 
-userSchema.method('rate', async function (rating, userId, relativeUserRating) {
+userSchema.method('rate', async function (rating, userId, relativeUserRating, type) {
     const User = models.User || model("User", userSchema);
     const currentUser = await User.findById(userId);
-    currentUser.rating.total += rating + Math.abs(rating - relativeUserRating) * .25;
-    currentUser.rating.count += 1;
-    currentUser.rating.avg = currentUser.rating.total / currentUser.rating.count;
+    currentUser.rating[type].total += rating + Math.abs(rating - relativeUserRating) * .25;
+    currentUser.rating[type].count += 1;
+    currentUser.rating[type].avg = Math.floor(currentUser.rating.total / currentUser.rating.count);
     await currentUser.save();
 });
 

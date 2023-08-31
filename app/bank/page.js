@@ -20,7 +20,6 @@ export default function Bank({ }) {
         };
         asyncWrapper();
     }, []);
-    console.log(allLikedBy);
     return (
         <div className='relative w-100'>
             {

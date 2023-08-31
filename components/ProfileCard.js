@@ -6,7 +6,7 @@ import { ReviewContext } from 'components/ReviewContext';
 import Upgrade from 'components/Upgrade';
 
 export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUser, distance,
-  setConnection, isBank, isRev }) {
+  setConnection, setBankConnection, isBank, isRev }) {
   const { setShowReviews, setShowUpgrade, showUpgrade} = useContext(ReviewContext);
   const { name, age, description, hobbies, rating } = user;
   const currentUserFormatted = JSON.parse(currentUser);
@@ -51,7 +51,6 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUs
         parsedConnection.activelyConnectedWith = parsedMatch.connectedWith;
         setConnection(parsedConnection);
       } else if (isBank) {
-        console.log(res.isBank);
         setAllLikedBy(res.isBank)
       }
       setCounter(prev => prev + 1);
@@ -79,7 +78,6 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUs
               <h2 className="text-black text-4xl">{name}</h2>
               <section aria-labelledby="information-heading" className="mt-4">
                 <h3 id="information-heading" className="sr-only">Product information</h3>
-
                 <div className="flex items-center">
                 <p className="text-lg text-gray-900 sm:text-xl">{age}</p>
                   <div className="ml-4 border-l border-gray-300 pl-4">
@@ -132,10 +130,9 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUs
               </section>
               <button className='bg-orange-400 rounded-lg w-1/4 h-1/4 my-auto p-0 flex text-center'
                 onClick={() => {
-                  if (currentUser.membershipType === 'pro') {
+                  if (JSON.parse(currentUser).membershipType === 'pro') {
                      setShowReviews(true);
                   } else {
-                    console.log('NEGATIVE')
                     setShowUpgrade(true);
                   }
                 }
@@ -194,6 +191,7 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUs
               className='bg-indigo-500 mx-auto block px-5 py-2 rounded-lg'
               onClick={() => {
                 setShowUpgrade(false);
+                setBankConnection(null);
               }}
             >close</button>
                     : null

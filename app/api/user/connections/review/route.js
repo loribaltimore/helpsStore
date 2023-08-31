@@ -9,7 +9,9 @@ export async function POST(request) {
     const { reviewText, reviewRating, connectionId, currentMongoConnectionId } = await request.json();
     const currentUser = await User.findById(session.userId.toString());
     const currentConnection = await User.findById(connectionId);
-    const currentMongoConnection = await Connection.findById(currentMongoConnectionId);
+  const currentMongoConnection = await Connection.findById(currentMongoConnectionId);
+  await currentConnection.rate(reviewRating, connectionId, currentUser.rating.date.avg, 'date');
+  rating, userId, relativeUserRating, type
     const review = {
         rating: reviewRating,
         text: reviewText,
