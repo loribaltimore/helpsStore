@@ -117,12 +117,37 @@ const userSchema = new Schema({
     ],
     interestAndPass: {
         interested: {
-            total: Number,
-            count: Number,
+            total: {
+                type: Number,
+                default: 0
+            },
+            count: {
+                type: Number,
+                default: 0
+            },
         },
         pass: {
-            total: Number,
-        }
+            count: {
+                type: Number,
+                default: 0
+            },
+        },
+        byTotal: [
+            {
+                interested: {
+                    type: Number,
+                    default: 0
+                },
+                pass: {
+                    type: Number,
+                    default: 0
+                },
+                matched: {
+                    type: Number,
+                    default: 0
+                }
+            }
+        ]
     }
 });
 
@@ -148,10 +173,20 @@ userSchema.static('interestAndPass', async (currentUserId, connectionId, isInter
     await database();
     const User = models.User || model('User', userSchema);
     const currentUser = await User.findById(currentUserId);
-    const connection = await User.findById(connectionId);
-    
-    connection.interestAndPass[isInterested].count += 1;
-    isInterested === 'interested' ? connection.interestAndPass.interested.total += currentUser.rating.avg : null;
+    console.log(currentUserId, 'IS HERE IS HERE');
+    // const connection = await User.findById(connectionId );
+    const totalInteractions = currentUser.interestAndPass.interested.count + currentUser.interestAndPass.pass.count;
+    const increment = totalInteractions <= 50 ? 1: Math.floor(totalInteractions / 50);
+    console.log(totalInteractions);
+    console.log(increment, 'increment');
+    if (!currentUser.interestAndPass.byTotal[increment]) {
+            currentUser.interestAndPass.byTotal.push({ interested: 0, pass: 0, matched: 0 });
+    };
+    currentUser.interestAndPass.byTotal[increment][isInterested] += 1;
+    isInterested !== 'matched' ?
+        currentUser.interestAndPass[isInterested].count += 1 : null;
+    // isInterested === 'interested' ? connection.interestAndPass.interested.total += currentUser.rating.avg : null;
+    await currentUser.save();
 });
 
 userSchema.virtual('dontQueue', async (currentUserId) => { 

@@ -158,6 +158,10 @@ const seedConnections = async () => {
     currentUser.rating.looks.metricsByAge = new Map();
     currentUser.connections.pending = [];
     currentUser.connections.matched = [];
+    currentUser.connections.rejectedBy = [];
+    currentUser.interestAndPass.byTotal = [{ interested: 0, pass: 0 }];
+    currentUser.interestAndPass.interested.count = 0;
+    currentUser.interestAndPass.pass.count = 0;
     currentUser.rating.looks.metricsByAge.set(currentUser.age.toString(), { total: 5, count: 1 });
         await currentUser.save();
 
@@ -203,12 +207,35 @@ const seedConnections = async () => {
             //         ]
             //     }
             // }).save();
-            if (rand % 2 === 0) {
+            if (i % 2 === 0 && i % 3 === 0) {
+                currentUser.connections.matched.push(users[i]._id);
+
+            } else if (i % 2 === 0) { 
                 currentUser.connections.pending.push(users[i]._id);
             } else {
                 currentUser.connections.rejectedBy.push(users[i]._id);
             }
             const rand2 = Math.floor(Math.random() * 75);
+            let isInterested;
+                if (i % 2 === 0 && i % 3 === 0)  {
+                    isInterested = 'matched';
+                } else if (rand2 % 2 === 0) {
+                    isInterested = 'interested';
+                    
+                } else {
+                    isInterested = 'pass';
+            }
+                const totalInteractions = currentUser.interestAndPass.interested.count + currentUser.interestAndPass.pass.count;
+            const increment = Math.floor(totalInteractions / 50);
+    console.log(totalInteractions);
+    console.log(increment, 'increment');
+    if (!currentUser.interestAndPass.byTotal[increment]) {
+            currentUser.interestAndPass.byTotal.push({ interested: 0, pass: 0, matched: 0 });
+    };
+    currentUser.interestAndPass.byTotal[increment][isInterested] += 1;
+    isInterested !== 'matched' ?
+        currentUser.interestAndPass[isInterested].count += 1 : null;
+
             const choices = { 0: 1 * Math.abs(users[i].rating.looks.avg - currentUser.rating.looks.avg) , 1: -.5 * Math.abs(users[i].rating.looks.avg - currentUser.rating.looks.avg) , 2: 0 };
             currentUser.rating.looks.count+=1;
             currentUser.rating.looks.total += currentUser.rating.looks.avg + choices[rand2 <= 25 ? '0' : rand2 > 50 ? '1' : '2']; 
@@ -224,13 +251,14 @@ const seedConnections = async () => {
             currentUser.rating.looks.metricsByAge.get(users[i].age.toString()) ?
                 currentUser.rating.looks.metricsByAge.set(users[i].age.toString(), {total: currentUser.rating.looks.metricsByAge.get(users[i].age.toString()).total  + Math.floor(currentUser.rating.looks.avg) + choices[rand2 <= 25 ? '0' : rand2 > 50 ? '1' : '2'], count: currentUser.rating.looks.metricsByAge.get(users[i].age.toString()).count + 1 })
                 : currentUser.rating.looks.metricsByAge.set(users[i].age.toString(), {total: currentUser.rating.looks.avg + choices[rand2 <= 25 ? '0' : rand2 > 50 ? '1' : '2'], count: 1});
-            await currentUser.save();
+                   await currentUser.save();
+
         }
 
     };
-    console.log(currentUser.rating.looks.metricsByAge);
-    console.log(currentUser.rating.looks);
     // seedThemTrivia();
+    console.log(currentUser.interestAndPass);
+    console.log(currentUser.interestAndPass.byTotal);
 };
 
 //seed coordinates so I can use algorithm to find distance between users
@@ -334,13 +362,16 @@ const populatePending = async () => {
     // currentConnection.date.shown.bothShown = true;
 
     // await currentConnection.save();
-    // const allUsers = await User.find({});
-    // allUsers.forEach(async (user, index) => { 
-    //     await user.save();
-    // })
+    const allUsers = await User.find({});
+    allUsers.forEach(async (user, index) => { 
+        await user.save();
+    })
     console.log('DONE!')
-    const currentUser = await User.findOne({ username: "Powerman5000" });
-    console.log(currentUser.rating.looks.metricsByAge);
+    // const test = await User.findById("64f0a36ed5d85f1e060c516f");
+    // console.log(test);
+    // const currentUser = await User.findOne({ username: "Powerman5000" });
+    // console.log(currentUser.interestAndPass);
+    // console.log(currentUser.interestAndPass.byTotal);
     // currentUser.membershipType = 'pro';
     // await currentUser.save();
     // await sortFunction(currentUser._id).then(data => { console.log(data.map(x => x.name)) }).catch(err => console.log(err));
