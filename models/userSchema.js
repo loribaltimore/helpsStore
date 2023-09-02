@@ -145,6 +145,10 @@ const userSchema = new Schema({
                 matched: {
                     type: Number,
                     default: 0
+                },
+                dated: {
+                    type: Number,
+                    default: 0
                 }
             }
         ]
@@ -154,9 +158,9 @@ const userSchema = new Schema({
 userSchema.method('rate', async function (rating, userId, relativeUserRating, type) {
     const User = models.User || model("User", userSchema);
     const currentUser = await User.findById(userId);
-    currentUser.rating[type].total += rating + Math.abs(rating - relativeUserRating) * .25;
+    currentUser.rating[type].total += rating * Math.abs(rating - relativeUserRating);
     currentUser.rating[type].count += 1;
-    currentUser.rating[type].avg = Math.floor(currentUser.rating.total / currentUser.rating.count);
+    currentUser.rating[type].avg = Math.round(currentUser.rating.total / currentUser.rating.count);
     await currentUser.save();
 });
 
@@ -169,23 +173,22 @@ userSchema.static('sendMessage', async (message) => {
 
 });
 
-userSchema.static('interestAndPass', async (currentUserId, connectionId, isInterested) => {
+userSchema.static('interestAndPass', async (currentUserId, isInterested) => {
     await database();
     const User = models.User || model('User', userSchema);
     const currentUser = await User.findById(currentUserId);
     console.log(currentUserId, 'IS HERE IS HERE');
-    // const connection = await User.findById(connectionId );
     const totalInteractions = currentUser.interestAndPass.interested.count + currentUser.interestAndPass.pass.count;
     const increment = totalInteractions <= 50 ? 1: Math.floor(totalInteractions / 50);
     console.log(totalInteractions);
     console.log(increment, 'increment');
     if (!currentUser.interestAndPass.byTotal[increment]) {
-            currentUser.interestAndPass.byTotal.push({ interested: 0, pass: 0, matched: 0 });
+            currentUser.interestAndPass.byTotal.push({ interested: 0, pass: 0, matched: 0, dated: 0 });
     };
     currentUser.interestAndPass.byTotal[increment][isInterested] += 1;
     isInterested !== 'matched' ?
         currentUser.interestAndPass[isInterested].count += 1 : null;
-    // isInterested === 'interested' ? connection.interestAndPass.interested.total += currentUser.rating.avg : null;
+    
     await currentUser.save();
 });
 

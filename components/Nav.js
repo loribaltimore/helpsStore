@@ -176,7 +176,7 @@ export default function Nav({ children }) {
     </a>
   </div>
 
-  <main className="py-10 lg:pl-72 h-screen overflow-y-scroll">
+  <main className=" lg:pl-72 h-screen overflow-y-scroll">
                     {children}
   </main>
 </div>

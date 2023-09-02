@@ -12,7 +12,7 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUs
   const currentUserFormatted = JSON.parse(currentUser);
   const [photos, setPhotos] = useState(undefined);
   const [rater, setRater] = useState(undefined);
-
+  const canVoteNegative = currentUserFormatted.rating.looks.count % 10 === 0; 
   useEffect(() => {
     const asyncWrapper = async () => {
       const searchParams = new URLSearchParams();
@@ -103,7 +103,6 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUs
                       <p className="sr-only">3.9 out of 5 stars</p>
                     </div>
                   </div>
-                  
                 </div>
                 <div className="mt-6 flex items-center">
                   <svg className="h-5 w-5 flex-shrink-0 text-green-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -151,7 +150,7 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUs
             <section aria-labelledby="options-heading" className="mt-6">
               {
                 !isRev ?
-              <Rater rating={rating.looks.total / rating.looks.count} setRater={setRater} /> : null
+                  <Rater rating={rating.looks.total / rating.looks.count} setRater={setRater} canVoteNegative={canVoteNegative} /> : null
               }
                   <div className="mt-4 flex">
                     <a href="#" className="group flex text-sm text-gray-500 hover:text-gray-700">

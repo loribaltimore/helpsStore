@@ -207,46 +207,50 @@ const seedConnections = async () => {
             //         ]
             //     }
             // }).save();
-            if (i % 2 === 0 && i % 3 === 0) {
+            if (i % 2 === 0 && i % 3 !== 0) {
                 currentUser.connections.matched.push(users[i]._id);
 
-            } else if (i % 2 === 0) { 
+            } else if (i % 2 === 0 && i % 3 === 0 && i % 5 !== 0) { 
                 currentUser.connections.pending.push(users[i]._id);
             } else {
                 currentUser.connections.rejectedBy.push(users[i]._id);
             }
-            const rand2 = Math.floor(Math.random() * 75);
+            const rand2 = Math.floor(Math.random() * 100);
             let isInterested;
-                if (i % 2 === 0 && i % 3 === 0)  {
+                if (i % 3 === 0 && i % 4 !== 0 && i % 5 === 0)  {
+                    isInterested = 'dated';
+                } else if (i % 2 === 0 && i % 3 === 0 && i % 4 !== 0)  {
                     isInterested = 'matched';
-                } else if (rand2 % 2 === 0) {
+                } else if (i % 2 === 0) {
                     isInterested = 'interested';
-                    
                 } else {
                     isInterested = 'pass';
-            }
+            };
                 const totalInteractions = currentUser.interestAndPass.interested.count + currentUser.interestAndPass.pass.count;
             const increment = Math.floor(totalInteractions / 50);
     console.log(totalInteractions);
     console.log(increment, 'increment');
     if (!currentUser.interestAndPass.byTotal[increment]) {
-            currentUser.interestAndPass.byTotal.push({ interested: 0, pass: 0, matched: 0 });
+            currentUser.interestAndPass.byTotal.push({ interested: 0, pass: 0, matched: 0, dated: 0 });
     };
-    currentUser.interestAndPass.byTotal[increment][isInterested] += 1;
-    isInterested !== 'matched' ?
+            currentUser.interestAndPass.byTotal[increment][isInterested] += 1;
+                
+    isInterested !== 'matched' && isInterested !== 'dated' ?
         currentUser.interestAndPass[isInterested].count += 1 : null;
 
-            const choices = { 0: 1 * Math.abs(users[i].rating.looks.avg - currentUser.rating.looks.avg) , 1: -.5 * Math.abs(users[i].rating.looks.avg - currentUser.rating.looks.avg) , 2: 0 };
+            const choices = { 0: 1 * Math.abs(currentUser.rating.looks.avg - users[i].rating.looks.avg)  , 1: -1 * Math.abs(currentUser.rating.looks.avg - users[i].rating.looks.avg), 2: 2 * Math.abs(currentUser.rating.looks.avg - users[i].rating.looks.avg), 3: 0 };
             currentUser.rating.looks.count+=1;
-            currentUser.rating.looks.total += currentUser.rating.looks.avg + choices[rand2 <= 25 ? '0' : rand2 > 50 ? '1' : '2']; 
+            currentUser.rating.looks.total += currentUser.rating.looks.avg + choices[rand2 <= 25 ? '0' : rand2 >= 50 ?  '3' : rand2 < 75 && i % 3 === 0 ? '1' : rand2 < 75  ? '2': '0'  ]; 
             currentUser.rating.looks.avg = Math.round(currentUser.rating.looks.total / currentUser.rating.looks.count);
-            console.log(Math.abs(users[i].rating.looks.avg - currentUser.rating.looks.avg), 'DIFFERENCE');
-            console.log(rand2)
-            console.log(currentUser.rating.looks.avg, 'AVERAGE');
-            console.log('PLUS')
-            console.log(choices[rand2 <= 25 ? '0' : rand2 > 50 ? '1' : '2'], 'RaND');
-            console.log('EQUALS')
-            console.log(currentUser.rating.looks.avg + choices[rand2 <= 25 ? '0' : rand2 > 50 ? '1' : '2']);
+            // console.log(Math.abs(users[i].rating.looks.avg - currentUser.rating.looks.avg), 'DIFFERENCE');
+            // console.log(rand2)
+            // console.log(currentUser.rating.looks.avg, 'AVERAGE');
+            // console.log('PLUS')
+            // console.log(choices[rand2 <= 25 ? '0' : rand2 > 50 ? '1' : '2'], 'RaND');
+            // console.log('EQUALS')
+            console.log(currentUser.rating.looks.total);
+            console.log(currentUser.rating.looks.count);
+            // console.log(currentUser.rating.looks.avg + choices[rand2 <= 25 ? '0' : rand2 > 50 ? '1' : '2']);
             currentUser.rating.looks.avg = Math.floor(currentUser.rating.looks.total / currentUser.rating.looks.count);
             currentUser.rating.looks.metricsByAge.get(users[i].age.toString()) ?
                 currentUser.rating.looks.metricsByAge.set(users[i].age.toString(), {total: currentUser.rating.looks.metricsByAge.get(users[i].age.toString()).total  + Math.floor(currentUser.rating.looks.avg) + choices[rand2 <= 25 ? '0' : rand2 > 50 ? '1' : '2'], count: currentUser.rating.looks.metricsByAge.get(users[i].age.toString()).count + 1 })

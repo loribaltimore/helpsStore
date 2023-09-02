@@ -59,20 +59,22 @@ export const lineOptions = {
           position: 'left',
           ticks: {
               beginAtZero: true,
-              callback: function (value, index, values) {
-                  if (value < 10) return value;
-                  if (value % 5 === 0) return value;
-                  return '';
-              }
+              stepSize: 1,
+              max: 10,
+                min: 10
           }
       },
     y1: {
       type: 'linear',
-      display: false,
+      display: true,
       position: 'right',
       grid: {
-        drawOnChartArea: false,
+        drawOnChartArea: true,
         },
+      ticks: {
+            beginAtZero: false,
+            stepSize: 1
+    },
     },
   },
 };
@@ -81,7 +83,7 @@ const labels = [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
 
 
 
-export default function DashboardWidget({ looksMetrics, likeRatio, likedLineData, passedLineData, matchedLineData }) {
+export default function DashboardWidget({ looksMetrics, likeRatio, likedLineData, datedLineData, matchedLineData, passedLineData }) {
     const bubbleData = {
   datasets: [
             {
@@ -121,20 +123,27 @@ export default function DashboardWidget({ looksMetrics, likeRatio, likedLineData
       data: likedLineData ? likedLineData : [1,2,3],
       borderColor: 'rgb(255, 99, 132)',
       backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      yAxisID: 'y',
+      yAxisID: 'y1',
     },
     {
       label: 'Matched',
       data: matchedLineData ? matchedLineData : [1,2,3],
       borderColor: 'rgb(53, 162, 235)',
       backgroundColor: 'rgba(53, 162, 235, 0.5)',
-      yAxisID: 'y1',
+      yAxisID: 'y',
     },
     {
       label: 'Dated',
-      data: [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500],
+      data: datedLineData ? datedLineData : [1,2,3],
       borderColor: 'rgb(19, 212, 165)',
       backgroundColor: 'rgba(19, 212, 165, 0.5)',
+      yAxisID: 'y',
+    },
+    {
+      label: 'Passed',
+      data: passedLineData ? passedLineData : [1,2,3],
+      borderColor: 'goldenrod',
+      backgroundColor: 'goldenrod',
       yAxisID: 'y1',
     },
   ],

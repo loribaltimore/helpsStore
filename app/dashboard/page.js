@@ -20,7 +20,7 @@ export async function getData(userId) {
     const looksMetrics = currentUser.toObject().rating.looks.metricsByAge;
     const totalLikedBy = currentUser.connections.pending.length + currentUser.connections.matched.length;
     const { byTotal } = currentUser.interestAndPass;
-    
+
     return {
         likedPercentage, rejectedByPercentage, looksRating,
         dateRating, looksMetrics, totalLikedBy, totalRejectedBy,
@@ -30,7 +30,8 @@ export async function getData(userId) {
 
 export default async function Dashboard() {
     const session = await getServerSession(authOptions);
-    const { dateRating, looksMetrics, totalLikedBy, totalRejectedBy, byTotal } = await getData(session.userId);
+    const { looksMetrics, totalLikedBy, totalRejectedBy, byTotal } = await getData(session.userId);
+    console.log(byTotal, 'byTotal')
     const likedLineData = byTotal ? byTotal.map((element, index) => {
         return element.interested;
     }): null;
@@ -38,14 +39,14 @@ export default async function Dashboard() {
         return element.pass;
     }) : null;
     const matchedLineData = byTotal ? byTotal.map((element, index) => {
-        console.log(element);
         return element.matched;
     }) : null;
-    console.log(likedLineData, 'likedLineData');
-    console.log(passedLineData, 'passedLineData');
-    console.log(matchedLineData, 'matchedLineData');
+    const datedLineData = byTotal ? byTotal.map((element, index) => {
+        return element.dated;
+    }) : null;
+
     return (
-        <div class="block p-5 h-[50rem] w-100 space-y-5">
+        <div class="block p-5 h-[50rem] w-100 space-y-10">
             <div className="rounded-xl text-center mx-auto w-3/4 bg-white drop-shadow-lg">
                 <DashboardWidget looksMetrics={looksMetrics} />
             </div>
@@ -53,16 +54,12 @@ export default async function Dashboard() {
                 <DashboardWidget likeRatio={{passed: totalRejectedBy, liked: totalLikedBy}} />
             </div>
             <div className="bg-white rounded-xl text-center mx-auto w-3/4">
-                <DashboardWidget likedLineData={likedLineData} passedLineData={passedLineData} matchedLineData={matchedLineData} />
-            </div>
-            <div className="bg-pink-400 rounded-xl text-center my-auto">
-                <h1 className='text-[10rem]'>{dateRating + '/10'}</h1>
-                <p>Average Date Rating</p>
+                <DashboardWidget likedLineData={likedLineData}
+                    datedLineData={datedLineData}
+                    matchedLineData={matchedLineData}
+                    passedLineData={passedLineData}
+                />
             </div>
         </div>
     )
 };
-
-//make sure that liking and rejecting is going to add into metrics in dashboard
-//style dashboard
-//update preferences
