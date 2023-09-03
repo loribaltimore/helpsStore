@@ -14,9 +14,12 @@ import {
 import { Bubble } from 'react-chartjs-2';
 import { Doughnut } from 'react-chartjs-2';
 import { Line } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2';
 
 
 ChartJS.register(LinearScale, PointElement, Tooltip, Legend, ArcElement, CategoryScale, LineElement, Title);
+
+ 
 
 export const bubbleOptions = {
   scales: {
@@ -83,16 +86,45 @@ const labels = [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
 
 
 
-export default function DashboardWidget({ looksMetrics, likeRatio, likedLineData, datedLineData, matchedLineData, passedLineData }) {
-    const bubbleData = {
+export default function DashboardWidget({ looksMetrics, likeRatio, likedLineData, datedLineData, matchedLineData, passedLineData, pieDataTest }) {
+    const pieData = {
+  labels: ['28', '29', '30', '31', '32', '33'],
+  datasets: [
+    {
+      label: '# of Likes',
+      data: [12, 19, 3, 5, 2, 3],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+      ],
+      borderWidth: 1,
+    },
+  ],
+};
+  
+  const bubbleData = {
   datasets: [
             {
                 label: 'Looks Rating by Age',
-                data: looksMetrics ? Array.from(looksMetrics).map(([key, value]) => ({
-                    x: parseInt(key),
-                    y: Math.round(value.total / value.count),
-                    r: 9
-                })) : null,
+          data: looksMetrics ? Object.keys(JSON.parse(looksMetrics)).map((key, index) => {
+              return {
+                  x: parseInt(key),
+                  y: Math.round(JSON.parse(looksMetrics)[key].total / JSON.parse(looksMetrics)[key].count),
+                  r: 9
+              }
+                }) : null,
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
             }
   ],
@@ -150,7 +182,7 @@ export default function DashboardWidget({ looksMetrics, likeRatio, likedLineData
 };
 
     return (
-        <div className='w-100'>
+        <div className=''>
             {looksMetrics ? 
             <Bubble
             options={bubbleOptions}
@@ -163,7 +195,7 @@ export default function DashboardWidget({ looksMetrics, likeRatio, likedLineData
                     </div> : null}
             {
                 likedLineData ?
-                        <Line options={lineOptions} data={lineData} /> : null
+                        <Line options={lineOptions} data={lineData} /> : pieDataTest ? <Pie data={pieData} /> : null
             }
         </div>
     )

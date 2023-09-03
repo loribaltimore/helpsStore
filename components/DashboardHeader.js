@@ -1,6 +1,11 @@
+"use client"
 import MetricsDiff from 'components/MetricsDiff';
+import { useContext } from 'react';
+import { ReviewContext } from 'components/ReviewContext';
 
 export default function DashboardHeader({likedPercentage, looksRating, dateRating, name}) {
+    const { setShowProfile, showProfile } = useContext(ReviewContext);
+    
     const stats = [
         { label: 'Liked Percentage', value: `${likedPercentage.totalLikedByPercentage}%`, type: likedPercentage.likedTrend },
         { label: 'Looks Rating', value: looksRating.looksRating, type: looksRating.looksTrend},
@@ -32,8 +37,12 @@ export default function DashboardHeader({likedPercentage, looksRating, dateRatin
             <a
               href="#"
               className="flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-            >
-              View profile
+                onClick={() => setShowProfile(!showProfile)}
+                      >
+                          {
+                              showProfile ? 'Show Metrics' : 'Show Profile'
+                          }
+              
             </a>
           </div>
         </div>

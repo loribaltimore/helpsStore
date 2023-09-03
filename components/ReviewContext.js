@@ -9,11 +9,11 @@ function ReviewProvider({ children }) {
     const [showReviews, setShowReviews] = useState(false);
     const [isBank, setIsBank] = useState(false);
     const [showUpgrade, setShowUpgrade] = useState(false);
-    console.log(showUpgrade, 'SHOW UPGRADE')
+    const [showProfile, setShowProfile] = useState(false);
     return <ReviewContext.Provider value={{
         currentMongoConnection, connection,
         setCurrentMongoConnection, showReviews, setShowReviews, setConnection,
-        isBank, setIsBank, showUpgrade, setShowUpgrade
+        isBank, setIsBank, showUpgrade, setShowUpgrade, showProfile, setShowProfile
     }}>
         {children}
     </ReviewContext.Provider>

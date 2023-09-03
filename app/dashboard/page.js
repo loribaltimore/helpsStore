@@ -2,7 +2,7 @@ import User from 'models/userSchema';
 import  database  from 'models/database';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]/route';
-import DashboardWidget from 'components/DashboardWidget';
+import AllDashboard from 'components/AllDashBoard';
 
 export async function getData(userId) {
     await database();
@@ -18,17 +18,16 @@ export async function getData(userId) {
     const looksMetrics = currentUser.toObject().rating.looks.metricsByAge;
     const totalLikedBy = currentUser.connections.pending.length + currentUser.connections.matched.length;
     const { byTotal } = currentUser.interestAndPass;
-
     return {
         likedPercentage, rejectedByPercentage, looksRating,
         dateRating, looksMetrics, totalLikedBy, totalRejectedBy,
-        byTotal, totalInteractions
+        byTotal, totalInteractions, currentUser
     };
 };
 
 export default async function Dashboard() {
     const session = await getServerSession(authOptions);
-    const { looksMetrics, totalLikedBy, totalRejectedBy, byTotal } = await getData(session.userId);
+    const { looksMetrics, totalLikedBy, totalRejectedBy, byTotal, currentUser } = await getData(session.userId);
     const likedLineData = byTotal ? byTotal.map((element, index) => {
         return element.interested;
     }): null;
@@ -41,22 +40,18 @@ export default async function Dashboard() {
     const datedLineData = byTotal ? byTotal.map((element, index) => {
         return element.dated;
     }) : null;
-
     return (
         <div class="block p-5 h-[50rem] w-100 space-y-10">
-            <div className="rounded-xl text-center mx-auto w-3/4 bg-white drop-shadow-lg">
-                <DashboardWidget looksMetrics={looksMetrics} />
-            </div>
-            <div className="rounded-xl text-center mx-auto w-1/2 p-5">
-                <DashboardWidget likeRatio={{passed: totalRejectedBy, liked: totalLikedBy}} />
-            </div>
-            <div className="bg-white rounded-xl text-center mx-auto w-3/4">
-                <DashboardWidget likedLineData={likedLineData}
-                    datedLineData={datedLineData}
-                    matchedLineData={matchedLineData}
-                    passedLineData={passedLineData}
-                />
-            </div>
+            <AllDashboard
+                likedLineData={likedLineData}
+                currentUser={JSON.stringify(currentUser)}
+                looksMetrics={JSON.stringify(Object.fromEntries(looksMetrics))}
+                totalLikedBy={totalLikedBy}
+                totalRejectedBy={totalRejectedBy}
+                passedLineData={passedLineData}
+                matchedLineData={matchedLineData}
+                datedLineData={datedLineData}
+            />
         </div>
     )
 };
