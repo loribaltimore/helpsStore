@@ -391,7 +391,69 @@ const populatePending = async () => {
     // await currentUser.save();
 }
 
-populatePending();
+const seedMetricChanges = async () => {
+    await database();
+    const currentUser = await User.findOne({ username: "Powerman5000" });
+    console.log("BEFORE");
+    console.log(currentUser.rating.weekly);
+    console.log(currentUser.connections.weekly)
+
+    const currentWeek = 37;
+    currentUser.rating.looks.avg = Math.floor(Math.random() * 7 + 3);
+    currentUser.rating.date.avg = Math.floor(Math.random() * 7 + 3);
+    const totalInteractedWith = currentUser.connections.pending.length + currentUser.connections.matched.length + currentUser.connections.rejectedBy.length;
+    const totalLikedByPercentage = 49;
+    if (currentWeek !== currentUser.membership.week) {
+        currentUser.membership.week = currentWeek;
+        if (currentUser.rating.weekly.currentWeek.looks.rating !== currentUser.rating.looks.avg) {
+            if (currentUser.rating.weekly.currentWeek.looks.rating > currentUser.rating.looks.avg) {
+                currentUser.rating.weekly.currentWeek.looks.trend = 'down';
+            } else {
+              currentUser.rating.weekly.currentWeek.looks.trend = 'up';
+            }
+            currentUser.rating.weekly.lastWeek.looks.rating = currentUser.rating.weekly.currentWeek.looks.rating;
+            currentUser.rating.weekly.currentWeek.looks.rating = currentUser.rating.looks.avg;
+        } else {
+            if (currentUser.rating.weekly.currentWeek.looks.trend !== 'none') {
+                currentUser.rating.weekly.currentWeek.looks.trend = 'none';
+            }
+        }
+        if (currentUser.rating.weekly.currentWeek.date.rating !== currentUser.rating.date.avg) {
+            if (currentUser.rating.weekly.currentWeek.date.rating > currentUser.rating.date.avg) {
+                currentUser.rating.weekly.currentWeek.date.trend = 'down';
+            } else {
+              currentUser.rating.weekly.currentWeek.date.trend = 'up';
+            }
+            currentUser.rating.weekly.lastWeek.date.rating = currentUser.rating.weekly.currentWeek.date.rating;
+            currentUser.rating.weekly.currentWeek.date.rating = currentUser.rating.date.avg;
+        } else {
+            if (currentUser.rating.weekly.currentWeek.date.trend !== 'none') {
+                currentUser.rating.weekly.currentWeek.date.trend = 'none';
+            }
+        };
+        if (currentUser.connections.weekly.currentWeek.likedPercentage !== totalLikedByPercentage) {
+            if (currentUser.connections.weekly.currentWeek.likedPercentage > totalLikedByPercentage) {
+                currentUser.connections.weekly.currentWeek.trend = 'down';
+            } else {
+              currentUser.connections.weekly.currentWeek.trend = 'up';
+            };
+            currentUser.connections.weekly.lastWeek.likedPercentage = currentUser.connections.weekly.currentWeek.likedPercentage;
+            currentUser.connections.weekly.currentWeek.likedPercentage = totalLikedByPercentage;
+        } else {
+            if (currentUser.connections.weekly.currentWeek.trend !== 'none') {
+                currentUser.connections.weekly.currentWeek.trend = 'none';
+            }
+        };
+    };
+    console.log("AFTER");
+    console.log(currentUser.rating.weekly);
+    console.log(currentUser.connections.weekly)
+    await currentUser.save();
+};
+
+seedMetricChanges();
+
+// populatePending();
 // sortingCheck();
 // seedUser();
 // seedConnections();

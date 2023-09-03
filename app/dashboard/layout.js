@@ -48,7 +48,7 @@ export async function getData(userId) {
             } else {
               currentUser.connections.weekly.currentWeek.trend = 'up';
             };
-            currentUser.connections.weekly.lastWeek.likedPercentage = currentUser.connections.weekly.currentWeek.likedPercentage;
+            currentUser.connections.weekly.lastWeek.likedPercentage = currentUser.connections.weekly.currentWeek.likedPercentage || 0;
             currentUser.connections.weekly.currentWeek.likedPercentage = totalLikedByPercentage;
         } else {
             if (currentUser.connections.weekly.currentWeek.trend !== 'none') {

@@ -50,14 +50,20 @@ const userSchema = new Schema({
         weekly: {
             currentWeek: {
                 looks: {
-                    rating: Number,
+                    rating: {
+                        type: Number,
+                        default: 5
+                    },
                     trend: {
                         type: String,
                         default: 'none'
                     },
                 },
                 date: {
-                    rating: Number,
+                    rating: {
+                        type: Number,
+                        default: 5
+                    },
                     trend: {
                         type: String,
                         default: 'none'
@@ -66,14 +72,20 @@ const userSchema = new Schema({
             },
             lastWeek: {
                 looks: {
-                    rating: Number,
+                    rating: {
+                        type: Number,
+                        default: 5
+                    },
                     trend: {
                         type: String,
                         default: 'none'
                     },
                 },
                 date: {
-                    rating: Number,
+                    rating:{
+                        type: Number,
+                        default: 5
+                    },
                     trend: {
                         type: String,
                         default: 'none'
@@ -130,7 +142,8 @@ const userSchema = new Schema({
         weekly: {
             currentWeek: {
                 likedPercentage: {
-                type: Number
+                    type: Number,
+                    default: 0
             },
             trend: {
                 type: String,
