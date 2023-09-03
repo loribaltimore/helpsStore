@@ -3,29 +3,79 @@ import User from 'models/userSchema';
 import  database  from 'models/database';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]/route';
+import calculateWeek from 'util/calculateWeek';
 
 export async function getData(userId) {
+    await database();
     const currentUser = await User.findById(userId);
-    const dateRating = currentUser.rating.date.avg;
+    const currentWeek = calculateWeek();
+        const dateRating = currentUser.rating.date.avg;
     const looksRating = currentUser.rating.looks.avg;
-    const totalRejected = currentUser.connections.rejected.length;
-    const totalLiked = currentUser.connections.liked.length;
-    const totalInteractions = totalRejected + totalLiked;
-    const likedPercentage = `${(totalLiked / totalInteractions) || 0}%`;
+    const totalInteractedWith = currentUser.connections.pending.length + currentUser.connections.matched.length + currentUser.connections.rejectedBy.length;
+    const totalLikedByPercentage = Math.round(((currentUser.connections.pending.length + currentUser.connections.matched.length) / totalInteractedWith) * 100);
     const { name } = currentUser;
-    return {dateRating, looksRating, likedPercentage, name};
+    if (currentWeek !== currentUser.membership.week) {
+        currentUser.membership.week = currentWeek;
+        if (currentUser.rating.weekly.currentWeek.looks.rating !== currentUser.rating.looks.avg) {
+            if (currentUser.rating.weekly.currentWeek.looks.rating > currentUser.rating.looks.avg) {
+                currentUser.rating.weekly.currentWeek.looks.trend = 'down';
+            } else {
+              currentUser.rating.weekly.currentWeek.looks.trend = 'up';
+            }
+            currentUser.rating.weekly.lastWeek.looks.rating = currentUser.rating.weekly.currentWeek.looks.rating;
+            currentUser.rating.weekly.currentWeek.looks.rating = currentUser.rating.looks.avg;
+        } else {
+            if (currentUser.rating.weekly.currentWeek.looks.trend !== 'none') {
+                currentUser.rating.weekly.currentWeek.looks.trend = 'none';
+            }
+        }
+        if (currentUser.rating.weekly.currentWeek.date.rating !== currentUser.rating.date.avg) {
+            if (currentUser.rating.weekly.currentWeek.date.rating > currentUser.rating.date.avg) {
+                currentUser.rating.weekly.currentWeek.date.trend = 'down';
+            } else {
+              currentUser.rating.weekly.currentWeek.date.trend = 'up';
+            }
+            currentUser.rating.weekly.lastWeek.date.rating = currentUser.rating.weekly.currentWeek.date.rating;
+            currentUser.rating.weekly.currentWeek.date.rating = currentUser.rating.date.avg;
+        } else {
+            if (currentUser.rating.weekly.currentWeek.date.trend !== 'none') {
+                currentUser.rating.weekly.currentWeek.date.trend = 'none';
+            }
+        };
+        if (currentUser.connections.weekly.currentWeek.likedPercentage !== totalLikedByPercentage) {
+            if (currentUser.connections.weekly.currentWeek.likedPercentage > totalLikedByPercentage) {
+                currentUser.connections.weekly.currentWeek.trend = 'down';
+            } else {
+              currentUser.connections.weekly.currentWeek.trend = 'up';
+            };
+            currentUser.connections.weekly.lastWeek.likedPercentage = currentUser.connections.weekly.currentWeek.likedPercentage;
+            currentUser.connections.weekly.currentWeek.likedPercentage = totalLikedByPercentage;
+        } else {
+            if (currentUser.connections.weekly.currentWeek.trend !== 'none') {
+                currentUser.connections.weekly.currentWeek.trend = 'none';
+            }
+        };
+    };
+
+    return {
+        dateRating, looksRating, name, totalLikedByPercentage,
+        looksTrend: currentUser.rating.weekly.currentWeek.looks.trend,
+        dateTrend: currentUser.rating.weekly.currentWeek.date.trend,
+        likedTrend: currentUser.connections.weekly.currentWeek.trend
+    };
 }
 
 export default async function layout({ children }) {
     const session = await getServerSession(authOptions);
-    const {dateRating, looksRating, likedPercentage, name} = await getData(session.userId.toString());
+    const {dateRating, looksRating, name, totalLikedByPercentage, looksTrend, dateTrend, likedTrend} = await getData(session.userId.toString());
     return (
         <div className="mt-0">
-            <DashboardHeader dateRating={dateRating} looksRating={looksRating} likedPercentage={likedPercentage} name={name} />
+            <DashboardHeader dateRating={{dateRating, dateTrend}}
+                looksRating={{looksRating, looksTrend}}
+                likedPercentage={{totalLikedByPercentage, likedTrend}}
+                name={name}
+            />
             {children}
         </div>
     );
 };
-
-//program rate of change in metrics in dashboard header with red or green arrow pointing up or down, tracked over 100-ish swipes
-//by others

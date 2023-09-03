@@ -2,6 +2,7 @@ const database = require('./database');
 const mongoose = require("mongoose");
 const { Schema, model, models } = mongoose;
 const hobbies = require('../util/hobbies');
+const calculateWeek = require('../util/calculateWeek');
 
 const userSchema = new Schema({
     username: String,
@@ -12,39 +13,74 @@ const userSchema = new Schema({
     image: String,
     emailVerified: Boolean,
     rating: {
-    looks: {
+        looks: {
             total: {
-            type: Number,
-            default: 5
-        },
-        count: {
-            type: Number,
-            default:1
-        },
-        avg: {
-            type: Number,
-            default: 5
+                type: Number,
+                default: 5
+            },
+            count: {
+                type: Number,
+                default: 1
+            },
+            avg: {
+                type: Number,
+                default: 5
             },
             metricsByAge: {
                 type: Map,
                 of: Object,
                 default: new Map(),
-        }
+            },
+            
         },
-    date: {
+        date: {
             total: {
-            type: Number,
-            default: 5
+                type: Number,
+                default: 5
+            },
+            count: {
+                type: Number,
+                default: 1
+            },
+            avg: {
+                type: Number,
+                default: 5
+            },
         },
-        count: {
-            type: Number,
-            default:1
+        weekly: {
+            currentWeek: {
+                looks: {
+                    rating: Number,
+                    trend: {
+                        type: String,
+                        default: 'none'
+                    },
+                },
+                date: {
+                    rating: Number,
+                    trend: {
+                        type: String,
+                        default: 'none'
+                    }
+                },
+            },
+            lastWeek: {
+                looks: {
+                    rating: Number,
+                    trend: {
+                        type: String,
+                        default: 'none'
+                    },
+                },
+                date: {
+                    rating: Number,
+                    trend: {
+                        type: String,
+                        default: 'none'
+                    }
+                },
+            }
         },
-        avg: {
-            type: Number,
-            default: 5
-        }
-    }
     },
     photos: [String],
     genderId: {
@@ -91,8 +127,29 @@ const userSchema = new Schema({
                 ref: 'Connection'
             }
         ],
+        weekly: {
+            currentWeek: {
+                likedPercentage: {
+                type: Number
+            },
+            trend: {
+                type: String,
+                default: 'none'
+            }
+            },
+            lastWeek: {
+                likedPercentage: {
+                type: Number
+            },
+            trend: {
+                type: String,
+                default: 'none'
+            }
+            }
+        }
     },
-    memberSince: {
+    membership: {
+ memberSince: {
         type: Date,
         default: Date.now
     },
@@ -100,6 +157,11 @@ const userSchema = new Schema({
         type: String,
         enum: ['basic', 'pro'],
         default: 'basic'
+        },
+        week: {
+            type: Number,
+            default: calculateWeek()
+    }
     },
     reviews: [
         {
@@ -151,7 +213,8 @@ const userSchema = new Schema({
                     default: 0
                 }
             }
-        ]
+        ],
+
     }
 });
 

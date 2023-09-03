@@ -10,10 +10,8 @@ export async function getData(userId) {
     const looksRating = currentUser.rating.looks.avg;
     const dateRating = currentUser.rating.date.avg;
     const totalLiked = currentUser.connections.liked.length;
-    // console.log(totalLiked, 'Total Liked');
     const totalRejectedBy = currentUser.connections.rejectedBy.length;
     const totalRejected = currentUser.connections.rejected.length;
-    // console.log(totalRejected, 'total rejected');
     const totalInteractions = totalRejected + totalLiked;
     const likedPercentage = `${(totalLiked / totalInteractions) || 0}%`;
     const rejectedByPercentage = `${totalRejectedBy / currentUser.rating.looks.count}%`;
@@ -31,7 +29,6 @@ export async function getData(userId) {
 export default async function Dashboard() {
     const session = await getServerSession(authOptions);
     const { looksMetrics, totalLikedBy, totalRejectedBy, byTotal } = await getData(session.userId);
-    console.log(byTotal, 'byTotal')
     const likedLineData = byTotal ? byTotal.map((element, index) => {
         return element.interested;
     }): null;

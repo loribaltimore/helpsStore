@@ -391,10 +391,10 @@ const populatePending = async () => {
     // await currentUser.save();
 }
 
-// populatePending();
+populatePending();
 // sortingCheck();
 // seedUser();
-seedConnections();
+// seedConnections();
 // seedSocketUser();
 // showResource();
 // seedLoc();

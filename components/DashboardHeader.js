@@ -1,11 +1,10 @@
-
-
+import MetricsDiff from 'components/MetricsDiff';
 
 export default function DashboardHeader({likedPercentage, looksRating, dateRating, name}) {
     const stats = [
-        { label: 'Liked Percentage', value: likedPercentage},
-        { label: 'Looks Rating', value: looksRating },
-        { label: 'Date Rating', value: dateRating },
+        { label: 'Liked Percentage', value: `${likedPercentage.totalLikedByPercentage}%`, type: likedPercentage.likedTrend },
+        { label: 'Looks Rating', value: looksRating.looksRating, type: looksRating.looksTrend},
+        { label: 'Date Rating', value: dateRating.dateRating, type: dateRating.dateTrend },
     ];
     const user = {
   name: name,
@@ -41,8 +40,12 @@ export default function DashboardHeader({likedPercentage, looksRating, dateRatin
       </div>
       <div className="grid grid-cols-1 divide-y divide-gray-200 border-t border-gray-200 bg-gray-50 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
         {stats.map((stat) => (
-          <div key={stat.label} className="px-6 py-5 text-center text-sm font-medium">
-            <span className="text-gray-900">{stat.value}</span> <span className="text-gray-600">{stat.label}</span>
+            <div key={stat.label} className="px-6 py-5 text-center text-sm font-medium">
+                <div className='flex align-top space-x-2'>
+                <span className="text-gray-900">{stat.value}</span>
+                <span className="text-gray-600">{stat.label}</span>
+                <MetricsDiff type={stat.type} />
+                </div>
           </div>
         ))}
       </div>
