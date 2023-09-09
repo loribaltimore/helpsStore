@@ -11,9 +11,10 @@ export async function POST(request) {
     const session = await getServerSession(authOptions);
     const res = await request.formData();
     const currentUser = await User.findById(session.userId.toString()).then(data => data).catch(err => console.log(err));
-  
-    for (let entry of res.entries()) {
-        let [name, value] = entry;
+
+  for (let entry of res.entries()) {
+    let [name, value] = entry;
+    console.log(name, value);
         const totalPhotos = res.getAll('files[]').length;
       if (name === 'files[]') {
         const db = client.useDb('datr');
@@ -41,11 +42,21 @@ export async function POST(request) {
       } else if (name === 'preferredDistance') {
         currentUser.preferences.range = value;
       } else if (name === 'preferredGender') {
-          currentUser.preferences.gender = value;
+        currentUser.preferences.gender = value;
+      } else if (name === 'Openness') {
+          currentUser.personality.openness = value;
+      } else if (name === 'Conscientiousness') {
+        currentUser.personality.conscientiousness = value;
+      } else if (name === 'Agreeableness'){
+        currentUser.personality.agreeableness = value;
+      } else if (name === 'Extraversion') {
+        currentUser.personality.extraversion = value;
+      } else if (name === 'Neuroticism') {
+          currentUser.personality.neuroticism = value;
       } else {
           currentUser[name] = value;
       };
-      await currentUser.save();
+      // await currentUser.save();
     console.log(`Name: ${name}, Value: ${value}`);
     };
     return NextResponse.json({ message: 'User Created' });

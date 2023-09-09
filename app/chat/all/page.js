@@ -13,10 +13,12 @@ async function getData() {
   const { userId } = session;
   const formattedId = userId.toString();
   const activeUser = await User.findById(formattedId)
-    .then(data => {  return data }).catch(err => console.log(err));
+    .then(data => { return data }).catch(err => console.log(err));
   const allConnections = await activeUser.populate('connections.reciprocated').then(data => {
     return data.connections.reciprocated
   }).catch(err => console.log(err));
+  activeUser.notifications.chat = [];
+  await activeUser.save();
   return { activeUser, allConnections }
 }
 export default async function All(props) {

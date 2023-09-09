@@ -95,6 +95,13 @@ const connectionSchema = new Schema({
         }
         }
     },
+    compatibility: {
+        openness: Number,
+        conscientiousness: Number,
+        extraversion: Number,
+        agreeableness: Number,
+        neuroticism: Number
+        },
 });
 
 
@@ -113,4 +120,15 @@ connectionSchema.static('icebreaker', async function (activeUser, answers, conne
     return isCompatibility;
 });
 
-module.exports =  models.Connection || model('Connection', connectionSchema);
+
+connectionSchema.method('calculateCompatibility', async function (connectionId, currentUserPersonality, connectedUserPersonality) { 
+const Connection = models.connection || model('Connection', connectionSchema);
+    const currentConnection = await Connection.findById(connectionId);
+    const compatibilityCalculation = {};
+    Object.keys(currentUserPersonality).forEach((trait, index) => {
+        compatibilityCalculation[trait] = 10 - Math.abs(Math.round(currentUserPersonality[trait] - connectedUserPersonality[trait]))
+    });
+    currentConnection.compatibility = compatibilityCalculation;
+    await currentConnection.save();
+})
+module.exports = models.Connection || model('Connection', connectionSchema);

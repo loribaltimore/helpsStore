@@ -17,10 +17,10 @@ export default function PartWays({ activeUserId, connection, setActiveConnection
     return (
         <button
               type="button"
-              className="relative inline-flex items-center rounded-md bg-red-400 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-red-500"
+              className="relative inline-flex items-center rounded px-3 py-2 text-sm  text-gray-900 shadow-sm ring-1 ring-inset ring-black hover:bg-red-500"
               onClick={async () => await partWays()}
             >
-            <span>Part Ways</span>
+            <span>Remove</span>
           </button>
     )
 };

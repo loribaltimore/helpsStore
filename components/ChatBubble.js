@@ -18,12 +18,12 @@ export default function ChatBubble({ message, isCurrentUser, isLast, secondToLas
     })
 
     const styles = {
-        true: 'bg-indigo-400',
-        false: 'bg-blue-400'
+        true: 'bg-gray-200 text-black border border-black',
+        false: 'text-black border border-black'
     }
     return (
         <div className={`w-1/2  ${!isCurrentUser ? 'ml-auto' : null}`}>
-            <div className={`rounded-lg  p-5 ${styles[isCurrentUser]}`}>
+            <div className={`rounded p-5 ${styles[isCurrentUser]}`}>
                 {message.text}
             </div>
             <p className={`text-xs ${secondToLast ? 'text-green-400' : 'text-red-400'} text-right`}>

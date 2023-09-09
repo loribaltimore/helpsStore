@@ -5,10 +5,11 @@ import ProfileCard from './ProfileCard';
 import calculateDistance from '@/util/calculateDistance';
 import Matched from 'components/Matched';
 import Reviews from 'components/Reviews';
+import QuizResults from 'components/QuizResults';
 
-export default function AllProfiles({ allMingles, setAllLikedBy, currentUser, isBank,
-    setBankConnection, isBankConnection, isRev }) {
-        const [counter, setCounter] = useState(0);
+export default function AllProfiles({ allMingles, setAllLikedBy, currentUser, isBank, isRev }) {
+    const [counter, setCounter] = useState(0);
+    const [compatibility, setCompatibility] = useState(undefined);
 
     useEffect(() => {
         // const asyncWrapper = async () => {
@@ -32,33 +33,42 @@ export default function AllProfiles({ allMingles, setAllLikedBy, currentUser, is
         // }
     }, []);
 
-    const {  showReviews} = useContext(ReviewContext);
+    const { showReviews, bankConnection } = useContext(ReviewContext);
     const [connection, setConnection] = useState(false);
     allMingles =  JSON.parse(allMingles);
     const currentUserFormatted = typeof currentUser === 'string' ? JSON.parse(currentUser) : currentUser;
-    const currentMingle = isBankConnection || allMingles[counter] || undefined;
+    const currentMingle = bankConnection || allMingles[counter] || undefined;
     let distance;
     if (currentMingle) {
        distance =  calculateDistance(currentMingle.location.geo.coordinates, currentUserFormatted.location.geo.coordinates);
     };
+
     return (
-        <div className='w-100'>
+        <div className=''>
             {
                 connection ?
-                    <Matched connection={connection} setConnection={setConnection} />
+                    <QuizResults
+                        setConnection={setConnection}
+                        connection={connection}
+                        compatibility={compatibility}
+                            /> 
                     :
                     !showReviews ?
-                        <ProfileCard user={currentMingle} setCounter={setCounter}
+                            <ProfileCard
+                            user={currentMingle}
+                            setCounter={setCounter}
                             currentUser={typeof currentUser === 'string' ? currentUser : JSON.stringify(currentUser)}
                             distance={distance}
                             setConnection={setConnection}
-                            setBankConnection={setBankConnection}
                             isBank={isBank}
                             isRev={isRev}
                             setAllLikedBy={setAllLikedBy}
-
-                        /> : <Reviews connection={currentMingle} />
+                            setCompatibility={setCompatibility}
+                            /> 
+                        : <Reviews connection={currentMingle} />
             }
         </div>
     )
 };
+
+//make location save at registration

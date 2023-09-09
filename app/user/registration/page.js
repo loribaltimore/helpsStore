@@ -1,9 +1,7 @@
-import LocationServices from '@/components/LocationServices';
-import RegistrationForm from 'components/RegistrationForm';
+import Allregistration from 'components/AllRegistration';
 
 export default function page() {
- 
   return (
-    <RegistrationForm  />
+   <Allregistration />
   )
 }

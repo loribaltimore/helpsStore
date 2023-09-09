@@ -25,7 +25,7 @@ export const authOptions = {
       return true
     },
     async redirect({ url, baseUrl }) {
-      return baseUrl
+      return baseUrl + '/dashboard'
     },
     async session({ session, user, token, trigger, newSession }) {
       await database();

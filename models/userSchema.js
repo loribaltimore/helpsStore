@@ -12,6 +12,13 @@ const userSchema = new Schema({
     email: String,
     image: String,
     emailVerified: Boolean,
+    personality: {
+        openness: Number,
+        conscientiousness: Number,
+        extraversion: Number,
+        agreeableness: Number,
+        neuroticism: Number
+        },
     rating: {
         looks: {
             total: {
@@ -227,16 +234,36 @@ const userSchema = new Schema({
                 }
             }
         ],
-
+    },
+    notifications: {
+        chat: [
+            {
+                text: String,
+                from: String,
+            }
+        ],
+        bank: [
+            {
+                from: String,
+            }
+        ],
+        reviews: [
+            {
+                from: String,
+                text: String,
+                rating: Number,
+            }
+        ]
     }
 });
 
 userSchema.method('rate', async function (rating, userId, relativeUserRating, type) {
     const User = models.User || model("User", userSchema);
     const currentUser = await User.findById(userId);
+    console.log(rating * Math.abs(rating - relativeUserRating));
     currentUser.rating[type].total += rating * Math.abs(rating - relativeUserRating);
     currentUser.rating[type].count += 1;
-    currentUser.rating[type].avg = Math.round(currentUser.rating.total / currentUser.rating.count);
+    currentUser.rating[type].avg = Math.round(currentUser.rating[type].total / currentUser.rating[type].count);
     await currentUser.save();
 });
 
@@ -256,8 +283,6 @@ userSchema.static('interestAndPass', async (currentUserId, isInterested) => {
     console.log(currentUserId, 'IS HERE IS HERE');
     const totalInteractions = currentUser.interestAndPass.interested.count + currentUser.interestAndPass.pass.count;
     const increment = totalInteractions <= 50 ? 1: Math.floor(totalInteractions / 50);
-    console.log(totalInteractions);
-    console.log(increment, 'increment');
     if (!currentUser.interestAndPass.byTotal[increment]) {
             currentUser.interestAndPass.byTotal.push({ interested: 0, pass: 0, matched: 0, dated: 0 });
     };

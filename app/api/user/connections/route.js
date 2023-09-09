@@ -44,32 +44,46 @@ export async function PUT(request) {
 
 export async function POST(request) {
   let isMatched = false;
+  let compatibility;
   await database();
-    const {interested, userId, currentUserId, rating } = await request.json();
+  const { interested, userId, currentUserId, rating } = await request.json();
     const currentUser = await User.findById(currentUserId);
     const connection = await User.findById(userId);
   const preConnected = currentUser.connections.pending.indexOf(userId);
-  await connection.rate(rating, userId, currentUser.rating.avg, 'looks');
+  await connection.rate(rating, userId, currentUser.rating.looks.avg, 'looks');
     if (interested) {
         if (preConnected > -1) {
             //if connection already liked currentUser
            const newConnection = await new Connection({
             connection1:{name: currentUser.name, id: currentUser._id},
-            connection2: {name: connection.name, id: userId},
-           }).save();
+             connection2: { name: connection.name, id: userId },
+             compatibility: {
+                openness: 10 - Math.abs(Math.round(currentUser.personality['openness'] - connection.personality['openness'])),
+        conscientiousness: 10 - Math.abs(Math.round(currentUser.personality['conscientiousness'] - connection.personality['conscientiousness'])),
+        extraversion: 10 - Math.abs(Math.round(currentUser.personality['extraversion'] - connection.personality['extraversion'])),
+        agreeableness: 10 - Math.abs(Math.round(currentUser.personality['agreeableness'] - connection.personality['agreeableness'])),
+        neuroticism: 10 - Math.abs(Math.round(currentUser.personality['neuroticism'] - connection.personality['neuroticism']))
+             }
+           }).save().then(data => {
+             compatibility = data.compatibility;
+             return data
+           }).catch(err => console.log(err));
           currentUser.connections.pending = currentUser.connections.pending.filter(connection => connection.toString() !== userId);
           currentUser.connections.reciprocated.push(newConnection.id);
           connection.connections.reciprocated.push(newConnection.id);
           currentUser.connections.matched.push(userId);
           connection.connections.matched.push(currentUserId);
+          connection.notifications.chat.push({from: currentUser.name});
+          currentUser.notifications.chat.push({from: currentUser.name});
           console.log("ITS A MATCH");
           await currentUser.save();
           await connection.save();
           await newConnection.save();
-          isMatched = JSON.stringify({connection: newConnection, connectedAs: 'connection1', connectedWith: 'connection2'});
-        } else {
+          isMatched = JSON.stringify({connection: newConnection ? newConnection: null, connectedAs: 'connection1', connectedWith: 'connection2'});
+      } else {
           console.log('JUST A LIKE');
           connection.connections.pending.push(currentUserId);
+          connection.notifications.bank.push({from: currentUser.name});
           currentUser.connections.liked.push(userId);
         }
     } else {
@@ -85,7 +99,7 @@ export async function POST(request) {
       };
   };
 
-  await User.interestAndPass(currentUserId, userId, interested ? 'interested' : 'pass');
+  await User.interestAndPass(currentUserId, interested ? 'interested' : 'pass');
     await currentUser.save();
   await connection.save();
   let updatedLikedBy = await currentUser.populate('connections.pending')
@@ -97,7 +111,7 @@ export async function POST(request) {
     updatedLikedBy = updatedLikedBy.map((element, index) => {
         return {user: element, photoUrl: allUserPhotos[index]}
     })
-    return NextResponse.json({ isMatched, isBank: updatedLikedBy });
+    return NextResponse.json({ isMatched, isBank: updatedLikedBy, compatibility });
 };
 
 
@@ -128,3 +142,6 @@ export async function GET(request) {
   })
 }
 
+
+
+// compatibilityResults show up instead of isMatch trivia game

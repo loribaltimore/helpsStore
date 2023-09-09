@@ -94,7 +94,7 @@ export default function DashboardWidget({ looksMetrics, likeRatio, likedLineData
       label: '# of Likes',
       data: [12, 19, 3, 5, 2, 3],
       backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
+        'rgba(106, 0, 0, 0.8)',
         'rgba(54, 162, 235, 0.2)',
         'rgba(255, 206, 86, 0.2)',
         'rgba(75, 192, 192, 0.2)',
@@ -125,7 +125,7 @@ export default function DashboardWidget({ looksMetrics, likeRatio, likedLineData
                   r: 9
               }
                 }) : null,
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                backgroundColor: 'rgba(102, 120, 0, 0.8)',
             }
   ],
     };
@@ -153,22 +153,22 @@ export default function DashboardWidget({ looksMetrics, likeRatio, likedLineData
     {
       label: 'Liked',
       data: likedLineData ? likedLineData : [1,2,3],
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      borderColor: 'rgba(106, 0, 0, 0.8)',
+      backgroundColor: 'rgba(106, 0, 0, 0.8)',
       yAxisID: 'y1',
     },
     {
       label: 'Matched',
       data: matchedLineData ? matchedLineData : [1,2,3],
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      borderColor: 'rgba(0, 0, 106, 0.8)',
+      backgroundColor: 'rgba(0, 0, 106, 0.8)',
       yAxisID: 'y',
     },
     {
       label: 'Dated',
       data: datedLineData ? datedLineData : [1,2,3],
-      borderColor: 'rgb(19, 212, 165)',
-      backgroundColor: 'rgba(19, 212, 165, 0.5)',
+      borderColor: 'rgba(0, 106, 7, 0.8)',
+      backgroundColor: 'rgba(0, 106, 7, 0.8)',
       yAxisID: 'y',
     },
     {

@@ -1,49 +1,47 @@
 "use client"
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import LocationServices from 'components/LocationServices';
 import hobbyList from 'util/hobbies';
 import { Switch } from '@headlessui/react';
 import { useSession } from 'next-auth/react';
-import {useRouter} from 'next/navigation'
+import { useRouter } from 'next/navigation'
+import { RegistrationContext } from 'components/RegistrationContext';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function RegistrationForm() {
-    const [name, setName] = useState('');
-    const [username, setUsername] = useState('');
-    const [hobbies, setHobbies] = useState([]);
-    const [description, setDescription] = useState('');
-    const [images, setImages] = useState([]);
-    const [streetAddress, setStreetAddress] = useState('');
-    const [zip, setZip] = useState('');
-    const [coord, setCoord] = useState([]);
-    const [entered, setEntered] = useState(false);
-    const [location, setLocation] = useState(undefined);
-    const [manualLoc, setManualLoc] = useState(false);
-    const [age, setAge] = useState('');
-  const [files, setFiles] = useState([]);
-  const [preferredAge, setPreferredAge] = useState('');
-  const [preferredGender, setPreferredGender] = useState('');
-  const [preferredDistance, setPreferredDistance] = useState('');
-    const {data: session, update } = useSession();
+export default function RegistrationForm({isLocation, setIsLocation}) {
+  const {username, setUsername, hobbies,
+                setHobbies, description, setDescription, setImages, images, name, setName,
+                streetAddress, setStreetAddress, zip, setZip, coord, setCoord,
+                location, setLocation, manualLoc, setManualLoc, age, setAge,
+                files, setFiles, preferredAge, setPreferredAge, preferredGender,
+                setPreferredGender, preferredDistance, setPreferredDistance,
+                isPersonality, setIsPersonality, Openness, setOpenness,
+                Agreeableness, Extraversion, Conscientiousness,  Neuroticism, 
+                entered, setEntered
+  } = useContext(RegistrationContext)
+    const {data: update } = useSession();
     const router = useRouter();
 
-    useEffect(() => {
+  useEffect(() => {
+    if (!isPersonality) {
         if (entered === 'good') {
             createUser();
             setEntered(false);
-            router.push('/mingle')
+            router.push('/dashboard')
         }
+    };
     }, [entered]);
 
-    const handleClick = async () => {
+  const handleClick = async () => {
+    setIsPersonality(true);
+    setIsLocation(true);
         if (!manualLoc) {
             if ("geolocation" in navigator) {
                 navigator.geolocation.getCurrentPosition(async function success(pos) {
                     const crd = pos.coords;
-                    //      
                     await fetch(`/api/user/location`, {
                         method: "POST",
                         headers: {
@@ -75,7 +73,13 @@ export default function RegistrationForm() {
         formData.append('username', username);
         formData.append('preferredAge', preferredAge);
         formData.append('preferredGender', preferredGender);
-        formData.append('preferredDistance', preferredDistance);
+      formData.append('preferredDistance', preferredDistance);
+      formData.append('Openness', Openness);
+      formData.append('Agreeableness', Agreeableness);
+      formData.append('Extraversion', Extraversion);
+      formData.append('Conscientiousness', Conscientiousness);
+      formData.append('Neuroticism', Neuroticism);
+      
         
         files.forEach(file => {
             const reader = new FileReader();
@@ -96,26 +100,25 @@ export default function RegistrationForm() {
         }, 1000);
     }
     return (
-        <div className='z-1'>
+        <div className='z-1 border border-black'>
             {
-                entered && location?
-                    <LocationServices setCoord={setCoord} setEntered={setEntered} location={location} setLocation={setLocation} /> : null
- 
+                isLocation && location ?
+            <LocationServices setCoord={setCoord} setIsLocation={setIsLocation} location={location} setLocation={setLocation} /> : null
             }
-      <div className="space-y-12 sm:space-y-16 p-5 w-1/2 mx-auto bg-white rounded-lg">
+        <div className={` sm:space-y-16 p-5 w-1/2 mx-auto bg-white rounded-lg ${isLocation && location ? 'hidden' : null}`}>
         <div>
-          <h2 className="text-base font-semibold leading-7 text-gray-900">Profile</h2>
-          <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-600">
+          <h2 className="text-4xl font-extralight leading-7 text-black">Profile</h2>
+          <p className="mt-1 max-w-2xl text-md leading-6 text-black font-extralight">
             This information will be displayed publicly so be careful what you share.
           </p>
 
-          <div className="mt-10 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
+          <div className="mt-5 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
             <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-              <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+              <label htmlFor="username" className="block text-lg font-extralight leading-6 text-black sm:pt-1.5">
                 Username
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
-                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-black sm:max-w-md">
                   <input
                                         type="text"
                                         value={username}
@@ -129,9 +132,9 @@ export default function RegistrationForm() {
               </div>
             </div>
 <div>
-          <div className="mt-10 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
+          <div className="mt-10 border-b border-gray-900/10 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
             <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-              <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+              <label htmlFor="first-name" className="block text-lg font-extralight leading-6 text-black sm:pt-1.5">
                 Name
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
@@ -141,13 +144,13 @@ export default function RegistrationForm() {
                                     id="first-name"
                                     value={name}
                   autoComplete="given-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
                      onChange={(event) => setName(event.target.value)}
                                 />
               </div>
             </div>
             <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-              <label htmlFor="age" className="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+              <label htmlFor="age" className="block text-lg font-extralight leading-6 text-black sm:pt-1.5">
                Age
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
@@ -157,13 +160,13 @@ export default function RegistrationForm() {
                 id="age"
                 value={age}
                   autoComplete="given-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
                      onChange={(event) => setAge(event.target.value)}
                                 />
               </div>
             </div>
-                        <div className='flex py-3 space-x-3'>
-                            <h1 className='text-sm font-medium leading-6 text-gray-900 sm:pt-1.5'>Set Location Manually</h1>
+                        <div className='flex py-3 space-x-16'>
+                            <h1 className='text-lg font-extralight leading-6 text-black sm:pt-1.5'>Set Location Manually</h1>
                                     {
                                         !entered ?
                         <Switch
@@ -171,7 +174,7 @@ export default function RegistrationForm() {
               onChange={setManualLoc}
               className={classNames(
                 manualLoc ? 'bg-indigo-600' : 'bg-gray-200',
-                'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2'
+                'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2'
               )}
             >
               <span
@@ -188,7 +191,7 @@ export default function RegistrationForm() {
                             manualLoc ? 
                                 <div>
                                 <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-              <label htmlFor="street-address" className="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+              <label htmlFor="street-address" className="block text-lg font-extralight leading-6 text-black sm:pt-1.5">
                 Street address
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
@@ -198,7 +201,7 @@ export default function RegistrationForm() {
                                     id="street-address"
                                     value={streetAddress}
                   autoComplete="street-address"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xl sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xl sm:text-sm sm:leading-6"
                      onChange={(event) => setStreetAddress(event.target.value)}
                                 />
               </div>
@@ -206,7 +209,7 @@ export default function RegistrationForm() {
 
 
             <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-              <label htmlFor="postal-code" className="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+              <label htmlFor="postal-code" className="block text-lg font-extralight leading-6 text-black sm:pt-1.5">
                 ZIP / Postal code
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
@@ -216,7 +219,7 @@ export default function RegistrationForm() {
                                     id="postal-code"
                                     value={zip}
                   autoComplete="postal-code"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
                    onChange={(event) => setZip(event.target.value)}
                                 />
               </div>
@@ -226,7 +229,7 @@ export default function RegistrationForm() {
           </div>
         </div>
             <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-              <label htmlFor="about" className="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+              <label htmlFor="about" className="block text-lg font-extralight leading-6 text-black sm:pt-1.5">
                 About
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
@@ -235,19 +238,19 @@ export default function RegistrationForm() {
                                     value={description}
                   name="about"
                   rows={3}
-                  className="block w-full max-w-2xl rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full max-w-2xl rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
                    onChange={(event) => setDescription(event.target.value)}
                 />
-                <p className="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about yourself.</p>
+                <p className="mt-3 text-md font-extralight leading-6 text-black">Write a few sentences about yourself.</p>
               </div>
                         </div>
                         <div>
-                            <h1 className='text-sm font-medium leading-6 text-gray-900 sm:pt-1.5'>Hobbies</h1>
+                            <h1 className='text-lg font-extralight leading-6 text-black sm:pt-1.5'>Hobbies</h1>
                                 <div className="h-[10rem] overflow-y-scroll grid grid-cols-5 gap-4 py-6 ">
                             
                                 {
                                     hobbyList.map((hobby, index) => {
-                                        return <p key={index} className='text-white text-sm bg-indigo-600/50 text-center rounded-full cursor-pointer hover:bg-indigo-800/70'
+                                        return <p key={index} className='text-black border border-black text-xs text-center p-1 rounded hover:bg-gray-100 cursor-pointer active:bg-gray-200 transition-all duration-300 ease-in-out'
                                             onClick={() => {
                                                 const allHobbies = hobbies;
                                                 allHobbies.push(hobby);
@@ -259,7 +262,7 @@ export default function RegistrationForm() {
                             </div>
                         </div>
             <div className="sm:grid sm:grid-cols-3 sm:items-center sm:gap-4 sm:py-6">
-              <label htmlFor="photo" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="photo" className="block text-lg font-extralight leading-6 text-black">
                 Photo
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
@@ -267,7 +270,7 @@ export default function RegistrationForm() {
                   <input
                                         type="file"
                                         multiple
-                                        value={images}
+                                        // value={images}
                                         className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                                         onChange={(event) => 
                                              {
@@ -283,10 +286,11 @@ export default function RegistrationForm() {
             </div>
           </div>
           </div>
+
           <div className='space-y-1'>
-<h1 className='text-center text-black text-xl'>Preferences</h1>
+      <h1 className=' font-extralight text-black text-4xl'>Preferences</h1>
           <div className="sm:grid sm:grid-cols-1 sm:items-start sm:gap-4 sm:py-6">
-              <label htmlFor="age" className="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+              <label htmlFor="age" className="block text-lg font-extralight leading-6 text-black sm:pt-1.5">
                Preferred Age
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
@@ -296,13 +300,13 @@ export default function RegistrationForm() {
                 id="preferredAge"
                 value={preferredAge}
                   autoComplete="given-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
                      onChange={(event) => setPreferredAge(event.target.value)}
                                 />
               </div>
           </div>
           <div className="sm:grid sm:grid-cols-1 sm:items-start sm:gap-2 sm:py-2">
-              <label htmlFor="age" className="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+              <label htmlFor="age" className="block text-lg font-extralight leading-6 text-black sm:pt-1.5">
                Preferred Distance
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
@@ -312,13 +316,13 @@ export default function RegistrationForm() {
                 id="preferredDistance"
                 value={preferredDistance}
                   autoComplete="given-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
                      onChange={(event) => setPreferredDistance(event.target.value)}
                                 />
               </div>
           </div>
           <div className="sm:grid sm:grid-cols-1 sm:items-start sm:gap-4 sm:py-6">
-              <label htmlFor="age" className="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+              <label htmlFor="age" className="block text-lg font-extralight leading-6 text-black sm:pt-1.5">
                Preferred Gender Identity
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
@@ -328,7 +332,7 @@ export default function RegistrationForm() {
                 id="preferredGender"
                 value={preferredGender}
                   autoComplete="given-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
                      onChange={(event) => setPreferredGender(event.target.value)}
                                 />
               </div>
@@ -344,7 +348,7 @@ export default function RegistrationForm() {
         </button>
         <button
                     type="submit"
-                    className="inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="text-black inline-flex justify-center rounded border border-black text-black px-3 py-2 text-sm font-extralight shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         onClick={() => {
                         setEntered(true)
                         handleClick();

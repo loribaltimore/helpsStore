@@ -11,12 +11,11 @@ export default function AllChats({ activeUser, allConnections }) {
     const [activeConnections, setActiveConnections] = useState(undefined);
     const [renderQuiz, setRenderQuiz] = useState(false);
     const formattedConnections = JSON.parse(allConnections);
-    const [bankConnection, setBankConnection] = useState(undefined);
     const [currentMongoConnection, setCurrentMongoConnection] = useState(undefined);
-    const { showReviews, setShowUpgrade } = useContext(ReviewContext);
-
+    const { showReviews, setShowUpgrade, bankConnection } = useContext(ReviewContext);
     return (
-        <div className='space-y-5'>
+        <div className='block mx-auto'>
+        <div className=' space-y-2 flex flex-wrap space-x-2'>
              <div className='absolute w-100 h-100 z-40 gap-4 mx-12'>
                         <div className=''></div>
                 {
@@ -30,8 +29,6 @@ export default function AllChats({ activeUser, allConnections }) {
                                         currentUser={JSON.parse(activeUser)}
                                         isBank={false}
                                             isRev={true}
-                                            setBankConnection={setBankConnection}
-                                        isBankConnection={bankConnection}
                                     /> : <Reviews 
                                         currentMongoConnection={currentMongoConnection}
                                         connection={JSON.stringify(bankConnection)} />}
@@ -47,7 +44,6 @@ export default function AllChats({ activeUser, allConnections }) {
                   key={index} activeUser={JSON.parse(activeUser)}
                   setActiveConnections={setActiveConnections}
                   setRenderQuiz={setRenderQuiz}
-                  setBankConnection={setBankConnection}
                   setShowUpgrade={setShowUpgrade}
                   setCurrentMongoConnection={setCurrentMongoConnection}
                 />
@@ -57,7 +53,6 @@ export default function AllChats({ activeUser, allConnections }) {
                          key={index} activeUser={JSON.parse(activeUser)}
                          setActiveConnections={setActiveConnections}
                          setRenderQuiz={setRenderQuiz}
-                         setBankConnection={setBankConnection}
                          setShowUpgrade={setShowUpgrade}
                          setCurrentMongoConnection={setCurrentMongoConnection}
                      />
@@ -65,6 +60,7 @@ export default function AllChats({ activeUser, allConnections }) {
                     :
                 <FullQuiz connection={renderQuiz} setConnection={setRenderQuiz} />
         }
-    </div>
+            </div>
+        </div>
 )
 }

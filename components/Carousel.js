@@ -11,7 +11,7 @@ export default function Carousel({ photos }) {
     };
 
     return (
-        <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100">
+        <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded bg-gray-100">
             {
                 photos ?
                 <img
@@ -25,3 +25,7 @@ export default function Carousel({ photos }) {
          </div>
     )
 }
+
+
+// notification blips on navigator
+// notification panels in Dashboard;

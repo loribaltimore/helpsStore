@@ -18,7 +18,7 @@ const sortingCheck = async () => {
 
 const seedUser = async () => {
     const client = await database();
-    await User.deleteMany({username: {$ne: 'Powerman5000'}});
+    await User.deleteMany({});
     for (let i = 0; i < 500; i++){
         const randHobby = Math.floor(Math.random() * (hobbies.length / 2));
         const randAge = Math.floor(Math.random() * 30);
@@ -164,12 +164,22 @@ const seedConnections = async () => {
     currentUser.interestAndPass.pass.count = 0;
     currentUser.rating.looks.metricsByAge.set(currentUser.age.toString(), { total: 5, count: 1 });
         await currentUser.save();
-
     for (let i = 1; i < 498; i++) {
         users[i].rating.looks.avg = Math.floor(Math.random() * 7 + 3);
-        await users[i].save();
+        
         const rand = Math.floor(Math.random() * 2);
+        users[i].personality = {
+        openness: rand % 2 === 0 ? Math.floor(Math.random() * 4) : -Math.floor(Math.random() * 4),
+        conscientiousness: rand % 2 === 0 ? Math.floor(Math.random() * 4) : -Math.floor(Math.random() * 4),
+        extraversion: rand % 2 === 0 ? Math.floor(Math.random() * 4) : -Math.floor(Math.random() * 4),
+        agreeableness: rand % 2 === 0 ? Math.floor(Math.random() * 4) : -Math.floor(Math.random() * 4),
+            neuroticism: rand % 2 === 0 ? Math.floor(Math.random() * 4) : -Math.floor(Math.random() * 4)
+        }
+        users[i].rating.looks.count = 5;
+        users[i].rating.looks.total = users[i].rating.looks.avg * 5;
+        await users[i].save();
         if (currentUser._id !== users[i]._id) {
+            
             // const newConnection = await new Connection({
             //     connection1: users[i]._id,
             //     trivia: {
@@ -261,8 +271,6 @@ const seedConnections = async () => {
 
     };
     // seedThemTrivia();
-    console.log(currentUser.interestAndPass);
-    console.log(currentUser.interestAndPass.byTotal);
 };
 
 //seed coordinates so I can use algorithm to find distance between users
@@ -366,17 +374,20 @@ const populatePending = async () => {
     // currentConnection.date.shown.bothShown = true;
 
     // await currentConnection.save();
-    const allUsers = await User.find({});
-    allUsers.forEach(async (user, index) => { 
-        await user.save();
-    })
-    console.log('DONE!')
+    // const allUsers = await User.find({});
+    // allUsers.forEach(async (user, index) => {
+    //     await user.save();
+    // })
+    // console.log('DONE!')
     // const test = await User.findById("64f0a36ed5d85f1e060c516f");
     // console.log(test);
-    // const currentUser = await User.findOne({ username: "Powerman5000" });
+   
+    const currentUser = await User.findOne({ username: 'Powerman5000'});
+    console.log(currentUser.notifications);
+    // await currentUser.save();
     // console.log(currentUser.interestAndPass);
     // console.log(currentUser.interestAndPass.byTotal);
-    // currentUser.membershipType = 'pro';
+    // currentUser.membership.membershipType = 'pro';
     // await currentUser.save();
     // await sortFunction(currentUser._id).then(data => { console.log(data.map(x => x.name)) }).catch(err => console.log(err));
     // console.log(currentUser.membershipType);
@@ -451,9 +462,8 @@ const seedMetricChanges = async () => {
     await currentUser.save();
 };
 
-seedMetricChanges();
-
-// populatePending();
+// seedMetricChanges();
+populatePending();
 // sortingCheck();
 // seedUser();
 // seedConnections();
@@ -461,3 +471,7 @@ seedMetricChanges();
 // showResource();
 // seedLoc();
 // seedThemTrivia();
+
+
+// change it so that compatibility results show up based on calculatePersonality function on match
+// no more trivia

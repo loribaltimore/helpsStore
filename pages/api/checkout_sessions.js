@@ -19,13 +19,13 @@ export default async function handler(req, res) {
           },
         ],
         mode: 'subscription',
-        success_url: `${req.headers.origin}/?success=true`,
-        cancel_url: `${req.headers.origin}/?canceled=true`,
+        success_url: `${req.headers.origin}/bank?success=true`,
+        cancel_url: `${req.headers.origin}/bank?canceled=true`,
         automatic_tax: {enabled: true},
       });
       currentSession.flash = { type: 'success', message: 'Your payment was successful!' };
       await currentSession.save();
-      currentUser.membershipType = 'pro';
+      currentUser.membership.membershipType = 'pro';
       await currentUser.save();
       res.redirect(303, session.url);
     } catch (err) {

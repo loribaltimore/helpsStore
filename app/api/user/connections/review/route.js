@@ -29,7 +29,8 @@ export async function POST(request) {
     activelyConnectedWith = 'connection1';
   };
     currentMongoConnection.date.review[currentMongoConnection.activelyConnectedAs] = review;
-    currentConnection.reviews = [...currentConnection.reviews, review];
+  currentConnection.reviews = [...currentConnection.reviews, review];
+  currentConnection.notifications.reviews.push({from: currentUser.name, text: reviewText, rating: reviewRating})
     await currentConnection.save();
     await currentMongoConnection.save();
     return NextResponse.json({allReviews: currentConnection.reviews})

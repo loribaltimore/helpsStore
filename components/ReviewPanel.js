@@ -6,12 +6,11 @@ function classNames(...classes) {
 }
 
 export default function ReviewPanel({ connection, updatedReviews }) {
-  console.log(connection);
     const reviews = updatedReviews.length ? updatedReviews : JSON.parse(connection).reviews;
   return (
-    <div className="bg-white p-4 rounded-md mb-10 ">
+    <div className="bg-white p-4 rounded mb-10 ">
       <div className=''>
-        <div className="-my-10 border p-4">
+        <div className="-my-10 border rounded p-4">
                   {
                         reviews && reviews.length ?
                       reviews.map((review, reviewIdx) => (
@@ -19,7 +18,7 @@ export default function ReviewPanel({ connection, updatedReviews }) {
               <div className="flex-none py-10">
                 <img src={review.avatarSrc} alt="" className="h-10 w-10 rounded-full bg-gray-100" />
               </div>
-              <div className={classNames(reviewIdx === 0 ? '' : 'border-t border-gray-200', 'flex-1 py-10')}>
+              <div className={classNames(reviewIdx === 0 ? '' : 'border-t border-black', 'flex-1 py-10')}>
                 <h3 className="font-medium text-gray-900">{review.from}</h3>
                 <p>
                   <time dateTime={review.date}>{new Date(review.date).toLocaleDateString()}</time>
@@ -44,7 +43,7 @@ export default function ReviewPanel({ connection, updatedReviews }) {
               </div>
             </div>
            )) :
-                          <p className='text-black'>Be the first to leave a review!</p>
+                          <p className='text-black text-4xl font-extralight'>No Reviews Yet</p>
                   }
         </div>
       </div>

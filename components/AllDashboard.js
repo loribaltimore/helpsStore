@@ -1,25 +1,17 @@
 "use client"
 import DashboardWidget from 'components/DashboardWidget';
-import { useContext } from 'react';
-import { ReviewContext } from 'components/ReviewContext';
-import ProfileCard from './ProfileCard';
+import DashboardOverview from './DashboardOverview';
 
-export default function AllDashboard({likedLineData, currentUser, looksMetrics, totalLikedBy, totalRejectedBy, passedLineData, matchedLineData, datedLineData}) {
-    const { showProfile } = useContext(ReviewContext);
-    console.log(typeof currentUser, 'currentUser');
+export default function AllDashboard({likedLineData, currentUser, looksMetrics, passedLineData, matchedLineData, datedLineData}) {
     return (
-        <div>
-            {
-                !showProfile ?
+        <div className='pb-12'>
                     <div>
-
                     <div className='flex space-x-2'>
-                        
-                <div className="rounded-xl  text-center bg-white drop-shadow-lg w-1/2">
+                <div className="rounded bg-white text-center drop-shadow-lg w-1/2">
                 <DashboardWidget looksMetrics={(looksMetrics)} />
             </div>
             
-            <div className="bg-white rounded-xl text-cente w-1/2">
+            <div className=" rounded bg-white text-center w-1/2">
                             <DashboardWidget
                                 likedLineData={likedLineData}
                     datedLineData={datedLineData}
@@ -27,24 +19,18 @@ export default function AllDashboard({likedLineData, currentUser, looksMetrics, 
                     passedLineData={passedLineData}
                 />
                             </div>
-                        </div>
+                </div>
+                <DashboardOverview user={JSON.parse(currentUser)} currentUser={currentUser} isCurrentUser={true} />
+                    {/* <div className='flex space-x-2'>
 
-                    <div className='flex space-x-2'>
-
-            <div className="rounded-xl text-center mx-auto w-1/2 p-5 drop-shadow-lg">
+            <div className="rounded text-center mx-auto w-1/2 p-5 drop-shadow-lg">
                 <DashboardWidget likeRatio={{passed: totalRejectedBy, liked: totalLikedBy}} />
             </div>  
-            <div className="rounded-xl text-center mx-auto w-1/2 p-5 drop-shadow-lg">
+            <div className="rounded text-center mx-auto w-1/2 p-5 drop-shadow-lg">
                 <DashboardWidget pieDataTest={true} />
             </div>  
-                        </div>
-                        
-                    </div> :
-                    <div className='sticky top-10'>
-                            <ProfileCard user={JSON.parse(currentUser)} currentUser={currentUser} />
-                        </div>
-            }
-
+                        </div> */}
+                    </div> 
         </div>
 
     )

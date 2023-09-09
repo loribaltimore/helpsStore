@@ -7,7 +7,11 @@ import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation'
 import DateInvite from 'components/DateInvite';
 let socket;
-
+ const user = {
+  name: name,
+  imageUrl:
+    'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+}
 export default function ChatWindow({ history, connection, dateInvite }) {
    const pathname = usePathname();
     const connectionId = pathname.split('/')[2];
@@ -15,25 +19,6 @@ export default function ChatWindow({ history, connection, dateInvite }) {
     const [messages, setMessages] = useState(history || []);
     const [input, setInput] = useState('');
     const ref = useRef(null);
-
-    // useEffect(() => {
-    //     const asyncWrapper = async () => {
-    //         await fetch('/api/socket', {method: 'GET'})
-    //             .then(async data => console.log(await data.json())).catch(err => console.log(err));
-    //         socket = io(undefined, {
-    //             path: '/api/socket.io',
-    //         });
-
-    //         socket.on('connect', () => {
-    //             console.log('connected');
-    //         });
-
-    //         socket.on('tester', (data) => {
-    //             setMessages(prev => [...prev, data]);
-    //         })
-    //     };
-    //     asyncWrapper();
-    // } , [])
     
     const sendMessage = async function () {
         const newMessage = {
@@ -43,13 +28,6 @@ export default function ChatWindow({ history, connection, dateInvite }) {
             connection: connection._id,
             read: false, delivered: true, liked: false
         }
-        // socket.emit('message', { newMessage, connectionId, userId: session.userId });
-
-        // await fetch('/api/socket', {
-        //     method: "POST",
-        //     body: JSON.stringify({message: newMessage}),
-        //     headers: {'Content-Type': 'application/json'}
-        // }).then(async data => { const res = await data.json(); setMessages(res.messages)}).catch(err => console.log(err));
         setMessages(prev => [...prev, newMessage])
         setInput('');
         ref.current ?
@@ -57,35 +35,32 @@ export default function ChatWindow({ history, connection, dateInvite }) {
     };
     return (
         <div className="relative  w-3/4 mx-auto rounded-xl border-gray-200 bg-white px-4 pt-2 sm:px-6 "
-        onKeyDown={async (event) => {
+            onKeyDown={async (event) => {
             if (event.key === 'Enter'
             && input.length > 0) {
                        await sendMessage();
                     }
                 }}
         >
-            <div className='flex '>
-        <Link className='text-indigo-500 p-2 rounded flex'
-            href="/chat/all"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="indigo" width="24" height="24">
-                    <path d="M0 0h24v24H0V0z" fill="none"/>
-                    <path d="M14 7l-5 5 5 5V7z"/>
-                </svg>
-                Back
-                </Link>
-
+            <div className='flex'>
                 {
                     connection ?
-                        <div className='w-1/2 mx-auto text-center'>
-                    <h1 className="text-center text-2xl text-black">{connection[connection.activelyConnectedWith].name}</h1>
-                </div> : ''
+                        <div className="p-5 sm:flex space-x-5">
+            <div className=" flex-shrink-0">
+              <img className="mx-auto h-12 w-12 rounded-full" src={user.imageUrl} alt="" />
+            </div>
+            <div className=" mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
+              <p className="text-4xl font-extralight text-gray-900">{connection[connection.activelyConnectedWith].name}</p>
+                            </div>
+              <DateInvite connection={connection} dateInvite={dateInvite} />
+          </div>
+                        : ''
                 }
             </div>
 
             {
                history || messages.length ? 
-                    <div className="mx-auto block space-y-5 p-3 h-[32rem] overflow-scroll"
+                    <div className="relative border border-black rounded mx-auto block space-y-5 p-3 h-[32rem] overflow-scroll"
                 ref={ref} >
                         {
                             session ?
@@ -113,28 +88,27 @@ export default function ChatWindow({ history, connection, dateInvite }) {
                                     isLast={isLast}
                                     isCurrentUser={message.sender === userId} />
                     }) : null : null
-                }
-                    </div> :
+                        }
+                        <div className='absolute bottom-2 flex w-full h-2/12 pr-5'>
+                        <textarea className='w-full rounded text-black'
+                         onChange={(event) => setInput(event.target.value)}
+                            ></textarea>
+                            <button className="text-black border border-black w-1/4 h-100  rounded text-sm "
+                                onClick={() => {
+                                    
+                                    if (input.length) {
+                                        sendMessage()
+                                    }
+                                }}
+                        >Send</button>
+                        </div>
+                     </div> :
                     <div className='w-3/4 mx-auto rounded-lg my-auto p-3 h-[32rem]'>
                         <h1 className="text-center text-6xl text-black">No Messages</h1>
                         </div>
             }
             <div className="sticky bottom-0 flex mt-5 w-100 bg-white space-x-5">
-                    <div className='mx-auto w-3/4'>
-                        <input placeholder="Type Message..." className="border-2 p-2 rounded w-3/4 text-black"
-                            value={input}
-                            onChange={(event) => setInput(event.target.value)}
-                        />
-                        <button className="bg-indigo-500 p-2 rounded text-sm h-full"
-                            onClick={() => sendMessage()}
-                        >Send</button>
-                </div>
                 <div>
-                    {
-                        session ?
-                            <DateInvite connection={connection} dateInvite={dateInvite} />
-                        : null
-                    }
             </div>
             </div>
             </div>

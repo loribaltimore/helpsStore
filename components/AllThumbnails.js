@@ -7,8 +7,7 @@ import { ReviewContext } from 'components/ReviewContext';
 import { useState, useContext } from 'react';
 
 export default function AllThumbnails({ allLikedBy, setAllLikedBy, membershipType, currentUser }) {
-    const [bankConnection, setBankConnection] = useState();
-    const { showReviews, showUpgrade } = useContext(ReviewContext);
+    const { showReviews, showUpgrade, bankConnection } = useContext(ReviewContext);
     const formattedLikedBy = allLikedBy.map((element, index) => {
         return element.user;
     });
@@ -18,26 +17,23 @@ export default function AllThumbnails({ allLikedBy, setAllLikedBy, membershipTyp
                 <div className='fixed top-5 left-92 z-50 min-w-[70rem]'>
                     {
                         showUpgrade ?
-                            <Upgrade /> :
-                            <div className='w-100'>
-                                {!showReviews ?
+                            <div className='w-3/4 mx-auto'>
+                                <Upgrade />
+                                </div>
+                             :
                                     <AllProfiles allMingles={JSON.stringify(formattedLikedBy)}
                                         setAllLikedBy={setAllLikedBy}
                                         currentUser={typeof currentUser !== 'string' ? JSON.stringify(currentUser) : currentUser}
                                         isBank={true}
-                                        setBankConnection={setBankConnection}
-                                        isBankConnection={bankConnection}
-                                    /> : <Reviews connection={bankConnection} />
-                                }
-                            </div>
+                                    /> 
                     }
                 </div>: null
 }
-        <div className="grid grid-cols-5 grid-flow-cols gap-6">
+        <div className="grid grid-cols-5 grid-flow-cols gap-2">
             {
                 allLikedBy.length ?
                 allLikedBy.map((connection, index) => { 
-                    return <BankThumbnail connection={connection.user} index={index} key={index} setBankConnection={setBankConnection} membershipType={membershipType} />
+                    return <BankThumbnail connection={connection.user} currentUserPersonality={JSON.stringify(currentUser.personality)} index={index} key={index}  membershipType={membershipType} />
                 })
                     : null
             }

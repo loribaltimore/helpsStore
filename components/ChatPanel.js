@@ -4,8 +4,44 @@ import Link from "next/link";
 import { useContext } from 'react';
 import { ReviewContext } from 'components/ReviewContext';
 
-export default function ChatPanel({ activeUser, connection, setActiveConnections, setRenderQuiz, setBankConnection, setShowUpgrade}) {
-  const { setCurrentMongoConnection } = useContext(ReviewContext);
+const star = [
+  <svg key={51} className="text-yellow-400 h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+    <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
+  </svg>,
+  <svg key={52} className="text-yellow-400 h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+    <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
+  </svg>,
+  <svg key={53} className="text-yellow-400 h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+    <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
+  </svg>,
+  <svg key={54} className="text-yellow-400 h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+    <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
+  </svg>,
+  <svg key={55} className="text-yellow-400 h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+    <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
+  </svg>
+];
+const star2 = [
+  <svg key={56} className="text-gray-400 h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+    <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
+  </svg>,
+  <svg key={57} className="text-gray-400 h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+    <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
+  </svg>,
+  <svg key={58} className="text-gray-400 h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+    <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
+  </svg>,
+  <svg key={59} className="text-gray-400 h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+    <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
+  </svg>,
+  <svg key={60} className="text-gray-400 h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+    <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
+  </svg>
+];
+
+export default function ChatPanel({ activeUser, connection, setActiveConnections}) {
+  const { setCurrentMongoConnection, setBankConnection } = useContext(ReviewContext);
+  const averageCompatibility = Math.round(Object.values(connection.compatibility).reduce((a, b) => a + b) / 5);
   const handleClick = async () => {
       setCurrentMongoConnection(connection);
     await fetch(`/api/user/connections?connectionId=${connection._id}`, {
@@ -13,7 +49,6 @@ export default function ChatPanel({ activeUser, connection, setActiveConnections
     }).then(async data => {
       const response = await data.json();
       setBankConnection(JSON.parse(response.connectedTo));
-      // setShowUpgrade(true);
     }).catch (err => console.log(err));
   };
 
@@ -31,9 +66,9 @@ export default function ChatPanel({ activeUser, connection, setActiveConnections
   updatedConnection.activelyConnectedAs = activelyConnectedAs;  
   
   return (
-    <div className="w-3/4 mx-auto rounded-xl border-gray-200 bg-white px-4 py-5 sm:px-6 ">
-      <div className=" p-5 -ml-4 -mt-4 flex flex-wrap items-center justify-between sm:flex-nowrap ">
-        <div className="ml-4 mt-4">
+    <div className="p-6 rounded border border-black bg-white sm:px-6 ">
+      <div className="px-1 py-2">
+        <div className="">
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <img
@@ -43,38 +78,40 @@ export default function ChatPanel({ activeUser, connection, setActiveConnections
               />
             </div>
             <div className="ml-4">
-              <h3 className="text-base font-semibold leading-6 text-gray-900">{connection[activelyConnectedWith].name}</h3>
+              <h3 className="text-base font-extralight leading-6 text-gray-900">{connection[activelyConnectedWith].name}</h3>
               <p className="text-sm text-gray-500">
               </p>
+              <div className='flex'>
+                {
+                  star.map((element, index) => {
+                    if (index < averageCompatibility / 2 && index < 5) {
+                      return element
+                    } else {
+                      return star2[index]
+                    }
+                  })
+                }
+        </div>
             </div>
           </div>
         </div>
-        {
-          connection.trivia[activelyConnectedAs] ?
+        <div>
           <div className="ml-4 mt-4 flex flex-shrink-0 space-x-2">
                 <button
                     type="button"
-                    className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    className="relative inline-flex items-center rounded bg-white px-3 py-2 text-sm  text-gray-900 shadow-sm ring-1 ring-inset ring-black hover:bg-gray-50"
                     onClick={async () => { await handleClick() }}
                   >
             Profile
                   </button>
-              <Link className="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+              <Link className="relative ml-3 inline-flex items-center rounded bg-white px-3 py-2 text-sm  text-gray-900 shadow-sm ring-1 ring-inset ring-black hover:bg-gray-50"
                 href={`/chat/${connection._id}`}>
             <span>Chat</span>
           </Link>
           <PartWays activeUserId={activeUser._id} connection={connection} setActiveConnections={setActiveConnections} />
             </div>
-            :
-            <button
-              className="relative inline-flex items-center rounded-md bg-indigo-400 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-indigo-500"
-              onClick={() => setRenderQuiz(updatedConnection)}
-            >Take Quiz</button>
-        }
+        </div>
       </div>
     </div>
     )
 };
-
-// make sure all chatting works
-// start filtering users based on user preferences

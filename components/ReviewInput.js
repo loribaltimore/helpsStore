@@ -3,7 +3,7 @@ import { StarIcon } from '@heroicons/react/20/solid'
 
 export default function ReviewInput({ connection, setUpdatedReviews, currentMongoConnection}) {
     const [review, setReview] = useState('');
-    const [parsedConnection, setParsedConnection] = useState(JSON.parse(connection));
+    const [parsedConnection, setParsedConnection] = useState(typeof connection === 'object' ? connection :  JSON.parse(connection));
   const [isRating, setIsRating] = useState(1);
     const rate = [0, 1, 2, 3, 4]
     const handleClick = async () => { 
@@ -33,7 +33,7 @@ export default function ReviewInput({ connection, setUpdatedReviews, currentMong
                   rate.map((element, index) => {
                       return  <StarIcon
                         key={index}
-                        className={`${isRating <= index  ? 'text-gray-400' : 'text-yellow-400'} h-5 w-5 flex-shrink-0 cursor-pointer hover:scale-150`}
+                        className={`${isRating <= index  ? 'text-gray-400' : 'text-yellow-700'} h-5 w-5 flex-shrink-0 cursor-pointer hover:scale-150`}
                         aria-hidden="true"
                         onMouseEnter={() => setIsRating(index + 1)}
                     />
@@ -61,9 +61,14 @@ export default function ReviewInput({ connection, setUpdatedReviews, currentMong
             </div>
             <div className="flex-shrink-0">
               <button
-                              className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                              onClick={async () => {await handleClick()}}
-                          >
+                              className="inline-flex items-center rounded text-black px-3 py-2 text-sm border border-black shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              onClick={async () => {
+                if (currentMongoConnection) {
+                  console.log(currentMongoConnection)
+                await handleClick()
+                }
+              }}
+          >
                 Post
               </button>
             </div>

@@ -69,7 +69,7 @@ export default async function layout({ children }) {
     const session = await getServerSession(authOptions);
     const {dateRating, looksRating, name, totalLikedByPercentage, looksTrend, dateTrend, likedTrend} = await getData(session.userId.toString());
     return (
-        <div className="mt-0">
+        <div className="mt-0 p-5">
             <DashboardHeader dateRating={{dateRating, dateTrend}}
                 looksRating={{looksRating, looksTrend}}
                 likedPercentage={{totalLikedByPercentage, likedTrend}}

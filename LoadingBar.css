@@ -1,0 +1,31 @@
+.loading-bar {
+  animation: loading 5s linear;
+}
+
+@keyframes loading {
+    0% {
+        width: 0%;
+    }
+    5% {
+        width: 30%;
+    }
+    10% {
+        width: 40%;
+    }
+    15% {
+        width: 50%;
+    }
+    30% {
+        width: 65%;
+    }
+    40% {
+        width: 70%;
+    }
+    50% {
+        width: 80%;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
