@@ -46,7 +46,7 @@ export default async function RootLayout({ children }) {
   }
   return (
     <html lang="en">
-      <body className={`${inter.className} overflow-hidden` } style={{backgroundColor: '#283747'}}>
+      <body className={`${inter.className} overflow-hidden` } style={{backgroundColor: 'gray'}}>
         <NextAuthProvider session={session}>
           <RegistrationProvider>
             <ReviewProvider>

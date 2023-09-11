@@ -14,8 +14,8 @@ export default function AllChats({ activeUser, allConnections }) {
     const [currentMongoConnection, setCurrentMongoConnection] = useState(undefined);
     const { showReviews, setShowUpgrade, bankConnection } = useContext(ReviewContext);
     return (
-        <div className='block mx-auto'>
-        <div className=' space-y-2 flex flex-wrap space-x-2'>
+        <div className='block  mt-10'>
+        <div className='block space-y-2 flex flex-wrap space-x-2'>
              <div className='absolute w-100 h-100 z-40 gap-4 mx-12'>
                         <div className=''></div>
                 {

@@ -29,7 +29,7 @@ export default function AllThumbnails({ allLikedBy, setAllLikedBy, membershipTyp
                     }
                 </div>: null
 }
-        <div className="grid grid-cols-5 grid-flow-cols gap-2">
+        <div className="grid grid-cols-5 grid-flow-cols gap-2 mt-10">
             {
                 allLikedBy.length ?
                 allLikedBy.map((connection, index) => { 
