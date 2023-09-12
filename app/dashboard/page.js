@@ -2,7 +2,7 @@ import User from 'models/userSchema';
 import  database  from 'models/database';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]/route';
-import AllDashboard from '@components/AllDashBoard';
+import AllDashboard from 'components/AllDashboard';
 
 export async function getData(userId) {
     await database();
