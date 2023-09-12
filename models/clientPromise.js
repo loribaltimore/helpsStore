@@ -2,7 +2,7 @@ import { MongoClient } from "mongodb";
 
 //THIS EDIT MADE BY SYDNEY ON GITHUB
 //let uri = 'mongodb://localhost:27017/test'
-let uri = process.env.NODE_ENV === "development" ? 'mongodb://localhost:27017/datr' :  "mongodb+srv://dmksoc:v7TjmD4FzSk9UAV9@portfolio.s3wva9j.mongodb.net/?retryWrites=true&w=majority";
+let uri = process.env.NODE_ENV === "development" ? 'mongodb://localhost:27017/datr' :  "mongodb+srv://vercel-admin-user:ETPIicfqVnzDNJNr@portfolio.s3wva9j.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const options = {};
 console.log(process.env.NODE_ENV);
 let client;
