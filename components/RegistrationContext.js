@@ -16,9 +16,9 @@ export function RegistrationProvider({children, isRegistered}) {
     const [manualLoc, setManualLoc] = useState(false);
     const [age, setAge] = useState('');
   const [files, setFiles] = useState([]);
-  const [preferredAge, setPreferredAge] = useState('');
+  const [preferredAge, setPreferredAge] = useState('28');
   const [preferredGender, setPreferredGender] = useState('');
-    const [preferredDistance, setPreferredDistance] = useState('');
+    const [preferredDistance, setPreferredDistance] = useState('10');
     const [isPersonality, setIsPersonality] = useState(false);
     const [Openness, setOpenness] = useState(0);
     const [Agreeableness, setAgreeableness] = useState(0);

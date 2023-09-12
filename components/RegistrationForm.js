@@ -251,12 +251,12 @@ const {data: update } = useSession();
               </div>
                         </div>
                         <div>
-                            <h1 className='text-lg font-extralight leading-6 text-black sm:pt-1.5'>Hobbies</h1>
+                            <h1 className='text-lg py-5 font-extralight leading-6 text-black sm:pt-1.5'>Hobbies</h1>
                                 <div className="h-[10rem] overflow-y-scroll grid grid-cols-5 gap-4 py-6 ">
                             
                                 {
                                     hobbyList.map((hobby, index) => {
-                                        return <p key={index} className='text-black border border-black text-xs text-center p-1 rounded hover:bg-gray-100 cursor-pointer active:bg-gray-200 transition-all duration-300 ease-in-out'
+                                        return <p key={index} className='text-black border border-black text-xs text-center p-1 rounded cursor-pointer hover:scale-110 cursor-pointer hover:ring ring-inset ring-[#02F3B0] transition-all duration-300 ease-in-out'
                                             onClick={() => {
                                                 const allHobbies = hobbies;
                                                 allHobbies.push(hobby);
@@ -300,7 +300,17 @@ const {data: update } = useSession();
                Preferred Age
               </label>
               <div className="flex space-x-5">
-                <h1 className={'text-4xl font-extralight text-black border border-black text-center rounded w-[2rem]'}>-</h1>
+                <h1 className={'text-4xl font-extralight text-black border border-black text-center rounded w-[2rem] hover:scale-110 cursor-pointer hover:ring ring-inset ring-[#02F3B0]'}
+                  onClick={() => {
+                    if (preferredAge) {
+                      if (preferredAge > 18) {
+                          setPreferredAge(prev => parseInt(prev) - 1 );
+                      }
+                    } else {
+                      setPreferredAge(27)
+                    }
+                  }}
+                >-</h1>
                 <input
                   type="text"
                   name="preferredAge"
@@ -311,39 +321,63 @@ const {data: update } = useSession();
                   className="block w-1/12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-black font-extralight text-center focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
                      onChange={(event) => setPreferredAge(event.target.value)}
                                 />
-                <h1 className={'text-4xl font-extralight text-black border border-black text-center rounded w-[2rem] h-100 hover:scale-105 cursor-pointer ring ring-'}>+</h1>
+                <h1 className={'text-4xl font-extralight text-black border border-black text-center rounded w-[2rem] hover:scale-110 cursor-pointer hover:ring ring-inset ring-[#02F3B0]'}
+                  onClick={() => {
+                    if (preferredAge ) {
+                        setPreferredAge(prev => parseInt(prev) + 1 );
+                    } else {
+                      setPreferredAge(29)
+                    }
+                  }}
+                >+</h1>
               </div>
           </div>
           <div className="sm:grid sm:grid-cols-1 sm:items-start sm:gap-2 sm:py-2">
               <label htmlFor="age" className="block text-lg font-extralight leading-6 text-black sm:pt-1.5">
                Preferred Distance
               </label>
-              <div className="mt-2 sm:col-span-2 sm:mt-0">
+              <div className="flex space-x-5">
+                <h1 className={'text-4xl font-extralight text-black border border-black text-center rounded w-[2rem] hover:scale-110 cursor-pointer hover:ring ring-inset ring-[#02F3B0]'}
+                  onClick={() => {
+                    if (preferredDistance) {
+                      if (preferredDistance > 1) {
+                          setPreferredDistance(prev => parseInt(prev) - 1 );
+                      }
+                    } else {
+                      setPreferredDistance(27)
+                    }
+                  }}
+                >-</h1>
                 <input
                   type="text"
                   name="preferredDistance"
                 id="preferredDistance"
-                value={preferredDistance}
+                  value={preferredDistance}
+                  placeholder={10}
                   autoComplete="given-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
+                  className="block w-1/12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-black font-extralight text-center focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
                      onChange={(event) => setPreferredDistance(event.target.value)}
-                                />
+                />
+                 <h1 className={'text-4xl font-extralight text-black border border-black text-center rounded w-[2rem] hover:scale-110 cursor-pointer hover:ring ring-inset ring-[#02F3B0]'}
+                  onClick={() => {
+                    if (preferredDistance) {
+                        setPreferredDistance(prev => parseInt(prev) + 1 );
+                    } else {
+                      setPreferredDistance(29)
+                    }
+                  }}
+                >+</h1>
               </div>
           </div>
           <div className="sm:grid sm:grid-cols-1 sm:items-start sm:gap-4 sm:py-6">
               <label htmlFor="age" className="block text-lg font-extralight leading-6 text-black sm:pt-1.5">
                Preferred Gender Identity
               </label>
-              <div className="mt-2 sm:col-span-2 sm:mt-0">
-                <input
-                  type="text"
-                  name="preferredGender"
-                id="preferredGender"
-                value={preferredGender}
-                  autoComplete="given-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
-                     onChange={(event) => setPreferredGender(event.target.value)}
-                                />
+              <div className="flex space-x-5">
+                <button className='p-2 w-2/12 rounded text-black font-extralight text-lg border border-black text-center hover:scale-110 cursor-pointer hover:ring ring-inset ring-[#02F3B0]'>Female</button>
+                <button className='p-2 w-2/12 rounded text-black font-extralight text-lg border border-black text-center hover:scale-110 cursor-pointer hover:ring ring-inset ring-[#02F3B0]'>Male</button>
+                <button className='p-2 w-2/12 rounded text-black font-extralight text-sm border border-black text-center hover:scale-110 cursor-pointer hover:ring ring-inset ring-[#02F3B0]'>Non-Binary</button>
+                <button className='p-2 w-2/12 rounded text-black font-extralight text-lg border border-black text-center hover:scale-110 cursor-pointer hover:ring ring-inset ring-[#02F3B0]'>All</button>
               </div>
             </div>
           </div>
