@@ -7,7 +7,7 @@ export default async function Signin(props) {
         <div className="w-1/2 mx-auto py-24 space-y-10">
             <div className="font-extralight ">
                 <h1 className="text-[5rem]">Welcome back,</h1>
-                <h2 className="text-[2rem] italic text-indigo-600">Let's Get Busy</h2>
+                <h2 className="text-[2rem] italic text-indigo-600">Let&apos;s Get Busy</h2>
             </div>
             {
                 Object.values(providers).map((provider, index) => (
