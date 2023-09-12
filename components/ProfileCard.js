@@ -5,7 +5,7 @@ import Rater from 'components/Rater';
 import { ReviewContext } from 'components/ReviewContext';
 import Upgrade from 'components/Upgrade';
 
-export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUser, distance,
+export default function ProfileCard({ user, setAllLikedBy, setCounter, counter, currentUser, distance,
   setConnection, isBank, isRev, setCompatibility, isCurrentUser }) {
   const { setShowReviews, setShowUpgrade, showUpgrade, setBankConnection } = useContext(ReviewContext);
   const { name, age, description, hobbies, rating } = user;
@@ -30,14 +30,14 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUs
 
   const flooredRating = Math.round(rating.looks.total / rating.looks.count);
     return (
-        <div className="border border-black m-auto mt-28 items-center overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 rounded w-3/4">
         <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8">
-            <div className="space-y-16 sm:col-span-4 lg:col-span-5">
+           
+        <div className="space-y-16 sm:col-span-4 lg:col-span-5">
             <Carousel photos={photos} />
              {
           isBank || isRev?
             <button
-              className='text-black border border-black mx-auto block px-6 py-5 cursor-pointer hover:scale-110 transition-all duration-300 ease-in-out relative block rounded border border-black p-4 active:scale-100 transition-all duration-100 ease-in-out'
+              className='hover:ring ring-[#F3D202] ring-inset text-black border border-black mx-auto block px-6 py-5 cursor-pointer hover:scale-110 transition-all duration-300 ease-in-out relative block rounded border border-black p-4 active:scale-100 transition-all duration-100 ease-in-out'
               onClick={() => {
                 setShowUpgrade(false);
                 setBankConnection(null);
@@ -91,7 +91,7 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUs
                 })
               }
               </section>
-              <button className='text-black border border-black rounded w-1/4 h-1/4 my-auto py-2 flex text-center hover:bg-gray-100'
+              <button className='hover:ring ring-[#02F3B0] ring-inset text-black border border-black rounded w-1/4 h-1/4 my-auto py-2 flex text-center'
                 onClick={() => {
                   if (JSON.parse(currentUser).membership.membershipType === 'pro') {
                      setShowReviews(true);
@@ -103,10 +103,16 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUs
               >
                 <span className='block mx-auto'>
                   <section className='flex'>
-                Reviews
-                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 m-0">
+                  Reviews
+                  {
+                    JSON.parse(currentUser).membership.membershipType === 'pro' ?
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 m-0">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                  </svg> :
+                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-black font-extralight w-5 h-5 m-0 ml-1">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
                     </svg>
+                  }
                   </section>
                 </span>
               </button>
@@ -121,22 +127,13 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, currentUs
                     setCounter={setCounter}
                     setCompatibility={setCompatibility}
                     setConnection={setConnection}
-                    userId={user._id}
+                  userId={user._id}
+                  counter={counter}
                     currentUserId={currentUserFormatted._id}
                   /> : null
               }
-                  <div className="mt-4 flex">
-                    <a href="#" className="group flex text-sm text-gray-500 hover:text-gray-700">
-                    </a>
-              </div>
-              
-                  <div className="mt-6 text-center">
-                    <a href="#" className="group inline-flex text-base font-medium">
-                    </a>
-                  </div>
               </section>
             </div>
-        </div>
         </div>
     )
 };

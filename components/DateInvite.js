@@ -1,9 +1,9 @@
 "use client"
 import { useState } from 'react';
+import Link from "next/link";
 
-export default function DateInvite({connection, dateInvite }) {
+export default function DateInvite({connection, dateInvite, setDateInvite }) {
     const [isInvited, setIsInvited] = useState(false);
-    console.log(isInvited)
     const sendDateInvite = async (type) => {
        await fetch('/api/user/connections', {
            method: 'PUT',
@@ -36,10 +36,12 @@ export default function DateInvite({connection, dateInvite }) {
     //dateInvite = 'accepted' = date accepted
     //dateInvite = 0 = date request not sent
     return (
-        <div>
+        <div className='flex space-x-2 font-extralight'>
+            <Link href="/chat/all" className='text-black border border-black py-2 px-3 rounded hover:ring ring-[#02F3B0] ring-inset'
+            >Back</Link>
             {
                typeof dateInvite === 'number' ?
-                    <button className="text-black border border-black px-3 py-2 rounded text-sm h-full"
+                    <button className="hover:ring ring-[#02F3B0] ring-inset text-black border border-black px-3 py-2 rounded text-sm h-full"
                         //then create an isShow button in chat panel.
                         //create message that says something like "if your date refuses to acknowledge that they showed, leave the date."
                         //create a message that says "never meet somebody that refuses to accept your date request in the chat"
@@ -47,22 +49,23 @@ export default function DateInvite({connection, dateInvite }) {
                         onClick={() => {
                             setIsInvited(true);
                             sendDateInvite(true);
+                            setDateInvite('string');
                         }}
-                        >Date</button>
+                        >Send Date Invite</button>
                     :
                     dateInvite || isInvited?
-                        <button className="text-black border border-black px-3 py-2 rounded text-sm h-full"
-                        >Pending</button>
+                        <button className=" text-black border border-black px-3 py-2 rounded text-sm h-full"
+                        >Invite Pending</button>
                         :
                         !dateInvite ?
-                            <button className="text-black border border-black px-3 py-2 rounded text-sm h-full"
+                            <button className="hover:ring ring-[#02F3B0] text-black border border-black px-3 py-2 rounded text-sm h-full"
                                 onClick={() => sendDataInvite(1)}
                             >Accept Date
                             </button>
                             :
                             typeof dateInvite === 'string' ?
                                 <button className="text-black border border-black px-3 py-2 rounded text-sm h-full"
-                                >Showed</button>
+                                >Date Showed</button>
                                 : null
 
         }

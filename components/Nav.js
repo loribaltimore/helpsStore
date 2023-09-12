@@ -9,7 +9,7 @@ import { NotifContext } from 'components/NotifContext';
 export default function Nav({ children, notifications }) {
   const { data: session } = useSession();
   const { isLoading } = useContext(ReviewContext);
-  const {pReviews,setPReviews, setPChat, pChat,setPBank,pBank} = useContext(NotifContext);
+  const {pReviews, setPReviews, setPChat, pChat,setPBank,pBank} = useContext(NotifContext);
   const { reviews, chat, bank } = notifications ? JSON.parse(notifications) : {};
     return (
 <div>

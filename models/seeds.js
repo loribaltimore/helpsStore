@@ -383,8 +383,8 @@ const populatePending = async () => {
     // console.log(test);
    
     const currentUser = await User.findOne({ username: 'Powerman5000'});
-    console.log(currentUser.notifications);
-    // await currentUser.save();
+    currentUser.membership.membershipType = 'basic';
+    await currentUser.save();
     // console.log(currentUser.interestAndPass);
     // console.log(currentUser.interestAndPass.byTotal);
     // currentUser.membership.membershipType = 'pro';

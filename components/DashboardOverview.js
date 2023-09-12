@@ -105,8 +105,9 @@ export default function DashboardOverview({ user, setAllLikedBy, setCounter, cur
             </div>
                 </div>
             </div>
-
+        <div className='p-10'>
                 <ReviewPanel connection={currentUser} updatedReviews={[]} />
+                </div>
 
             </div>
 

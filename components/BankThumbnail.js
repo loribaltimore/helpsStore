@@ -65,7 +65,7 @@ export default function BankThumbnail({ connection, membershipType, currentUserP
     }, []);
 
     return (
-        <div className={`min-w-full min-h-[12rem] rounded flex ${membershipType === 'basic' ? 'blur-sm' : ''} p-6 rounded border border-black bg-white sm:px-6 cursor-pointer z-30 hover:scale-105 transition-all duration-300 ease-in-out`}
+        <div className={`min-w-full min-h-[12rem] rounded flex ${membershipType === 'basic' ? 'blur-sm' : ''} p-6 rounded border border-black bg-white sm:px-6 cursor-pointer z-30 hover:scale-105 transition-all duration-300 ease-in-out hover:ring ring-[#02F3B0] ring-inset` }
         onClick={() => {
                 
                 if (membershipType === 'pro') {

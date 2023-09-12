@@ -1,7 +1,8 @@
 "use client"
 import ChatWindow from 'components/ChatWindow';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { usePathname } from 'next/navigation';
+import { ReviewContext } from 'components/ReviewContext';
 
 export default function All(props) {
   const [allMessages, setAllMessages] = useState([]);
@@ -9,8 +10,10 @@ export default function All(props) {
   const [dateInvite, setDateInvite] = useState({});
   const pathname = usePathname();
   const connectionId = pathname.split('/')[2];
-
+  const { setIsLoading } = useContext(ReviewContext);
+  
   useEffect(() => {
+    setIsLoading(true);
     const asyncWrapper = async () => {
       await fetch(`/api/user/connections?connectionId=${connectionId}`, {
         method: 'GET'
@@ -35,6 +38,7 @@ export default function All(props) {
           } else {
             setDateInvite('accepted')
           };
+          setIsLoading(false);
         }).catch(err => console.log(err));
     };
     asyncWrapper();
@@ -45,6 +49,7 @@ export default function All(props) {
         history={allMessages}
         connection={connection}
         dateInvite={dateInvite}
+        setDateInvite={setDateInvite}
       />
   )
 };

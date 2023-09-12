@@ -71,7 +71,7 @@ export default function Upgrade() {
           <button
             type='submit'
                 aria-describedby={tier.id}
-                className= 'text-black border border-black py-3 px-5 rounded mt-8 hover:translate-110 transition-all duration-300 ease-in-out'
+                className='text-black border border-black py-3 px-5 rounded mt-8 hover:translate-110 transition-all duration-300 ease-in-out hover:ring ring-[#02F3B0] ring-inset'
               >
                 Subscribe
           </button>
@@ -80,14 +80,14 @@ export default function Upgrade() {
         <ul role="list" className="space-y-3 text-sm leading-6 text-black">
                 {tier.features.map((feature) => (
                   <li key={feature} className="flex gap-x-3">
-                    <CheckIcon className="h-6 w-5 flex-none text-indigo-600" aria-hidden="true" />
+                    <CheckIcon className="h-6 w-5 flex-none text-[#02F3B0]" aria-hidden="true" />
                   <h1 className='text-xl font-extralight'>{feature}</h1>  
                   </li>
                 ))}
               </ul>
         </div>
         <button
-          className='block mx-auto text-black border border-black py-3 px-5 rounded mt-8 hover:translate-110 transition-all duration-300 ease-in-out'
+          className='hover:ring ring-[#F3D202] ring-inset block mx-auto text-black border border-black py-3 px-5 rounded mt-8 hover:translate-110 transition-all duration-300 ease-in-out '
           onClick={() => setShowUpgrade(false)}
         >
                 Close

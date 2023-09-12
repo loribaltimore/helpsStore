@@ -6,13 +6,13 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation'
 import DateInvite from 'components/DateInvite';
-let socket;
+
  const user = {
   name: name,
   imageUrl:
     'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 }
-export default function ChatWindow({ history, connection, dateInvite }) {
+export default function ChatWindow({history, connection, dateInvite, setDateInvite}) {
    const pathname = usePathname();
     const connectionId = pathname.split('/')[2];
     const {data: session } =  useSession();
@@ -34,7 +34,7 @@ export default function ChatWindow({ history, connection, dateInvite }) {
         ref.current.scrollTop = ref.current.scrollHeight : null
     };
     return (
-        <div className="relative  w-3/4 mx-auto rounded-xl border-gray-200 bg-white px-4 pt-2 sm:px-6 "
+        <div className="mt-10 w-3/4 mx-auto rounded border-black bg-white px-4 pt-2 sm:px-6 "
             onKeyDown={async (event) => {
             if (event.key === 'Enter'
             && input.length > 0) {
@@ -42,17 +42,19 @@ export default function ChatWindow({ history, connection, dateInvite }) {
                     }
                 }}
         >
-            <div className='flex'>
+            <div className='flex w-100'>
                 {
                     connection ?
-                        <div className="p-5 sm:flex space-x-5">
-            <div className=" flex-shrink-0">
+                        <div className="p-5 w-full sm:flex">
+                            <div className="flex space-x-2 w-3/4">
+            <div className="flex-shrink-0 ">
               <img className="mx-auto h-12 w-12 rounded-full" src={user.imageUrl} alt="" />
             </div>
             <div className=" mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
               <p className="text-4xl font-extralight text-gray-900">{connection[connection.activelyConnectedWith].name}</p>
-                            </div>
-              <DateInvite connection={connection} dateInvite={dateInvite} />
+                                </div>
+                </div>
+                            <DateInvite connection={connection}  dateInvite={dateInvite} setDateInvite={setDateInvite}/>
           </div>
                         : ''
                 }
@@ -90,10 +92,13 @@ export default function ChatWindow({ history, connection, dateInvite }) {
                     }) : null : null
                         }
                         <div className='absolute bottom-2 flex w-full h-2/12 pr-5'>
-                        <textarea className='w-full rounded text-black'
-                         onChange={(event) => setInput(event.target.value)}
+                            <textarea className='w-full rounded text-black'
+                                value={input}
+                                onChange={(event) => {
+                                    setInput(event.target.value);
+                                }}
                             ></textarea>
-                            <button className="text-black border border-black w-1/4 h-100  rounded text-sm "
+                            <button className="hover:ring ring-[#02F3B0] ring-inset text-black border border-black w-1/4 h-100 rounded text-lg font-extralight "
                                 onClick={() => {
                                     
                                     if (input.length) {

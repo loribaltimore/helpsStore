@@ -24,6 +24,7 @@ export default function Bank({ }) {
         };
         asyncWrapper();
     }, []);
+
     return (
         <div className='block relative w-100'>
             {

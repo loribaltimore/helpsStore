@@ -15,11 +15,7 @@ import { Bubble } from 'react-chartjs-2';
 import { Doughnut } from 'react-chartjs-2';
 import { Line } from 'react-chartjs-2';
 import { Pie } from 'react-chartjs-2';
-
-
 ChartJS.register(LinearScale, PointElement, Tooltip, Legend, ArcElement, CategoryScale, LineElement, Title);
-
- 
 
 export const bubbleOptions = {
   scales: {
@@ -125,7 +121,7 @@ export default function DashboardWidget({ looksMetrics, likeRatio, likedLineData
                   r: 9
               }
                 }) : null,
-                backgroundColor: 'rgba(102, 120, 0, 0.8)',
+                backgroundColor: '#7C02F3',
             }
   ],
     };

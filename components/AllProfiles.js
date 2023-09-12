@@ -44,7 +44,7 @@ export default function AllProfiles({ allMingles, setAllLikedBy, currentUser, is
     };
 
     return (
-        <div className=''>
+        <div className="border border-black m-auto mt-28 items-center overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 rounded w-3/4">
             {
                 connection ?
                     <QuizResults
@@ -57,6 +57,7 @@ export default function AllProfiles({ allMingles, setAllLikedBy, currentUser, is
                             <ProfileCard
                             user={currentMingle}
                             setCounter={setCounter}
+                            counter={counter}
                             currentUser={typeof currentUser === 'string' ? currentUser : JSON.stringify(currentUser)}
                             distance={distance}
                             setConnection={setConnection}

@@ -13,22 +13,24 @@ export default function AllThumbnails({ allLikedBy, setAllLikedBy, membershipTyp
     });
     return (
         <div className='w-100 p-2'>
-            {bankConnection || showUpgrade?
-                <div className='fixed top-5 left-92 z-50 min-w-[70rem]'>
+            <div className='absolute w-100 h-100 z-40 gap-4 mx-12'>
+                
                     {
+                        bankConnection || showUpgrade ?
                         showUpgrade ?
-                            <div className='w-3/4 mx-auto'>
-                                <Upgrade />
-                                </div>
-                             :
-                                    <AllProfiles allMingles={JSON.stringify(formattedLikedBy)}
-                                        setAllLikedBy={setAllLikedBy}
-                                        currentUser={typeof currentUser !== 'string' ? JSON.stringify(currentUser) : currentUser}
-                                        isBank={true}
-                                    /> 
-                    }
-                </div>: null
+                            <div className='m-32'>
+                                <Upgrade /> 
+                                </div> :
+                                <div className="min-w-[70.5rem]">
+                                    <AllProfiles allMingles={[JSON.stringify(formattedLikedBy)]}
+                                        currentUser={currentUser}
+                                        isBank={false}
+                                        isRev={true}
+                                    />
+                                </div> : null
 }
+            </div>
+            
         <div className="grid grid-cols-5 grid-flow-cols gap-2 mt-10">
             {
                 allLikedBy.length ?

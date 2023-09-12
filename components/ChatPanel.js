@@ -78,7 +78,7 @@ export default function ChatPanel({ activeUser, connection, setActiveConnections
               />
             </div>
             <div className="ml-4">
-              <h3 className="text-base font-extralight leading-6 text-gray-900">{connection[activelyConnectedWith].name}</h3>
+              <h3 className="text-base font-extralight leading-6 text-black">{connection[activelyConnectedWith].name}</h3>
               <p className="text-sm text-gray-500">
               </p>
               <div className='flex'>
@@ -99,12 +99,12 @@ export default function ChatPanel({ activeUser, connection, setActiveConnections
           <div className="ml-4 mt-4 flex flex-shrink-0 space-x-2">
                 <button
                     type="button"
-                    className="relative inline-flex items-center rounded bg-white px-3 py-2 text-sm  text-gray-900 shadow-sm ring-1 ring-inset ring-black hover:bg-gray-50"
+                    className="border border-black relative inline-flex items-center rounded bg-white px-3 py-2 text-sm  text-black shadow-sm hover:ring ring-[#02F3B0] ring-inset"
                     onClick={async () => { await handleClick() }}
                   >
             Profile
                   </button>
-              <Link className="relative ml-3 inline-flex items-center rounded bg-white px-3 py-2 text-sm  text-gray-900 shadow-sm ring-1 ring-inset ring-black hover:bg-gray-50"
+              <Link className="border border-black relative ml-3 inline-flex items-center rounded bg-white px-3 py-2 text-sm text-black shadow-sm hover:ring ring-[#02F3B0] ring-inset"
                 href={`/chat/${connection._id}`}>
             <span>Chat</span>
           </Link>
