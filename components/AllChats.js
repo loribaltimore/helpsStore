@@ -11,7 +11,7 @@ export default function AllChats({ activeUser, allConnections }) {
     const [renderQuiz, setRenderQuiz] = useState(false);
     const formattedConnections = JSON.parse(allConnections);
     const { setShowUpgrade, bankConnection, setIsLoading } = useContext(ReviewContext);
-
+    console.log('bankConnection', bankConnection)
     useEffect(() => { 
         setIsLoading(true);
         setTimeout(() => {setIsLoading()}, 500);
