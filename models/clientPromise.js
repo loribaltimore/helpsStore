@@ -4,7 +4,7 @@ import { MongoClient } from "mongodb";
 //let uri = 'mongodb://localhost:27017/test'
 let uri = process.env.NODE_ENV === "development" ? 'mongodb://localhost:27017/datr' : 'mongodb+srv://dmksoc:v7TjmD4FzSk9UAV9@portfolio.s3wva9j.mongodb.net/';
 const options = {};
-
+console.log(process.env.NODE_ENV);
 let client;
 let clientPromise;
 

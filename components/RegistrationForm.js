@@ -300,18 +300,18 @@ const {data: update } = useSession();
                Preferred Age
               </label>
               <div className="flex space-x-5">
-                <h1 className={'text-4xl font-extralight text-black'}>-</h1>
+                <h1 className={'text-4xl font-extralight text-black border border-black text-center rounded w-[2rem]'}>-</h1>
                 <input
                   type="text"
                   name="preferredAge"
                 id="preferredAge"
                   value={preferredAge}
-                  placeholder={age}
+                  placeholder={age || "28"}
                   autoComplete="given-name"
-                  className="block w-1/12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-black focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
+                  className="block w-1/12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-black font-extralight text-center focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
                      onChange={(event) => setPreferredAge(event.target.value)}
                                 />
-                                <h1 className={'text-4xl font-extralight text-black'}>+</h1>
+                <h1 className={'text-4xl font-extralight text-black border border-black text-center rounded w-[2rem] h-100 hover:scale-105 cursor-pointer ring ring-'}>+</h1>
               </div>
           </div>
           <div className="sm:grid sm:grid-cols-1 sm:items-start sm:gap-2 sm:py-2">
