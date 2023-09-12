@@ -1,14 +1,13 @@
 "use client"
 import { signIn } from "next-auth/react";
-import { GoogleLoginButton } from "react-social-login-buttons";
 import { useContext } from 'react';
 import { ReviewContext } from 'components/ReviewContext';
 
 export default function SigninBtn({ providerId, providerName }) {
     const {setIsLoading} = useContext(ReviewContext);
     return (
-        <div className="w-3/4 mx-auto">
-            <GoogleLoginButton onClick={() => {
+        <button className="block mx-auto text-black border border-black w-2/3 rounded p-3"
+            onClick={() => {
                  setIsLoading(true);
                     try {
                         signOut()
@@ -18,8 +17,7 @@ export default function SigninBtn({ providerId, providerName }) {
                         setIsLoading(false);
                     }
                 signIn(providerId, providerName)
-            }
-            } />
-        </div>
+            }}
+            ><span className="">Sign In</span></button>
     )
 };
