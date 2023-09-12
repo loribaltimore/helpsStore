@@ -1,19 +1,17 @@
 "use client"
 import { signOut } from "next-auth/react"
-import { GoogleLoginButton } from "react-social-login-buttons";
 import { useContext } from 'react';
 import { ReviewContext } from 'components/ReviewContext';
 
 export default function Signout(){
        const {setIsLoading} = useContext(ReviewContext);
     return (
-        <div className="w-7/12 mx-auto py-24 space-y-10 block">
-            <div className="font-extralight ">
-                <h1 className="text-[5rem]">See you next time,</h1>
-                <h2 className="text-[2rem] italic text-indigo-600">We&apos;ll miss you!</h2>
+        <div className="w-3/4 bg-white border border-black text-black rounded m-36 py-24 space-y-10 block">
+            <div className="font-extralight">
+                <h1 className="text-[5rem] text-center">Sign Out?</h1>
             </div>
-            <div className="w-7/12 block mx-auto">
-                <GoogleLoginButton text={'Sign Out'} onClick={() => {
+            <button className="block mx-auto text-black border border-black w-2/3 rounded p-3"
+            onClick={() => {
                     setIsLoading(true);
                     try {
                         signOut()
@@ -22,8 +20,8 @@ export default function Signout(){
                     } finally {
                         setIsLoading(false);
                     }
-                }} />
-            </div>
+                }}
+            ><span className="">Continue to Sign Out</span></button>
     </div>
     )
 }
