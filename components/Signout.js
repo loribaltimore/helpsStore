@@ -24,4 +24,4 @@ export default function Signout(){
             ><span className="">Continue to Sign Out</span></button>
     </div>
     )
-}
+};
