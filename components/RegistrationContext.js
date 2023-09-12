@@ -3,8 +3,7 @@ import { createContext, useState } from 'react';
 
 export const RegistrationContext = createContext();
 
-  
-export function RegistrationProvider({children}) {
+export function RegistrationProvider({children, isRegistered}) {
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [hobbies, setHobbies] = useState([]);
@@ -40,7 +39,7 @@ export function RegistrationProvider({children}) {
                 isPersonality, setIsPersonality, Openness, setOpenness,
                 Agreeableness, setAgreeableness, Extraversion, setExtraversion,
                 Conscientiousness, setConscientiousness, Neuroticism, setNeuroticism,
-                entered, setEntered
+                entered, setEntered, isRegistered
             }}
         >
             {children}

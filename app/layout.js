@@ -29,6 +29,13 @@ async function getSession(cookie) {
 async function getNotifications(userId) {
   const currentUser = await User.findById(userId);
   return currentUser.notifications;
+};
+
+async function getIsRegistered(userId) {
+  let registered = false;
+   const currentUser = await User.findById(userId);
+    currentUser.rating ? registered = true:  null;
+    return registered;
 }
 
 export default async function RootLayout({ children }) {
@@ -40,15 +47,18 @@ export default async function RootLayout({ children }) {
     };
   }).catch(err => console.log(err));
   let notifications;
+  let isRegistered;
   if (session) {
       notifications = await getNotifications(session.userId)
-    .then(data => {return data}).catch(err => console.log(err))
+      .then(data => {return data}).catch(err => console.log(err));
+      isRegistered = await getIsRegistered(session.userId)
+      .then(data => {return data}).catch(err => console.log(err));
   }
   return (
     <html lang="en">
       <body className={`${inter.className} overflow-hidden` } style={{backgroundColor: 'gray'}}>
         <NextAuthProvider session={session}>
-          <RegistrationProvider>
+          <RegistrationProvider isRegistered={isRegistered}>
             <ReviewProvider>
               <NotifProvider>
               <Nav notifications={notifications ? JSON.stringify(notifications): null}>

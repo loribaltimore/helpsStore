@@ -10,7 +10,6 @@ import { RegistrationContext } from 'components/RegistrationContext';
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
-
 export default function RegistrationForm({isLocation, setIsLocation}) {
   const {username, setUsername, hobbies,
                 setHobbies, description, setDescription, setImages, images, name, setName,
@@ -20,10 +19,17 @@ export default function RegistrationForm({isLocation, setIsLocation}) {
                 setPreferredGender, preferredDistance, setPreferredDistance,
                 isPersonality, setIsPersonality, Openness, setOpenness,
                 Agreeableness, Extraversion, Conscientiousness,  Neuroticism, 
-                entered, setEntered
+                entered, setEntered, isRegistered
   } = useContext(RegistrationContext)
-    const {data: update } = useSession();
-    const router = useRouter();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    // isRegistered ?
+    // router.push('/dashboard'): null
+  }, [])
+
+const {data: update } = useSession();
 
   useEffect(() => {
     if (!isPersonality) {
@@ -293,16 +299,19 @@ export default function RegistrationForm({isLocation, setIsLocation}) {
               <label htmlFor="age" className="block text-lg font-extralight leading-6 text-black sm:pt-1.5">
                Preferred Age
               </label>
-              <div className="mt-2 sm:col-span-2 sm:mt-0">
+              <div className="flex space-x-5">
+                <h1 className={'text-4xl font-extralight text-black'}>-</h1>
                 <input
                   type="text"
                   name="preferredAge"
                 id="preferredAge"
-                value={preferredAge}
+                  value={preferredAge}
+                  placeholder={age}
                   autoComplete="given-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
+                  className="block w-1/12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-black focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
                      onChange={(event) => setPreferredAge(event.target.value)}
                                 />
+                                <h1 className={'text-4xl font-extralight text-black'}>+</h1>
               </div>
           </div>
           <div className="sm:grid sm:grid-cols-1 sm:items-start sm:gap-2 sm:py-2">
