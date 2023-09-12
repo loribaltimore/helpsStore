@@ -374,24 +374,32 @@ const {data: update } = useSession();
                Preferred Gender Identity
               </label>
               <div className="flex space-x-5">
-                <button className='p-2 w-2/12 rounded text-black font-extralight text-lg border border-black text-center hover:scale-110 cursor-pointer hover:ring ring-inset ring-[#02F3B0]'>Female</button>
-                <button className='p-2 w-2/12 rounded text-black font-extralight text-lg border border-black text-center hover:scale-110 cursor-pointer hover:ring ring-inset ring-[#02F3B0]'>Male</button>
-                <button className='p-2 w-2/12 rounded text-black font-extralight text-sm border border-black text-center hover:scale-110 cursor-pointer hover:ring ring-inset ring-[#02F3B0]'>Non-Binary</button>
-                <button className='p-2 w-2/12 rounded text-black font-extralight text-lg border border-black text-center hover:scale-110 cursor-pointer hover:ring ring-inset ring-[#02F3B0]'>All</button>
+                <button className='p-2 w-2/12 rounded text-black font-extralight text-lg border border-black text-center hover:scale-110 cursor-pointer hover:ring ring-inset ring-[#02F3B0]'
+                  onClick={() => setPreferredGender('female')}
+                >Female</button>
+                <button className='p-2 w-2/12 rounded text-black font-extralight text-lg border border-black text-center hover:scale-110 cursor-pointer hover:ring ring-inset ring-[#02F3B0]'
+                onClick={() => setPreferredGender('male')}
+                >Male</button>
+                <button className='p-2 w-2/12 rounded text-black font-extralight text-sm border border-black text-center hover:scale-110 cursor-pointer hover:ring ring-inset ring-[#02F3B0]'
+                  onClick={() => setPreferredGender('non-binary')}
+                >Non-Binary</button>
+                <button className='p-2 w-2/12 rounded text-black font-extralight text-lg border border-black text-center hover:scale-110 cursor-pointer hover:ring ring-inset ring-[#02F3B0]'
+                                  onClick={() => setPreferredGender('female')}
+                >All</button>
               </div>
             </div>
           </div>
           
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
-                    <button type="button" className="text-sm font-semibold leading-6 text-gray-900"
+                    <button type="button" className="text-sm font-extralight leading-6 text-black hover:scale-110 "
                         onClick={() =>update({flash: {type: 'success', message:'THIS IS A NEW MESSAGE'}})}
                     >
           Cancel
         </button>
         <button
                     type="submit"
-                    className="text-black inline-flex justify-center rounded border border-black text-black px-3 py-2 text-sm font-extralight shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="text-black inline-flex justify-center rounded border border-black text-black px-3 py-2 text-sm font-extralight shadow-sm hover:bg-[#02F3B0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#02F3B0]"
                         onClick={() => {
                         setEntered(true)
                         handleClick();
