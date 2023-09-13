@@ -7,7 +7,7 @@ import User from 'models/userSchema';
 import Session from 'models/sessionSchema';
 import mongoose from 'mongoose'
 
-const localUrl = `${process.env.LOCAL_URL}/api/auth/callback/google`;
+const url = process.env.NODE_ENV === 'development' ? `${process.env.LOCAL_URL}/api/auth/callback/google`: `${process.env.NEXTAUTH_URL}/api/auth/callback/google`;
 // configure auth options below
 export const authOptions = {
   // Authentication providers - should be Google and Apple
@@ -16,7 +16,7 @@ export const authOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackUrl: localUrl
+      callbackUrl: url
     }),
 
   ],
