@@ -2,6 +2,7 @@ import {NextResponse} from 'next/server';
 import { headers } from 'next/headers';
 
 export async function middleware(request) {
+    const url = process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL;
     console.log(process.env.LOCAL_URL, 'URL IS');
     const cookie = headers().get('cookie') ?? '';
     const regex = /_next|\/api\/auth/g;
