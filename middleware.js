@@ -3,7 +3,7 @@ import { headers } from 'next/headers';
 
 export async function middleware(request) {
     let url;
-    process.env.NODE_ENV === 'development' ? url = 'localhost:3000' : 'datr.vercel.app';
+    process.env.NODE_ENV === 'development' ? url = 'localhost:3000' : 'datr-lyrat.vercel.app';
     const cookie = headers().get('cookie') ?? '';
     const regex = /_next|\/api\/auth/g;
     if (request.url !== `${url}/auth/signin`) {
