@@ -7,7 +7,7 @@ import User from 'models/userSchema';
 import Session from 'models/sessionSchema';
 import mongoose from 'mongoose'
 
-const localUrl = 'http://localhost:3000/api/auth/callback/google';
+const localUrl = `${process.env.LOCAL_URL}/api/auth/callback/google`;
 // configure auth options below
 export const authOptions = {
   // Authentication providers - should be Google and Apple
