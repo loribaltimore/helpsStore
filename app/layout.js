@@ -65,7 +65,7 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <body className={`${inter.className} overflow-hidden` } style={{backgroundColor: 'gray'}}>
         <NextAuthProvider session={session}>
-          <RegistrationProvider isRegistered={isRegistered}>
+          <RegistrationProvider>
             <ReviewProvider>
               <NotifProvider>
               <Nav notifications={notifications ? JSON.stringify(notifications): null}>

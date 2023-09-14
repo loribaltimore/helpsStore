@@ -11,24 +11,17 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 export default function RegistrationForm({ isLocation, setIsLocation }) {
-  console.log("GETTING HERE IN REGISTRATION FORM");
   const {username, setUsername, hobbies,
                 setHobbies, description, setDescription, setImages, images, name, setName,
                 streetAddress, setStreetAddress, zip, setZip, coord, setCoord,
                 location, setLocation, manualLoc, setManualLoc, age, setAge,
                 files, setFiles, preferredAge, setPreferredAge, preferredGender,
                 setPreferredGender, preferredDistance, setPreferredDistance,
-                isPersonality, setIsPersonality, Openness, setOpenness,
+                isPersonality, setIsPersonality, Openness,
                 Agreeableness, Extraversion, Conscientiousness,  Neuroticism, 
-                entered, setEntered, isRegistered
-  } = useContext(RegistrationContext)
+                entered, setEntered } = useContext(RegistrationContext)
 
   const router = useRouter();
-
-  useEffect(() => {
-    // isRegistered ?
-    // router.push('/dashboard'): null
-  }, [])
 
 const {data: update } = useSession();
 
