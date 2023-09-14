@@ -50,15 +50,16 @@ export default async function RootLayout({ children }) {
       return null
     };
   }).catch(err => console.log(err));
+
   let notifications;
   let isRegistered;
   if (session) {
     console.log('THERE IS A SESSION');
     console.log(session);
       notifications = await getNotifications(session.userId)
-      .then(data => {return data}).catch(err => console.log(err));
+        .then(data => { console.log(data); return data}).catch(err => console.log(err));
       isRegistered = await getIsRegistered(session.userId)
-      .then(data => {return data}).catch(err => console.log(err));
+      .then(data => {console.log(data); return data}).catch(err => console.log(err));
   }
   return (
     <html lang="en">
