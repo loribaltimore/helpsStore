@@ -47,4 +47,4 @@ export async function middleware(request) {
     }
 }
 
-middleware is the issue.
+// middleware is the issue.
