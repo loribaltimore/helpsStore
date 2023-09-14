@@ -5,10 +5,10 @@ export async function middleware(request) {
     console.log(process.env.NODE_ENV === 'development')
     const cookie = headers().get('cookie') ?? '';
     const regex = /_next|\/api\/auth/g;
-    if (request.url !== `${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/auth/signin`) {
-        if (request.url !== `${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/api/auth/session`
+    if (request.url !== `${process.env.NODE_ENV === 'development' ? process.env.NEXTAUTH_URL : process.env.NEXTAUTH_URL}/auth/signin`) {
+        if (request.url !== `${process.env.NODE_ENV === 'development' ? process.env.NEXTAUTH_URL : process.env.NEXTAUTH_URL}/api/auth/session`
             && !request.url.match(regex)) {
-            const response = await fetch(`${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/api/auth/session`, {
+            const response = await fetch(`${process.env.NODE_ENV === 'development' ? process.env.NEXTAUTH_URL : process.env.NEXTAUTH_URL}/api/auth/session`, {
                 headers: {
                     cookie
                 },
@@ -23,12 +23,12 @@ export async function middleware(request) {
             if (response) {
                 return NextResponse.next();
             } else {
-                console.log(`redirecting to${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/auth/signin`);
-                return NextResponse.redirect(`${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/auth/signin`);
+                console.log(`redirecting to${process.env.NODE_ENV === 'development' ? process.env.NEXTAUTH_URL : process.env.NEXTAUTH_URL}/auth/signin`);
+                return NextResponse.redirect(`${process.env.NODE_ENV === 'development' ? process.env.NEXTAUTH_URL : process.env.NEXTAUTH_URL}/auth/signin`);
             }
         } 
     } else {
-        const response = await fetch(`${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/api/auth/session`, {
+        const response = await fetch(`${process.env.NODE_ENV === 'development' ? process.env.NEXTAUTH_URL : process.env.NEXTAUTH_URL}/api/auth/session`, {
                 headers: {
                     cookie
                 },
@@ -41,7 +41,7 @@ export async function middleware(request) {
                 }
             }).catch(err => console.log(err));
         if (response) {
-            return NextResponse.redirect(`${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/dashboard`)
+            return NextResponse.redirect(`${process.env.NODE_ENV === 'development' ? process.env.NEXTAUTH_URL : process.env.NEXTAUTH_URL}/dashboard`)
         };
     }
 }
