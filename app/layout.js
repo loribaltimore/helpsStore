@@ -29,13 +29,13 @@ async function getSession(cookie) {
 };
 
 async function getNotifications(userId) {
-  const currentUser = await User.findById(userId);
+  const currentUser = await User.findById(userId).then(data => data).catch(err => console.log(err));
   return currentUser.notifications;
 };
 
 async function getIsRegistered(userId) {
   let registered = false;
-  const currentUser = await User.findById(userId);
+  const currentUser = await User.findById(userId).then(data => data).catch(err => console.log(err));
   console.log(currentUser);
   console.log('THIS IS ISREGISTERED');
     currentUser.rating ? registered = true:  null;
@@ -54,6 +54,7 @@ export default async function RootLayout({ children }) {
   let isRegistered;
   if (session) {
     console.log('THERE IS A SESSION');
+    console.log(session);
       notifications = await getNotifications(session.userId)
       .then(data => {return data}).catch(err => console.log(err));
       isRegistered = await getIsRegistered(session.userId)
