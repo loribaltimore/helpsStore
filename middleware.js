@@ -12,6 +12,7 @@ export async function middleware(request) {
                     cookie
                 },
             }).then(async data => {
+                console.log(await data.json())
                 const session = await data.json();
                 if (Object.keys(session).length > 0) {
                     return true;
@@ -22,6 +23,7 @@ export async function middleware(request) {
             if (response) {
                 return NextResponse.next();
             } else {
+                console.log(`redirecting to${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/auth/signin`);
                 return NextResponse.redirect(`${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/auth/signin`);
             }
         } 
