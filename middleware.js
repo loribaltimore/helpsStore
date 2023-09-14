@@ -46,6 +46,4 @@ export async function middleware(request) {
             return NextResponse.redirect(`${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/dashboard`)
         };
     }
-}
-
-// middleware is the issue.
+};

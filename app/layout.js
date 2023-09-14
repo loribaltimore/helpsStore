@@ -38,7 +38,7 @@ async function getIsRegistered(userId) {
   const currentUser = await User.findById(userId).then(data => data).catch(err => console.log(err));
   console.log(currentUser);
   console.log('THIS IS ISREGISTERED');
-    currentUser.rating ? registered = true:  null;
+    currentUser.rating ? registered = true : false;
     return registered;
 }
 
