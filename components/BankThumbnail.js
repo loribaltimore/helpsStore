@@ -53,7 +53,7 @@ export default function BankThumbnail({ connection, membershipType, currentUserP
                 connection.photos.forEach(photo => {
                     searchParams.append('photos[]', photo);
                 })
-                const url = `http://localhost:3000/api/user/photos?${searchParams.toString()}`;
+                const url = `${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/api/user/photos?${searchParams.toString()}`;
                 await fetch(url, {
                     method: 'GET',
                 }).then(async data => {

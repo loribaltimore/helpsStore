@@ -7,7 +7,6 @@ import userSorting from '@/lib/userSorting';
 
 
 export async function GET(request) {
-    console.log("THIS IS GETTING GOT!!")
     await database();
   const session = await getServerSession(authOptions);
   const currentUser = await User.findById(session.userId.toString());

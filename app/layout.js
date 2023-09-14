@@ -17,6 +17,7 @@ export const metadata = {
 }
 export const dynamic = 'force-static';
 const url = process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL;
+
 async function getSession(cookie) {
   const response = await fetch(`${url}/api/auth/session`, {
     headers: {
