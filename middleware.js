@@ -4,8 +4,10 @@ import { headers } from 'next/headers';
 export async function middleware(request) {
     const url = process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL;
     console.log(url, 'URL IS');
+    console.log(process.env.NODE_ENV);
     const cookie = headers().get('cookie') ?? '';
     const regex = /_next|\/api\/auth/g;
+
     if (request.url !== `${url}/auth/signin`) {
         if (request.url !== `${url}/api/auth/session`
             && !request.url.match(regex)) {
