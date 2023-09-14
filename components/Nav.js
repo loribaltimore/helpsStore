@@ -16,7 +16,7 @@ export default function Nav({ children, notifications }) {
   <div className="relative z-50 lg:hidden" role="dialog" aria-modal="true">
         </div>
         {
-          session && reviews ? 
+          session? 
             <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
     <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white border border-black px-6">
       <nav className="flex flex-1 flex-col py-5">
