@@ -2,23 +2,12 @@ import {NextResponse} from 'next/server';
 import { headers } from 'next/headers';
 
 export async function middleware(request) {
-    let url;
-    if (process.env.NODE_ENV === 'development') {
-        console.log('WRONG ONE')
-        url = process.env.LOCAL_URL;
-    } else {
-        console.log('RIGHT ONE')
-        url = process.env.NEXTAUTH_URL
-    };
-    console.log(url, 'URL IS');
-    console.log(process.env.NODE_ENV);
     const cookie = headers().get('cookie') ?? '';
     const regex = /_next|\/api\/auth/g;
-
-    if (request.url !== `${url}/auth/signin`) {
-        if (request.url !== `${url}/api/auth/session`
+    if (request.url !== `${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/auth/signin`) {
+        if (request.url !== `${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/api/auth/session`
             && !request.url.match(regex)) {
-            const response = await fetch(`${url}/api/auth/session`, {
+            const response = await fetch(`${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/api/auth/session`, {
                 headers: {
                     cookie
                 },
@@ -33,11 +22,11 @@ export async function middleware(request) {
             if (response) {
                 return NextResponse.next();
             } else {
-                return NextResponse.redirect(`${url}/auth/signin`);
+                return NextResponse.redirect(`${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/auth/signin`);
             }
         } 
     } else {
-        const response = await fetch(`${url}/api/auth/session`, {
+        const response = await fetch(`${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/api/auth/session`, {
                 headers: {
                     cookie
                 },
@@ -50,7 +39,7 @@ export async function middleware(request) {
                 }
             }).catch(err => console.log(err));
         if (response) {
-            return NextResponse.redirect(`${url}/dashboard`)
+            return NextResponse.redirect(`${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/dashboard`)
         };
     }
 }
