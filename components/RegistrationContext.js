@@ -3,7 +3,8 @@ import { createContext, useState } from 'react';
 
 export const RegistrationContext = createContext();
 
-export function RegistrationProvider({children, isRegistered}) {
+export function RegistrationProvider({ children, isRegistered }) {
+    console.log("IS REGISTERED IS ", isRegistered);
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [hobbies, setHobbies] = useState([]);

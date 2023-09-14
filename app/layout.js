@@ -35,7 +35,9 @@ async function getNotifications(userId) {
 
 async function getIsRegistered(userId) {
   let registered = false;
-   const currentUser = await User.findById(userId);
+  const currentUser = await User.findById(userId);
+  console.log(currentUser);
+  console.log('THIS IS ISREGISTERED');
     currentUser.rating ? registered = true:  null;
     return registered;
 }
@@ -51,6 +53,7 @@ export default async function RootLayout({ children }) {
   let notifications;
   let isRegistered;
   if (session) {
+    console.log('THERE IS A SESSION');
       notifications = await getNotifications(session.userId)
       .then(data => {return data}).catch(err => console.log(err));
       isRegistered = await getIsRegistered(session.userId)

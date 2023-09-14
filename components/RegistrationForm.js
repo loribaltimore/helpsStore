@@ -10,7 +10,8 @@ import { RegistrationContext } from 'components/RegistrationContext';
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
-export default function RegistrationForm({isLocation, setIsLocation}) {
+export default function RegistrationForm({ isLocation, setIsLocation }) {
+  console.log("GETTING HERE IN REGISTRATION FORM");
   const {username, setUsername, hobbies,
                 setHobbies, description, setDescription, setImages, images, name, setName,
                 streetAddress, setStreetAddress, zip, setZip, coord, setCoord,
