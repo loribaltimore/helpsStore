@@ -9,6 +9,8 @@ import mongoose from 'mongoose'
 
 const url = process.env.NODE_ENV === 'development' ? `${process.env.LOCAL_URL}/api/auth/callback/google`: `${process.env.NEXTAUTH_URL}/api/auth/callback/google`;
 // configure auth options below
+  console.log(url);
+
 export const authOptions = {
   // Authentication providers - should be Google and Apple
   adapter: MongoDBAdapter(clientPromise),
