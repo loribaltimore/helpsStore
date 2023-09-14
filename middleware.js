@@ -3,13 +3,13 @@ import { headers } from 'next/headers';
 
 export async function middleware(request) {
     const url = process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL;
-    console.log(process.env.LOCAL_URL, 'URL IS');
+    console.log(url, 'URL IS');
     const cookie = headers().get('cookie') ?? '';
     const regex = /_next|\/api\/auth/g;
-    if (request.url !== `${process.env.LOCAL_URL}/auth/signin`) {
-        if (request.url !== `${process.env.LOCAL_URL}/api/auth/session`
+    if (request.url !== `${url}/auth/signin`) {
+        if (request.url !== `${url}/api/auth/session`
             && !request.url.match(regex)) {
-            const response = await fetch(`${process.env.LOCAL_URL}/api/auth/session`, {
+            const response = await fetch(`${url}/api/auth/session`, {
                 headers: {
                     cookie
                 },
@@ -24,11 +24,11 @@ export async function middleware(request) {
             if (response) {
                 return NextResponse.next();
             } else {
-                return NextResponse.redirect(`${process.env.LOCAL_URL}/auth/signin`);
+                return NextResponse.redirect(`${url}/auth/signin`);
             }
         } 
     } else {
-        const response = await fetch(`${process.env.LOCAL_URL}/api/auth/session`, {
+        const response = await fetch(`${url}/api/auth/session`, {
                 headers: {
                     cookie
                 },
@@ -41,7 +41,7 @@ export async function middleware(request) {
                 }
             }).catch(err => console.log(err));
         if (response) {
-            return NextResponse.redirect(`${process.env.LOCAL_URL}/dashboard`)
+            return NextResponse.redirect(`${url}/dashboard`)
         };
     }
 }
