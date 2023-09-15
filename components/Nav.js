@@ -13,7 +13,7 @@ export default function Nav({ children, notifications }) {
   const { reviews, chat, bank } = notifications ? JSON.parse(notifications) : {};
     return (
 <div>
-  <div className="relative z-50 lg:hidden" role="dialog" aria-modal="true">
+        <div className="relative z-50 lg:hidden" role="dialog" aria-modal="true">
         </div>
         {
           session? 

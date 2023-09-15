@@ -25,6 +25,8 @@ export const authOptions = {
       return true
     },
     async redirect({ url, baseUrl }) {
+      console.log(baseUrl)
+      console.log(url, 'url is');
       return baseUrl + '/dashboard'
     },
     async session({ session, user, token, trigger, newSession }) {
@@ -33,7 +35,6 @@ export const authOptions = {
         {return data}
      }).catch(err => console.log(err));
       const convertedId = new mongoose.Types.ObjectId(currentUser.id);
-      console.log(convertedId);
       session = await Session.findOne({ userId: convertedId }).then(data => { return data }).catch(err => console.log(err));
       if (newSession) {
         session.flash = newSession.flash;

@@ -99,13 +99,17 @@ const {data: update } = useSession();
             }).catch(err => console.log(err))
         }, 1000);
     }
-    return (
-        <div className='z-1 border border-black'>
+  return (
+      <div>
+        <h1 className='block p-10 text-4xl font-extralight'>Profile Setup</h1>
+
+      <div className='z-1 flex p-10 space-x-2 border-t w-11/12'>
+
             {
                 isLocation && location ?
             <LocationServices setCoord={setCoord} setIsLocation={setIsLocation} location={location} setLocation={setLocation} /> : null
             }
-        <div className={` sm:space-y-16 p-5 w-1/2 mx-auto bg-white rounded-lg ${isLocation && location ? 'hidden' : null}`}>
+        <div className={`sm:space-y-16 p-5 w-1/2 mx-auto bg-white rounded border border-black ${isLocation && location ? 'hidden' : null}`}>
         <div>
           <h2 className="text-4xl font-extralight leading-7 text-black">Profile</h2>
           <p className="mt-1 max-w-2xl text-md leading-6 text-black font-extralight">
@@ -286,7 +290,9 @@ const {data: update } = useSession();
             </div>
           </div>
           </div>
+        </div>
 
+        <div className={` sm:space-y-16 p-5 w-1/2 mx-auto bg-white rounded border border-black ${isLocation && location ? 'hidden' : null}`}>
           <div className='space-y-1'>
       <h1 className=' font-extralight text-black text-4xl'>Preferences</h1>
           <div className="sm:grid sm:grid-cols-1 sm:items-start sm:gap-4 sm:py-6">
@@ -383,9 +389,7 @@ const {data: update } = useSession();
               </div>
             </div>
           </div>
-          
-
-        <div className="mt-6 flex items-center justify-end gap-x-6">
+          <div className="mt-6 flex items-center justify-end gap-x-6">
                     <button type="button" className="text-sm font-extralight leading-6 text-black hover:scale-110 "
                         onClick={() =>update({flash: {type: 'success', message:'THIS IS A NEW MESSAGE'}})}
                     >
@@ -403,7 +407,10 @@ const {data: update } = useSession();
         </button>
           </div>
         </div>
+        
+      </div>
             </div>
+
   )
 }
 

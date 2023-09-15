@@ -17,7 +17,7 @@ export const metadata = {
 }
 export const dynamic = 'force-dynamic';
 const url = process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL;
-
+console.log(url);
 async function getSession(cookie) {
   const response = await fetch(`${url}/api/auth/session`, {
     headers: {
@@ -32,6 +32,7 @@ async function getNotifications(userId) {
   const currentUser = await User.findById(userId).then(data => data).catch(err => console.log(err));
   return currentUser.notifications;
 };
+
 
 export default async function RootLayout({ children }) {
   const session = await getSession(headers().get('cookie') ?? '').then(data => {
