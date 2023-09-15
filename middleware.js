@@ -2,9 +2,6 @@ import {NextResponse} from 'next/server';
 import { headers } from 'next/headers';
 
 export async function middleware(request) {
-    // console.log(process.env.LOCAL_URL)
-    // console.log(process.env.NODE_ENV === 'development')
-    // console.log(request.url)
     const cookie = headers().get('cookie') ?? '';
     const regex = /_next|\/api\/auth/g;
     if (request.url !== `${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/auth/signin`) {

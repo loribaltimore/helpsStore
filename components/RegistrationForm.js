@@ -37,7 +37,7 @@ const {data: update } = useSession();
 
   const handleClick = async () => {
     setIsPersonality(true);
-    setIsLocation(true);
+    // setIsLocation(true);
         if (!manualLoc) {
             if ("geolocation" in navigator) {
                 navigator.geolocation.getCurrentPosition(async function success(pos) {
@@ -104,11 +104,10 @@ const {data: update } = useSession();
         <h1 className='block p-10 text-4xl font-extralight'>Profile Setup</h1>
 
       <div className='z-1 flex p-10 space-x-2 border-t w-11/12'>
-
-            {
+            {/* {
                 isLocation && location ?
             <LocationServices setCoord={setCoord} setIsLocation={setIsLocation} location={location} setLocation={setLocation} /> : null
-            }
+            } */}
         <div className={`sm:space-y-16 p-5 w-1/2 mx-auto bg-white rounded border border-black ${isLocation && location ? 'hidden' : null}`}>
         <div>
           <h2 className="text-4xl font-extralight leading-7 text-black">Profile</h2>

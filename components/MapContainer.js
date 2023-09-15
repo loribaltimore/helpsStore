@@ -35,7 +35,7 @@ export default function MapContainer({ location, setCoord, setIsLocation }) {
     }, [location])
 
     return (
-        <div className="h-[40rem] w-[40rem] ml-[19.5%] mt-[8%] absolute bg-white rounded p-5 border border-black">
+        <div className="h-[40rem] w-[40rem] ml-[19.5%] absolute bg-white rounded p-5 border border-black">
             <div ref={mapContainer} className="w-full h-3/4 p-5 border border-black"></div>
             <h1 className="text-slate-800 text-center py-2">Is this your address?</h1>
             <div className="flex p-5 w-1/2 mx-auto space-x-3">

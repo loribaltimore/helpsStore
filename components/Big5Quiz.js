@@ -20,7 +20,7 @@ export default function Big5Quiz() {
         setExtraversion, setConscientiousness,
         setNeuroticism, setIsPersonality } = useContext(RegistrationContext);
     return (
-        <div className='w-3/4 mx-auto space-y-10 items-center bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 rounded-xl'>
+        <div className='w-3/4 mx-auto mt-36 space-y-10 items-center bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 rounded'>
             <div className="block ">
             <h1 className="text-black text-3xl text-left font-extralight">{traitNames[trait]}</h1>
                 <h1 className="text-black text-xl text-center font-light p-5">{traits[trait][question]}</h1>
@@ -33,7 +33,7 @@ export default function Big5Quiz() {
                       name="notification-method"
                       type="radio"
                       value={element.value}
-                      className="align-bottom h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                      className="align-bottom h-4 w-4 border-black text-[#02F3B0] focus:ring-[#02F3B0]"
                       onClick={() => {
                           switch (trait) {
                               case 0: setNeuroticism(prev => prev + element.value);
@@ -68,7 +68,7 @@ export default function Big5Quiz() {
             </div>
             {
                 showButton ?
-                    <button className='block mx-auto py-2 px-3 bg-indigo-500 text-white rounded'
+                    <button className='block mx-auto py-2 px-3 border border-black text-black rounded  hover:ring ring-[#02F3B0] ring-inset hover:scale-110 transition-all duration-300 ease-in-out relative block rounded border border-black p-4 active:scale-100 transition-all duration-100 ease-in-out'
                         onClick={() => { 
                             setShowButton(false);
                             setEntered('good');
