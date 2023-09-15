@@ -9,7 +9,7 @@ const svgRefNo = useRef(null);
   const flooredRating = Math.round(rating)
   const [newRating, setNewRating] = useState(undefined);
   const [interested, setInterested] = useState(undefined);
-  console.log(newRating);
+  
   useEffect(() => {
     const asyncWrapper = async () => {
       await showedInterest(interested);

@@ -42,6 +42,7 @@ const star2 = [
 export default function ChatPanel({ activeUser, connection, setActiveConnections}) {
   const { setCurrentMongoConnection, setBankConnection } = useContext(ReviewContext);
   const averageCompatibility = Math.round(Object.values(connection.compatibility).reduce((a, b) => a + b) / 5);
+
   const handleClick = async () => {
       setCurrentMongoConnection(connection);
     await fetch(`/api/user/connections?connectionId=${connection._id}`, {
@@ -49,9 +50,9 @@ export default function ChatPanel({ activeUser, connection, setActiveConnections
     }).then(async data => {
       const response = await data.json();
       setBankConnection(JSON.parse(response.connectedTo));
+      console.log(response, 'response')
     }).catch (err => console.log(err));
   };
-
   let activelyConnectedAs;
   let activelyConnectedWith;
   if (activeUser._id === connection.connection1.id) {

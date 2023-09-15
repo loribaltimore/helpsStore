@@ -20,7 +20,10 @@ export default function Big5Quiz() {
         setExtraversion, setConscientiousness,
         setNeuroticism, setIsPersonality } = useContext(RegistrationContext);
     return (
-        <div className='w-3/4 mx-auto mt-36 space-y-10 items-center bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 rounded'>
+
+        <div className=''>
+            <h1 className='text-white font-extralight text-4xl p-10 border-b w-3/4'>Personality Test</h1>
+        <div className='w-3/4 mx-auto mt-32 space-y-10 items-center bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 rounded'>
             <div className="block ">
             <h1 className="text-black text-3xl text-left font-extralight">{traitNames[trait]}</h1>
                 <h1 className="text-black text-xl text-center font-light p-5">{traits[trait][question]}</h1>
@@ -78,6 +81,7 @@ export default function Big5Quiz() {
                 Submit
             </button> : null
             }
+            </div>
         </div>
     )
 };

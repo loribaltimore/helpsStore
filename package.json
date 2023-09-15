@@ -23,6 +23,7 @@
     "chart.js": "^4.3.0",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.4",
+    "file-type": "^18.5.0",
     "gridfs-stream": "^1.1.1",
     "i": "^0.3.7",
     "mongoose": "^7.2.2",

@@ -25,8 +25,6 @@ export const authOptions = {
       return true
     },
     async redirect({ url, baseUrl }) {
-      console.log(baseUrl)
-      console.log(url, 'url is');
       return baseUrl + '/dashboard'
     },
     async session({ session, user, token, trigger, newSession }) {

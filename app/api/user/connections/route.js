@@ -136,9 +136,14 @@ export async function GET(request) {
   updatedConnection = JSON.parse(updatedConnection);
   updatedConnection.activelyConnectedAs = activelyConnectedAs;
   updatedConnection.activelyConnectedWith = activelyConnectedWith;
+    const url = request.url;
+    const params = new URLSearchParams(url.split('?')[1]);
+    const photos = params.getAll('photos[]');
+    const allFormattedPhotos = await getPhotos(photos).then(data => { return data }).catch(err => console.log(err));
   return NextResponse.json({
     connection: JSON.stringify(updatedConnection),
-    connectedTo: JSON.stringify(connectedTo)
+    connectedTo: JSON.stringify(connectedTo),
+    formattedPhotos: allFormattedPhotos
   })
 }
 

@@ -9,14 +9,14 @@ export default function DashboardOverview({ user, setAllLikedBy, setCounter, cur
   const { name, age, description, hobbies, rating } = user;
   const currentUserFormatted = JSON.parse(currentUser);
   const [photos, setPhotos] = useState(undefined);
-  const canVoteNegative = currentUserFormatted.rating.looks.count % 10 === 0; 
   useEffect(() => {
     const asyncWrapper = async () => {
       const searchParams = new URLSearchParams();
       user.photos.forEach(photo => {
         searchParams.append('photos[]', photo);
-      })
-                const url = `${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/api/user/photos?${searchParams.toString()}`;
+      });
+      // ${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}
+     const url = `/api/user/photos?${searchParams.toString()}`;
       await fetch(url, {
         method: 'GET',
       }).then(async data => {
@@ -25,7 +25,6 @@ export default function DashboardOverview({ user, setAllLikedBy, setCounter, cur
     }
     asyncWrapper();
   }, [user]);
-
   const flooredRating = Math.round(rating.looks.total / rating.looks.count);
     return (
         <div className=" space-y-10 border border-black m-auto mt-10 mb-10 items-center overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 rounded w-3/4">

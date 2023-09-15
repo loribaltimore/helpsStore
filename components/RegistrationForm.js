@@ -61,44 +61,49 @@ const {data: update } = useSession();
         }
     };
 
-    const createUser = async (e) => {
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('description', description);
-        formData.append('hobbies', hobbies);
-        formData.append('streetAddress', streetAddress);
-        formData.append('age', age);
-        formData.append('zip', zip);
-        formData.append('coordinates', coord);
-        formData.append('username', username);
-        formData.append('preferredAge', preferredAge);
-        formData.append('preferredGender', preferredGender);
-      formData.append('preferredDistance', preferredDistance);
-      formData.append('Openness', Openness);
-      formData.append('Agreeableness', Agreeableness);
-      formData.append('Extraversion', Extraversion);
-      formData.append('Conscientiousness', Conscientiousness);
-      formData.append('Neuroticism', Neuroticism);
-      
-        
-        files.forEach(file => {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const arrayBuffer = event.target.result;
-                const newBuffer = Buffer.from(arrayBuffer);
-                formData.append('files[]', newBuffer)
-};
-            reader.readAsArrayBuffer(file);
-        })
-        setTimeout(async () => {
-            await fetch('/api/user/registration', {
-                method: 'POST',
-                body: formData,
-            }).then(data => {
-                console.log(data);
-            }).catch(err => console.log(err))
-        }, 1000);
+   const createUser = async () => {
+
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('description', description);
+    formData.append('hobbies', hobbies);
+    formData.append('streetAddress', streetAddress);
+    formData.append('age', age);
+    formData.append('zip', zip);
+    formData.append('coordinates', coord);
+    formData.append('username', username);
+    formData.append('preferredAge', preferredAge);
+    formData.append('preferredGender', preferredGender);
+    formData.append('preferredDistance', preferredDistance);
+    formData.append('Openness', Openness);
+    formData.append('Agreeableness', Agreeableness);
+    formData.append('Extraversion', Extraversion);
+    formData.append('Conscientiousness', Conscientiousness);
+    formData.append('Neuroticism', Neuroticism);
+    
+    files.forEach(file => {
+        formData.append('files[]', file);
+    });
+
+    try {
+        const response = await fetch('/api/user/registration', {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        console.log(data);
+
+    } catch (error) {
+        console.error("There was an error:", error);
+        // Handle the error more comprehensively here
     }
+}
+
   return (
       <div>
         <h1 className='block p-10 text-4xl font-extralight'>Profile Setup</h1>
@@ -121,7 +126,7 @@ const {data: update } = useSession();
                 Username
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
-                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-black sm:max-w-md">
+                <div className="flex rounded shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-black sm:max-w-md">
                   <input
                                         type="text"
                                         value={username}
@@ -147,7 +152,7 @@ const {data: update } = useSession();
                                     id="first-name"
                                     value={name}
                   autoComplete="given-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
+                  className="block w-full rounded border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
                      onChange={(event) => setName(event.target.value)}
                                 />
               </div>
@@ -163,7 +168,7 @@ const {data: update } = useSession();
                 id="age"
                 value={age}
                   autoComplete="given-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
+                  className="block w-full rounded border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
                      onChange={(event) => setAge(event.target.value)}
                                 />
               </div>
@@ -204,7 +209,7 @@ const {data: update } = useSession();
                                     id="street-address"
                                     value={streetAddress}
                   autoComplete="street-address"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xl sm:text-sm sm:leading-6"
+                  className="block w-full rounded border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xl sm:text-sm sm:leading-6"
                      onChange={(event) => setStreetAddress(event.target.value)}
                                 />
               </div>
@@ -222,7 +227,7 @@ const {data: update } = useSession();
                                     id="postal-code"
                                     value={zip}
                   autoComplete="postal-code"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
+                  className="block w-full rounded border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
                    onChange={(event) => setZip(event.target.value)}
                                 />
               </div>
@@ -241,7 +246,7 @@ const {data: update } = useSession();
                                     value={description}
                   name="about"
                   rows={3}
-                  className="block w-full max-w-2xl rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
+                  className="block w-full max-w-2xl rounded border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
                    onChange={(event) => setDescription(event.target.value)}
                 />
                 <p className="mt-3 text-md font-extralight leading-6 text-black">Write a few sentences about yourself.</p>
@@ -271,19 +276,15 @@ const {data: update } = useSession();
               <div className="mt-2 sm:col-span-2 sm:mt-0">
                 <div className="flex items-center gap-x-3">
                   <input
-                                        type="file"
-                                        multiple
-                                        // value={images}
-                                        className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                                        onChange={(event) => 
-                                             {
-                                             setImages(event.target.value)
-                                            Object.values(event.target.files).forEach(image => {
-                                                setFiles(prev => [...prev, image]);
-                                            });
-                                        }
-                                        }
-                                    />
+    type="file"
+    multiple
+    className="rounded bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+    onChange={(event) => {
+        // directly accessing event.target.files
+        const newFiles = Object.values(event.target.files);
+        setFiles(prev => [...prev, ...newFiles]);
+    }}
+/>
                 </div>
               </div>
             </div>
@@ -317,7 +318,7 @@ const {data: update } = useSession();
                   value={preferredAge}
                   placeholder={age || "28"}
                   autoComplete="given-name"
-                  className="block w-1/12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-black font-extralight text-center focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
+                  className="block w-1/12 rounded border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-black font-extralight text-center focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
                      onChange={(event) => setPreferredAge(event.target.value)}
                                 />
                 <h1 className={'text-4xl font-extralight text-black border border-black text-center rounded w-[2rem] hover:scale-110 cursor-pointer hover:ring ring-inset ring-[#02F3B0]'}
@@ -354,7 +355,7 @@ const {data: update } = useSession();
                   value={preferredDistance}
                   placeholder={10}
                   autoComplete="given-name"
-                  className="block w-1/12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-black font-extralight text-center focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
+                  className="block w-1/12 rounded border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-black font-extralight text-center focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
                      onChange={(event) => setPreferredDistance(event.target.value)}
                 />
                  <h1 className={'text-4xl font-extralight text-black border border-black text-center rounded w-[2rem] hover:scale-110 cursor-pointer hover:ring ring-inset ring-[#02F3B0]'}
@@ -411,5 +412,8 @@ const {data: update } = useSession();
             </div>
 
   )
-}
+};
+
+// location not fetching
+// need to finish photos
 

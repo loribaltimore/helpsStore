@@ -1,13 +1,11 @@
 import { MongoClient } from "mongodb";
 
 //THIS EDIT MADE BY SYDNEY ON GITHUB
-//let uri = 'mongodb://localhost:27017/test'
-let uri = process.env.NODE_ENV === "development" ? 'mongodb://localhost:27017/datr' :  "mongodb+srv://vercel-admin-user:ETPIicfqVnzDNJNr@portfolio.s3wva9j.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+let uri = process.env.NODE_ENV === "development" || process.env.NODE_ENV === undefined? 'mongodb://localhost:27017/datr' :  "mongodb+srv://vercel-admin-user:ETPIicfqVnzDNJNr@portfolio.s3wva9j.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const options = {};
 let client;
 let clientPromise;
-
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === undefined) {
   // In development mode, use a global variable so that the value
   // is preserved across module reloads caused by HMR (Hot Module Replacement).
   if (!global._mongoClientPromise) {

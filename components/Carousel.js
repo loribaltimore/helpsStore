@@ -3,10 +3,11 @@ import { useState } from 'react';
 
 export default function Carousel({ photos }) {
     const [counter, setCounter] = useState(0);
-
+    
     const nextPhoto = () => {
         if (counter + 1 <= photos.length) {
-        setCounter(prev => prev + 1)
+            setCounter(prev => prev + 1);
+            photos.formattedPhotos[counter]
         };
     };
 

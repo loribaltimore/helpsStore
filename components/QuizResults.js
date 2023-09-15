@@ -38,7 +38,7 @@ const chartConfig  = {
   }]
 };
     return (
-        <div className='border border-black w-100 mx-auto block space-y-5 bg-white p-5 rounded w-3/4'>
+        <div className=' w-100 mx-auto block space-y-5 bg-white p-5 rounded '>
             <h1 className='block mx-auto text-4xl text-black font-extralight'>Compatability Results</h1>
         <p className='text-sm text-slate-800'>
           This graph is a visual representation of your compatibility across the Big 5 personality traits.

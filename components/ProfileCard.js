@@ -12,22 +12,25 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, counter, 
   const currentUserFormatted = JSON.parse(currentUser);
   const [photos, setPhotos] = useState(undefined);
   const canVoteNegative = currentUserFormatted.rating.looks.count % 10 === 0; 
+
   useEffect(() => {
     const asyncWrapper = async () => {
       const searchParams = new URLSearchParams();
       user.photos.forEach(photo => {
         searchParams.append('photos[]', photo);
       })
-      const url = `${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/api/user/photos?${searchParams.toString()}`;
+      // ${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}
+      const url = `http://localhost:3000/api/user/photos?${searchParams.toString()}`;
       await fetch(url, {
         method: 'GET',
       }).then(async data => {
+        console.log('THIS IS WORKING')
         setPhotos(await data.json());
       }).catch(err => console.log(err));
     }
     asyncWrapper();
   }, [user]);
-
+  console.log(isRev);
   const flooredRating = Math.round(rating.looks.total / rating.looks.count);
     return (
         <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8">
@@ -119,7 +122,7 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, counter, 
             </div>
             <section aria-labelledby="options-heading" className="mt-6 border-t border-t-black">
               {
-                !isRev && !isCurrentUser?
+                ( !isCurrentUser) ?
                   <Rater
                     rating={rating.looks.total / rating.looks.count}
                     canVoteNegative={canVoteNegative}

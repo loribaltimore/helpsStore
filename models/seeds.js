@@ -148,7 +148,7 @@ console.log("THEM TRIVIA SEEDED")
 
 const seedConnections = async () => {
     await database();
-    const currentUser = await User.findOne({username: 'Powerman5000'});
+    const currentUser = await User.findOne({ username: 'Powerman5000' }).then(data => { return data} ).catch(err => console.log(err));
     const users = await User.find({})
         .then(data => { return data }).catch(err => console.log(err));
     currentUser.connections.reciprocated = [];
@@ -382,9 +382,10 @@ const populatePending = async () => {
     // const test = await User.findById("64f0a36ed5d85f1e060c516f");
     // console.log(test);
    
-    const currentUser = await User.findOne({ username: 'Powerman5000'});
-    currentUser.membership.membershipType = 'basic';
-    await currentUser.save();
+    const currentUser = await User.findOne({ username: 'Powerman5000' });
+    console.log(currentUser);
+    // currentUser.membership.membershipType = 'basic';
+    // await currentUser.save();
     // console.log(currentUser.interestAndPass);
     // console.log(currentUser.interestAndPass.byTotal);
     // currentUser.membership.membershipType = 'pro';
@@ -463,10 +464,10 @@ const seedMetricChanges = async () => {
 };
 
 // seedMetricChanges();
-populatePending();
+// populatePending();
 // sortingCheck();
 // seedUser();
-// seedConnections();
+seedConnections();
 // seedSocketUser();
 // showResource();
 // seedLoc();

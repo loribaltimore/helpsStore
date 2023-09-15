@@ -10,8 +10,7 @@ export default function AllChats({ activeUser, allConnections }) {
     const [activeConnections, setActiveConnections] = useState(undefined);
     const [renderQuiz, setRenderQuiz] = useState(false);
     const formattedConnections = JSON.parse(allConnections);
-    const { setShowUpgrade, bankConnection, setIsLoading } = useContext(ReviewContext);
-
+    const { setShowUpgrade, bankConnection } = useContext(ReviewContext);
     // useEffect(() => { 
     //     setIsLoading(true);
     //     setTimeout(() => {setIsLoading()}, 500);
