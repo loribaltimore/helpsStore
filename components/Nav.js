@@ -6,11 +6,10 @@ import { useContext} from 'react';
 import { ReviewContext } from 'components/ReviewContext';
 import { NotifContext } from 'components/NotifContext';
 
-export default function Nav({ children, notifications }) {
+export default function Nav({ children }) {
   const { data: session } = useSession();
   const { isLoading } = useContext(ReviewContext);
   const {pReviews, setPReviews, setPChat, pChat,setPBank,pBank} = useContext(NotifContext);
-  const { reviews, chat, bank } = notifications ? JSON.parse(notifications) : {};
     return (
 <div>
         <div className="relative z-50 lg:hidden" role="dialog" aria-modal="true">
@@ -30,7 +29,8 @@ export default function Nav({ children, notifications }) {
                   </svg>
                        Dashboard
                             {
-                              reviews.length || pReviews ?
+                              // reviews.length ||
+                                pReviews ?
                               <span className='border border-black bg-gray-300 w-2 h-2 rounded-full'></span> : null
                             }
                 </Link>
@@ -44,7 +44,8 @@ export default function Nav({ children, notifications }) {
                 </svg>
                             Chat
                             {
-                              chat.length || pChat?
+                              // chat.length ||
+                                pChat ?
                               <span className='border border-black bg-gray-300 w-2 h-2 rounded-full'></span> : null
                             }
                 </Link>
@@ -66,7 +67,8 @@ export default function Nav({ children, notifications }) {
                       </svg>
                             Admirers
                             {
-                              bank.length || pBank?
+                              // bank.length ||
+                                pBank ?
                               <span className='border border-black bg-gray-300 w-2 h-2 rounded-full'></span> : null
                             }
                 </Link>

@@ -17,7 +17,7 @@ export const metadata = {
 }
 export const dynamic = 'force-dynamic';
 const url = process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL;
-console.log(url);
+
 async function getSession(cookie) {
   const response = await fetch(`${url}/api/auth/session`, {
     headers: {
@@ -42,11 +42,7 @@ export default async function RootLayout({ children }) {
       return null
     };
   }).catch(err => console.log(err));
-  let notifications;
-  if (session) {
-      notifications = await getNotifications(session.userId)
-        .then(data => { console.log(data); return data}).catch(err => console.log(err));
-  }
+
   return (
     <html lang="en">
       <body className={`${inter.className} overflow-hidden` } style={{backgroundColor: 'gray'}}>
@@ -54,7 +50,7 @@ export default async function RootLayout({ children }) {
           <RegistrationProvider>
             <ReviewProvider>
               <NotifProvider>
-              <Nav notifications={notifications ? JSON.stringify(notifications): null}>
+              <Nav>
             {
              session && session.flash && session.flash.message ?
               <Flash flash={session.flash} /> : null
