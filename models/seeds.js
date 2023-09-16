@@ -33,12 +33,12 @@ const sortingCheck = async () => {
 
 const seedUser = async () => {
     const client = await database();
-    // await User.deleteMany({});
+
     for (let i = 0; i < 50; i++){
         const randHobby = Math.floor(Math.random() * (hobbies.length / 2));
         const randAge = Math.floor(Math.random() * 30);
         const randCoord = Math.floor(Math.random() * coords.length -1);
-        const randPhoto = Math.floor(Math.random() * 24);
+        const randPhoto = Math.floor(Math.random() * 23 + 1);
        const currentUser = await new User({
         username: casual.username,
         name: casual.first_name,
@@ -58,12 +58,12 @@ const seedUser = async () => {
         genderId: randAge % 2 === 0 ? 'female' : 'male',
         age: randAge + 18
        })
-        fs.readFile(randAge % 2 === 0 ? `../public/Women Photos Datr/${randPhoto}.jpg` : `../public/Women Photos Datr/${randPhoto}.jpg`, (err, data) => {
+        fs.readFile(randAge % 2 === 0 ? `../public/Women Photos Datr/${randPhoto}.jpg` : `../public/Men Photos Datr/${randPhoto}.jpg`, (err, data) => {
             if (err) {
                 throw err;
             };
             const buffer = Buffer.from(data);
-            const db = client.useDb('myFirstProject');
+            const db = client.useDb('myFirstDatabase');
             const bucket = new GridFSBucket(db);
             console.log(buffer);
             const filename = casual.word + '.jpg';

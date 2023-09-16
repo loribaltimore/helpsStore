@@ -8,7 +8,7 @@ import Upgrade from 'components/Upgrade';
 export default function ProfileCard({ user, setAllLikedBy, setCounter, counter, currentUser, distance,
   setConnection, isBank, isRev, setCompatibility, isCurrentUser }) {
   const { setShowReviews, setShowUpgrade, showUpgrade, setBankConnection } = useContext(ReviewContext);
-  const { name, age, description, hobbies, rating } = user;
+  const { name, age, description, hobbies, rating, sign } = user;
   const currentUserFormatted = JSON.parse(currentUser);
   const [photos, setPhotos] = useState(undefined);
   const canVoteNegative = currentUserFormatted.rating.looks.count % 10 === 0; 
@@ -19,18 +19,15 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, counter, 
       user.photos.forEach(photo => {
         searchParams.append('photos[]', photo);
       })
-      // ${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}
       const url = `https://datr-lyart.vercel.app/api/user/photos?${searchParams.toString()}`;
       await fetch(url, {
         method: 'GET',
       }).then(async data => {
-        console.log('THIS IS WORKING')
         setPhotos(await data.json());
       }).catch(err => console.log(err));
     }
     asyncWrapper();
-  }, [user]);
-  console.log(isRev);
+  }, [user, counter, setCounter]);
   const flooredRating = Math.round(rating.looks.total / rating.looks.count);
     return (
         <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8">
@@ -64,7 +61,7 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, counter, 
                 <p className="text-lg text-gray-900 sm:text-xl">{age}</p>
                   <div className="ml-4 border-l border-gray-300 pl-4">
                       <div className="flex items-center">
-                        <p className='text-black'>Pisces</p>
+                      <p className='text-black'>{sign}</p>
                       <div className="flex items-center">
                       </div>
                     </div>
