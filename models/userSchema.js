@@ -12,12 +12,13 @@ const userSchema = new Schema({
     email: String,
     image: String,
     emailVerified: Boolean,
+    sign: String,
     personality: {
         openness: Number,
         conscientiousness: Number,
         extraversion: Number,
         agreeableness: Number,
-        neuroticism: Number
+        neuroticism: Number,
         },
     rating: {
         looks: {

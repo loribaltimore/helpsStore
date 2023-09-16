@@ -8,7 +8,22 @@ const coords = require('../util/coords');
 const userSorting = require('../lib/userSorting');
 const fs = require('fs');
 const { GridFSBucket } = require('mongodb');
-const {sortFunction} = require('../lib/userSorting');
+const { sortFunction } = require('../lib/userSorting');
+
+const zodiacSigns = [
+    "Aries",
+    "Taurus",
+    "Gemini",
+    "Cancer",
+    "Leo",
+    "Virgo",
+    "Libra",
+    "Scorpio",
+    "Sagittarius",
+    "Capricorn",
+    "Aquarius",
+    "Pisces"
+];
 
 const sortingCheck = async () => {
     await database();
@@ -18,16 +33,17 @@ const sortingCheck = async () => {
 
 const seedUser = async () => {
     const client = await database();
-    await User.deleteMany({});
-    for (let i = 0; i < 500; i++){
+    // await User.deleteMany({});
+    for (let i = 0; i < 50; i++){
         const randHobby = Math.floor(Math.random() * (hobbies.length / 2));
         const randAge = Math.floor(Math.random() * 30);
         const randCoord = Math.floor(Math.random() * coords.length -1);
-
+        const randPhoto = Math.floor(Math.random() * 24);
        const currentUser = await new User({
         username: casual.username,
         name: casual.first_name,
-        description: casual.sentences(n = 4),
+           description: casual.sentences(n = 4),
+        sign: zodiacSigns[Math.floor(Math.random() * zodiacSigns.length)],
            hobbies: hobbies.slice(randHobby, randHobby + 6),
             location: {
                 geo: {
@@ -35,24 +51,23 @@ const seedUser = async () => {
         }
            },
             preferences: {
-        range: Math.floor(Math.random() * 30),
+        range: Math.floor(Math.random() * 20),
         gender: randAge % 2 === 0 ? 'female' : 'male',
         age: randAge + 18
     },
-            genderId: randAge % 2 === 0 ? 'female' : 'male',
+        genderId: randAge % 2 === 0 ? 'female' : 'male',
         age: randAge + 18
        })
-        
-        fs.readFile(randAge % 2 === 0 ? '../public/female.jpeg' : '../public/guy.jpg', (err, data) => {
+        fs.readFile(randAge % 2 === 0 ? `../public/Women Photos Datr/${randPhoto}.jpg` : `../public/Women Photos Datr/${randPhoto}.jpg`, (err, data) => {
             if (err) {
                 throw err;
             };
             const buffer = Buffer.from(data);
-            const db = client.useDb('datr');
+            const db = client.useDb('myFirstProject');
             const bucket = new GridFSBucket(db);
             console.log(buffer);
-            const filename = casual.word +  randAge % 2 === 0 ? '.jpeg' : '.jpg';
-            const uploadStream = bucket.openUploadStream(filename,  {contentType:randAge % 2 === 0 ? 'image/jpeg' : 'image/jpg'});
+            const filename = casual.word + '.jpg';
+            const uploadStream = bucket.openUploadStream(filename,  {contentType:'image/jpg'});
             uploadStream.write(buffer);
             uploadStream.on('close', async function (file) {
                 currentUser.photos.push(uploadStream.id.toString());
@@ -179,44 +194,6 @@ const seedConnections = async () => {
         users[i].rating.looks.total = users[i].rating.looks.avg * 5;
         await users[i].save();
         if (currentUser._id !== users[i]._id) {
-            
-            // const newConnection = await new Connection({
-            //     connection1: users[i]._id,
-            //     trivia: {
-            //         connection1: [
-            //             {
-            //                 question: 'What kind of music do you enjoy1?',
-            //                 answers: ['Pop', 'Rock', 'Country', 'Rap'],
-            //                 chosen: 'Pop'
-            //             },
-            //             {
-            //                 question: 'What is your favorite movie genre?',
-            //                 answers: ['Action', 'Comedy', 'Drama', 'Horror'],
-            //                 chosen: 'Action'
-            //             },
-            //             {
-            //                 question: 'Are you an early bird or a night owl?',
-            //                 answers: ['Early bird', 'Night owl', 'Neither', 'Both'],
-            //                 chosen: 'Early bird'
-            //             },
-            //             {
-            //                 question: 'What is your favorite season?',
-            //                 answers: ['Summer', 'Winter', 'Spring', 'Fall'],
-            //                 chosen: 'Summer'
-            //             },
-            //             {
-            //                 question: 'Do you prefer coffee or tea?',
-            //                 answers: ['Coffee', 'Tea', 'Neither', 'Both'],
-            //                 chosen: 'Coffee'
-            //             },
-            //             {
-            //                 question: 'Do you prefer forest or beack?',
-            //                 answers: ['Forest', 'Beach', 'Neither', 'Both'],
-            //                 chosen: 'Beach'
-            //             }
-            //         ]
-            //     }
-            // }).save();
             if (i % 2 === 0 && i % 3 !== 0) {
                 currentUser.connections.matched.push(users[i]._id);
 
@@ -466,8 +443,8 @@ const seedMetricChanges = async () => {
 // seedMetricChanges();
 // populatePending();
 // sortingCheck();
-// seedUser();
-seedConnections();
+seedUser();
+// seedConnections();
 // seedSocketUser();
 // showResource();
 // seedLoc();

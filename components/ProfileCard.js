@@ -20,7 +20,7 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, counter, 
         searchParams.append('photos[]', photo);
       })
       // ${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}
-      const url = `http://localhost:3000/api/user/photos?${searchParams.toString()}`;
+      const url = `https://datr-lyart.vercel.app/api/user/photos?${searchParams.toString()}`;
       await fetch(url, {
         method: 'GET',
       }).then(async data => {
