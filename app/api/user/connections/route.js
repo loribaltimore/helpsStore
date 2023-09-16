@@ -86,6 +86,7 @@ export async function POST(request) {
           connection.notifications.bank.push({from: currentUser.name});
           currentUser.connections.liked.push(userId);
           await currentUser.save();
+          await connection.save();
         }
     } else {
       console.log('USER REJECTED');
@@ -99,6 +100,7 @@ export async function POST(request) {
         });
       };
       await currentUser.save();
+      await connection.save();
   };
 
   await User.interestAndPass(currentUserId, interested ? 'interested' : 'pass');
