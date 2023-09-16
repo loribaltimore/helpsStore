@@ -18,7 +18,7 @@ export default function Carousel({ photos }) {
                 <img
                         src={photos.formattedPhotos[counter]}
                         alt="Interior of light green canvas bag with padded laptop sleeve and internal organization pouch."
-                        className="object-fill object-center cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out"
+                        className="object-cover object-center cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out"
                         onClick={() => nextPhoto()}
                         />
 : null

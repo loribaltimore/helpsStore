@@ -34,7 +34,6 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, counter, 
   const flooredRating = Math.round(rating.looks.total / rating.looks.count);
     return (
         <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8">
-           
         <div className="space-y-16 sm:col-span-4 lg:col-span-5">
             <Carousel photos={photos} />
              {
