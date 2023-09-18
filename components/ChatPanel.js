@@ -38,10 +38,10 @@ export default function ChatPanel({ activeUser, connection, setActiveConnections
       <div className="px-1 py-2">
         <div className="">
           <div className="flex items-center">
-            <Image
+            <img
               src={`/api/user/photos/${connection[connection.activelyConnectedWith].photo}`}
-                  width={500}
-              height={500}
+              //     width={500}
+              // height={500}
               alt="profile picture"
                   className='w-[3rem] h-[3rem] rounded-full object-cover object-center'/>
             <div className="ml-4">

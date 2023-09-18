@@ -16,9 +16,9 @@ export default function ReviewPanel({ connection, updatedReviews }) {
                       reviews.map((review, reviewIdx) => (
             <div key={reviewIdx} className="flex space-x-4 text-sm text-gray-500">
                           <div className="flex-none py-10">
-                            <Image src={`/api/user/photos/${JSON.parse(connection).photos}`}
-                  width={500}
-                  height={500}
+                            <img src={`/api/user/photos/${JSON.parse(connection).photos}`}
+                  // width={500}
+                  // height={500}
                   alt="profile picture"
                   className='w-[3rem] h-[3rem] object-cover object-center rounded-full'/>
               </div>

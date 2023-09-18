@@ -17,10 +17,10 @@ export default function DashboardHeader({likedPercentage, looksRating, dateRatin
         <div className="sm:flex sm:items-center sm:justify-between">
           <div className="sm:flex sm:space-x-5">
             <div className="flex-shrink-0">
-            <Image
+            <img
               src={`/api/user/photos/${photo}`}
-                  width={100}
-              height={100}
+              //     width={100}
+              // height={100}
               alt="profile picture"
                   className='w-[3rem] h-[3rem] rounded-full object-cover object-center'/>            </div>
             <div className="text-center sm:mt-0 sm:pt-1 sm:text-left">

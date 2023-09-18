@@ -27,9 +27,9 @@ export default function BankThumbnail({ connection, membershipType, currentUserP
         <div className="space-y-6">
           <div className="flex items-center">
               <div className="flex-shrink-0">
-                <Image src={`/api/user/photos/${connection.photos[0]}`}
-                  width={500}
-                  height={500}
+                <img src={`/api/user/photos/${connection.photos[0]}`}
+                  // width={500}
+                  // height={500}
                   alt="profile picture"
                   className='w-[3rem] h-[3rem] object-cover object-center rounded-full'/>
             </div>

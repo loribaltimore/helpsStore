@@ -17,9 +17,9 @@ export default function Reviews({ connection }) {
                     <div className='w-full flex'>
                         <div className="p-5 sm:flex space-x-5">
             <div className=" flex-shrink-0">
-              <Image src={`/api/user/photos/${connection.photos}`}
-                  width={500}
-                  height={500}
+              <img src={`/api/user/photos/${connection.photos}`}
+                  // width={500}
+                  // height={500}
                   alt="profile picture"
                   className='w-[3rem] h-[3rem] object-cover object-center rounded-full'/>
             </div>

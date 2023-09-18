@@ -23,9 +23,9 @@ export default function ReviewInput({ connection, setUpdatedReviews, currentMong
   return (
     <div className="flex items-start space-x-4 mt-2">
       <div className="flex-shrink-0">
-        <Image src={`/api/user/photos/${parsedMongoConnection[parsedMongoConnection.activelyConnectedAs].photo}`}
-                  width={500}
-                  height={500}
+        <img src={`/api/user/photos/${parsedMongoConnection[parsedMongoConnection.activelyConnectedAs].photo}`}
+                  // width={500}
+                  // height={500}
                   alt="profile picture"
                   className='w-[3rem] h-[3rem] object-cover object-center rounded-full'/>
       </div>

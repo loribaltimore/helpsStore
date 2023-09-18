@@ -16,10 +16,10 @@ export default function Carousel({ photos }) {
         <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded ">
             {
                 photos ?
-                    <Image
-                        width={500}
-                        height={500}
-                        src={`https://datr-lyart.vercel.app/api/user/photos/${photos[counter]}`}
+                    <img
+                        // width={500}
+                        // height={500}
+                        src={`/api/user/photos/${photos[counter]}`}
                         alt="Interior of light green canvas bag with padded laptop sleeve and internal organization pouch."
                         className="object-cover object-center cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out"
                         onClick={() => nextPhoto()}

@@ -42,13 +42,12 @@ export default function ChatWindow({history, connection, dateInvite, setDateInvi
                         <div className="p-5 w-full sm:flex">
                             <div className="flex space-x-2 w-3/4">
                                 <div className="flex-shrink-0 ">
-                        <Image
-                        width={500}
-                        height={500}
+                        <img
+                        // width={500}
+                        // height={500}
                         src={`/api/user/photos/${connection[connection.activelyConnectedWith].photo}`}
                         alt="Interior of light green canvas bag with padded laptop sleeve and internal organization pouch."
                         className="w-[3rem] h-[3rem] rounded-full object-cover object-center cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out"
-                        onClick={() => nextPhoto()}
                         />
             </div>
             <div className=" mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
