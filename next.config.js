@@ -11,6 +11,7 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'datr-lyart.vercel.app',
+        port: '',
         pathname: '/api/user/photos/**',
       },
       {
