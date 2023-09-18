@@ -55,8 +55,8 @@ export async function POST(request) {
         if (preConnected > -1) {
             //if connection already liked currentUser
            const newConnection = await new Connection({
-            connection1:{name: currentUser.name, id: currentUser._id},
-             connection2: { name: connection.name, id: userId },
+            connection1:{name: currentUser.name, id: currentUser._id, photo: currentUser.photos},
+             connection2: { name: connection.name, id: userId, photo: connection.photos},
              compatibility: {
                 openness: 10 - Math.abs(Math.round(currentUser.personality['openness'] - connection.personality['openness'])),
         conscientiousness: 10 - Math.abs(Math.round(currentUser.personality['conscientiousness'] - connection.personality['conscientiousness'])),
@@ -108,13 +108,13 @@ export async function POST(request) {
   await connection.save();
   let updatedLikedBy = await currentUser.populate('connections.pending')
     .then(data => { return data.connections.pending }).catch(err => console.log(err));
-  const allPhotos = updatedLikedBy.map((element, index) => {
-        return element.photos[0];
-    })
-    const allUserPhotos = await getPhotos(allPhotos);
-    updatedLikedBy = updatedLikedBy.map((element, index) => {
-        return {user: element, photoUrl: allUserPhotos[index]}
-    })
+  // const allPhotos = updatedLikedBy.map((element, index) => {
+  //       return element.photos[0];
+  //   })
+    // const allUserPhotos = await getPhotos(allPhotos);
+    // updatedLikedBy = updatedLikedBy.map((element, index) => {
+    //     return {user: element, photoUrl: allUserPhotos[index]}
+    // })
     return NextResponse.json({ isMatched, isBank: updatedLikedBy, compatibility });
 };
 

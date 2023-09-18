@@ -13,6 +13,7 @@ export default function AllThumbnails({ allLikedBy, setAllLikedBy, membershipTyp
     });
     return (
         <div className='w-100 p-2'>
+                        <h1 className='text-5xl font-extralight p-5 w-3/4 border-b border-white'>Admirers</h1>
             <div className='absolute w-100 h-100 z-40 gap-4 mx-12'>
                 
                     {
@@ -35,7 +36,7 @@ export default function AllThumbnails({ allLikedBy, setAllLikedBy, membershipTyp
             {
                 allLikedBy.length ?
                 allLikedBy.map((connection, index) => { 
-                    return <BankThumbnail connection={connection.user} currentUserPersonality={JSON.stringify(currentUser.personality)} index={index} key={index}  membershipType={membershipType} />
+                    return <BankThumbnail connection={connection} currentUserPersonality={JSON.stringify(currentUser.personality)} index={index} key={index}  membershipType={membershipType} />
                 })
                     : null
             }

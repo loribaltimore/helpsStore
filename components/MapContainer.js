@@ -1,53 +1,55 @@
 "use client"
-import {useContext, useRef, useEffect } from "react";
+import {useContext, useRef, useEffect, useState } from "react";
 import {Map, MapStyle, geocoding, Marker, config} from '@maptiler/sdk';
 import { RegistrationContext } from 'components/RegistrationContext';
 
 config.apiKey = 'K34N8EzXnRm1QQbwcdOo';
 
+import { GeocodingControl } from "@maptiler/geocoding-control/maptilersdk";
+import "@maptiler/sdk/dist/maptiler-sdk.css";
+import "@maptiler/geocoding-control/style.css";
+
+
+
+const gc = new GeocodingControl({country: 'us', language: 'en', responseType: 'json'});
+
 export default function MapContainer({ location, setCoord, setIsLocation }) {
+    const [currentAddress, setCurrentAddress] = useState(undefined);
+    gc.addEventListener('response', (event) => {
+        console.log(event.detail.featureCollection.features[0].center);
+        setCoord(event.detail.featureCollection.features[0].center);
+        console.log(event.detail.featureCollection.features[0].place_name)
+        setCurrentAddress(event.detail.featureCollection.features[0].place_name)
+    })
     const mapContainer = useRef(null);
     const { setEntered } = useContext(RegistrationContext);
+
     useEffect(() => {
         const asyncWrapper = async () => {
-            let finalLoc = location;
-            if (typeof location === 'string') {
-                const result = await geocoding.forward(location);
-                finalLoc = result.features[0].geometry.coordinates;
-            };
             setTimeout(() => {
                 const map = new Map({
                     container: mapContainer.current,
                     apiKey: 'K34N8EzXnRm1QQbwcdOo',
-                    center: finalLoc,
-                    zoom: 17,
+                    center: [-105.2705, 40.0150],
+                    zoom: 5,
                     MapStyle: MapStyle.STREETS,
-                });
-                const marker = new Marker()
-                    .setLngLat({ lng: finalLoc[0], lat: finalLoc[1] })
-                    .addTo(map);
-            }, 500);
-            setCoord(finalLoc);
-        };
+                }).addControl(gc);
 
+            }, 500);
+        };
         asyncWrapper();
-        
     }, [location])
 
     return (
-        <div className="h-[40rem] w-[40rem] ml-[19.5%] absolute bg-white rounded p-5 border border-black">
+        <div className="h-[20rem] space-y-3  rounded border border-black">
             <div ref={mapContainer} className="w-full h-3/4 p-5 border border-black"></div>
-            <h1 className="text-slate-800 text-center py-2">Is this your address?</h1>
-            <div className="flex p-5 w-1/2 mx-auto space-x-3">
-                <button className="border border-black text-black p-2 rounded text-sm h-full w-1/2"
-                onClick={() => setIsLocation(false)}
-                >Correct</button>
-                <button className="border border-black text-black p-2 rounded text-sm h-full w-1/2"
-                    onClick={() => {
-                        setIsLocation(false);
-                        setEntered(false);
-                    }}
-                >Incorrect</button>
+            <div className=" flex w-3/4 mx-auto">
+                <div className="w-1/2">
+                    <p className="text-black text-sm">{currentAddress}</p>
+                </div>
+                <button className="block mx-auto border border-black text-black p-3 rounded text-sm h-full hover:ring ring-[#02F3B0] ring-inset"
+                    onClick={() => setEntered(true)}
+                >Set Address</button>
             </div>
         </div>
     )

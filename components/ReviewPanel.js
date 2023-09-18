@@ -1,12 +1,12 @@
-import { useState } from 'react';
 import { StarIcon } from '@heroicons/react/20/solid'
+import Image from 'next/image';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function ReviewPanel({ connection, updatedReviews }) {
-    const reviews = updatedReviews.length ? updatedReviews : JSON.parse(connection).reviews;
+  const reviews = updatedReviews.length ? updatedReviews : JSON.parse(connection).reviews;
   return (
     <div className="bg-white p-4 rounded mb-10 ">
       <div className=''>
@@ -15,8 +15,12 @@ export default function ReviewPanel({ connection, updatedReviews }) {
                         reviews && reviews.length ?
                       reviews.map((review, reviewIdx) => (
             <div key={reviewIdx} className="flex space-x-4 text-sm text-gray-500">
-              <div className="flex-none py-10">
-                <img src={review.avatarSrc} alt="" className="h-10 w-10 rounded-full bg-gray-100" />
+                          <div className="flex-none py-10">
+                            <Image src={`/api/user/photos/${JSON.parse(connection).photos}`}
+                  width={500}
+                  height={500}
+                  alt="profile picture"
+                  className='w-[3rem] h-[3rem] object-cover object-center rounded-full'/>
               </div>
               <div className={classNames(reviewIdx === 0 ? '' : 'border-t border-black', 'flex-1 py-10')}>
                 <h3 className="font-medium text-gray-900">{review.from}</h3>

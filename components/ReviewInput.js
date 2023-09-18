@@ -1,10 +1,12 @@
 import {  useState } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
+import Image from 'next/image';
 
 export default function ReviewInput({ connection, setUpdatedReviews, currentMongoConnection}) {
     const [review, setReview] = useState('');
     const [parsedConnection, setParsedConnection] = useState(typeof connection === 'object' ? connection :  JSON.parse(connection));
   const [isRating, setIsRating] = useState(1);
+  const parsedMongoConnection = JSON.parse(currentMongoConnection);
     const rate = [0, 1, 2, 3, 4]
     const handleClick = async () => { 
         await fetch('/api/user/connections/review', {
@@ -21,11 +23,11 @@ export default function ReviewInput({ connection, setUpdatedReviews, currentMong
   return (
     <div className="flex items-start space-x-4 mt-2">
       <div className="flex-shrink-0">
-        <img
-          className="inline-block h-10 w-10 rounded-full"
-          src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-          alt=""
-        />
+        <Image src={`/api/user/photos/${parsedMongoConnection[parsedMongoConnection.activelyConnectedAs].photo}`}
+                  width={500}
+                  height={500}
+                  alt="profile picture"
+                  className='w-[3rem] h-[3rem] object-cover object-center rounded-full'/>
       </div>
           <div className="min-w-0 flex-1">
               <div className='flex'>

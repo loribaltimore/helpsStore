@@ -61,19 +61,21 @@ export async function getData(userId) {
         dateRating, looksRating, name, totalLikedByPercentage,
         looksTrend: currentUser.rating.weekly.currentWeek.looks.trend,
         dateTrend: currentUser.rating.weekly.currentWeek.date.trend,
-        likedTrend: currentUser.connections.weekly.currentWeek.trend
+        likedTrend: currentUser.connections.weekly.currentWeek.trend,
+        photo: currentUser.photos[0]
     };
 }
 
 export default async function layout({ children }) {
     const session = await getServerSession(authOptions);
-    const {dateRating, looksRating, name, totalLikedByPercentage, looksTrend, dateTrend, likedTrend} = await getData(session.userId.toString());
+    const {dateRating, looksRating, name, totalLikedByPercentage, looksTrend, dateTrend, likedTrend, photo} = await getData(session.userId.toString());
     return (
         <div className="mt-0 p-5">
-            <DashboardHeader dateRating={{dateRating, dateTrend}}
-                looksRating={{looksRating, looksTrend}}
-                likedPercentage={{totalLikedByPercentage, likedTrend}}
+            <DashboardHeader dateRating={{ dateRating, dateTrend }}
+                looksRating={{ looksRating, looksTrend }}
+                likedPercentage={{ totalLikedByPercentage, likedTrend }}
                 name={name}
+                photo={photo}
             />
             {children}
         </div>

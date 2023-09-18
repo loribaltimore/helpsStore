@@ -20,7 +20,6 @@ const svgRefNo = useRef(null);
   }, [newRating, interested]);
 
   const showedInterest = async () => {
-        setCounter(prev => prev + 1);
     await fetch('/api/user/connections', {
       method: 'POST',
       body: JSON.stringify({
@@ -50,7 +49,6 @@ const svgRefNo = useRef(null);
       setCounter(prev => prev + 1);
     }).catch(err => console.log(err))
 };
-  
 
     return (
       <div className="flex space-x-16 w-3/4 mx-auto pt-5">

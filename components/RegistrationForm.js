@@ -33,32 +33,10 @@ const {data: update } = useSession();
             router.push('/dashboard')
         }
     };
-    }, [entered]);
+  }, [entered]);
 
   const handleClick = async () => {
     setIsPersonality(true);
-    setIsLocation(true);
-        if (!manualLoc) {
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(async function success(pos) {
-                    const crd = pos.coords;
-                    await fetch(`/api/user/location`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ lat: crd.latitude, lng: crd.longitude }),
-                    }).then(async data => {
-                        const res = await data.json();
-                        setLocation([res.location.data[0].longitude, res.location.data[0].latitude]);
-                    }).catch(err => console.log(err));
-                })
-            } else {
-                console.log("NO LOCATION AVAILABLE")
-            }
-        } else {
-              setLocation(streetAddress + ' ' + zip);
-        }
     };
 
    const createUser = async () => {
@@ -109,10 +87,6 @@ const {data: update } = useSession();
         <h1 className='block p-10 text-4xl font-extralight'>Profile Setup</h1>
 
       <div className='z-1 flex p-10 space-x-2 border-t w-11/12'>
-            {
-                isLocation && location ?
-            <LocationServices setCoord={setCoord} setIsLocation={setIsLocation} location={location} setLocation={setLocation} /> : null
-            }
         <div className={`sm:space-y-16 p-5 w-1/2 mx-auto bg-white rounded border border-black ${isLocation && location ? 'hidden' : null}`}>
         <div>
           <h2 className="text-4xl font-extralight leading-7 text-black">Profile</h2>
@@ -173,67 +147,9 @@ const {data: update } = useSession();
                                 />
               </div>
             </div>
-                        <div className='flex py-3 space-x-16'>
-                            <h1 className='text-lg font-extralight leading-6 text-black sm:pt-1.5'>Set Location Manually</h1>
-                                    {
-                                        !entered ?
-                        <Switch
-              checked={manualLoc}
-              onChange={setManualLoc}
-              className={classNames(
-                manualLoc ? 'bg-indigo-600' : 'bg-gray-200',
-                'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2'
-              )}
-            >
-              <span
-                aria-hidden="true"
-                className={classNames(
-                  manualLoc ? 'translate-x-5' : 'translate-x-0',
-                  'inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
-                )}
-              />
-            </Switch>: ''
-            }
+                        <div className='py-3 space-x-16'>
+                    <LocationServices setCoord={setCoord} setIsLocation={setIsLocation} location={location} setLocation={setLocation} />
                                 </div>
-                                {
-                            manualLoc ? 
-                                <div>
-                                <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-              <label htmlFor="street-address" className="block text-lg font-extralight leading-6 text-black sm:pt-1.5">
-                Street address
-              </label>
-              <div className="mt-2 sm:col-span-2 sm:mt-0">
-                <input
-                  type="text"
-                  name="street-address"
-                                    id="street-address"
-                                    value={streetAddress}
-                  autoComplete="street-address"
-                  className="block w-full rounded border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xl sm:text-sm sm:leading-6"
-                     onChange={(event) => setStreetAddress(event.target.value)}
-                                />
-              </div>
-            </div>
-
-
-            <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-              <label htmlFor="postal-code" className="block text-lg font-extralight leading-6 text-black sm:pt-1.5">
-                ZIP / Postal code
-              </label>
-              <div className="mt-2 sm:col-span-2 sm:mt-0">
-                <input
-                  type="text"
-                  name="postal-code"
-                                    id="postal-code"
-                                    value={zip}
-                  autoComplete="postal-code"
-                  className="block w-full rounded border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
-                   onChange={(event) => setZip(event.target.value)}
-                                />
-              </div>
-                                    </div>
-                                </div> : ''
-                        }
           </div>
         </div>
             <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">

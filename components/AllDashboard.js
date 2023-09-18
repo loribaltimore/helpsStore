@@ -20,7 +20,7 @@ export default function AllDashboard({likedLineData, currentUser, looksMetrics, 
                 />
                             </div>
                 </div>
-                <DashboardOverview user={JSON.parse(currentUser)} currentUser={currentUser} isCurrentUser={true} />
+                <DashboardOverview user={JSON.parse(currentUser)} currentUser={currentUser} isCurrentUser={true}/>
                     </div> 
         </div>
 

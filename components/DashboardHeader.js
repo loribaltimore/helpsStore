@@ -1,21 +1,13 @@
 "use client"
 import MetricsDiff from 'components/MetricsDiff';
-import { useContext } from 'react';
-import { ReviewContext } from 'components/ReviewContext';
+import Image from 'next/image';
 
-export default function DashboardHeader({likedPercentage, looksRating, dateRating, name}) {
-    const { setShowProfile, showProfile } = useContext(ReviewContext);
-    
+export default function DashboardHeader({likedPercentage, looksRating, dateRating, photo, name}) {
     const stats = [
         { label: 'Liked Percentage', value: `${likedPercentage.totalLikedByPercentage || 0}%`, type: likedPercentage.likedTrend },
         { label: 'Looks Rating', value: looksRating.looksRating, type: looksRating.looksTrend},
         { label: 'Date Rating', value: dateRating.dateRating, type: dateRating.dateTrend },
     ];
-    const user = {
-  name: name,
-  imageUrl:
-    'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
   return (
     <div className="overflow-hidden rounded bg-white shadow sticky top-0 z-40">
       <h2 className="sr-only" id="profile-overview-title">
@@ -25,12 +17,15 @@ export default function DashboardHeader({likedPercentage, looksRating, dateRatin
         <div className="sm:flex sm:items-center sm:justify-between">
           <div className="sm:flex sm:space-x-5">
             <div className="flex-shrink-0">
-              <img className="mx-auto h-20 w-20 rounded-full" src={user.imageUrl} alt="" />
-            </div>
+            <Image
+              src={`/api/user/photos/${photo}`}
+                  width={100}
+              height={100}
+              alt="profile picture"
+                  className='w-[3rem] h-[3rem] rounded-full object-cover object-center'/>            </div>
             <div className="text-center sm:mt-0 sm:pt-1 sm:text-left">
               <p className="text-lg font-extralight text-gray-600">Welcome back,</p>
-              <p className="text-4xl font-extralight text-gray-900">{user.name}</p>
-              <p className="text-lg font-extralight text-gray-600">{user.role}</p>
+              <p className="text-4xl font-extralight text-gray-900">{name}</p>
             </div>
           </div>
         </div>
@@ -48,4 +43,6 @@ export default function DashboardHeader({likedPercentage, looksRating, dateRatin
       </div>
     </div>
   )
-}
+};
+
+// work on seeding and fetching mingles

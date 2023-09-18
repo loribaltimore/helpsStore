@@ -360,7 +360,7 @@ const populatePending = async () => {
     // console.log(test);
    
     const currentUser = await User.findOne({ username: 'Powerman5000' });
-    currentUser.photos = ['65062d54c9ecc5f12f4a9a5a'];
+    currentUser.connections.reciprocated = [];
     await currentUser.save();
     // currentUser.membership.membershipType = 'basic';
     // await currentUser.save();

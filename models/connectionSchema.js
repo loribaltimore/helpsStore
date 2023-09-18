@@ -4,11 +4,13 @@ const database = require('./database');
 const connectionSchema = new Schema({
     connection1: {
         name: String,
-        id: String
+        id: String,
+        photo: [String]
     },
     connection2: {
         name: String,
-        id: String
+        id: String,
+        photo: [String]
     },
     conversation: [
         {

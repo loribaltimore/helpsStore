@@ -17,8 +17,9 @@ export default function AllChats({ activeUser, allConnections }) {
     // }, [])
 
     return (
-        <div className='block  mt-10'>
-        <div className='block space-y-2 flex flex-wrap space-x-2'>
+        <div className='block  p-2'>
+            <h1 className='text-5xl font-extralight p-5 w-3/4 border-b border-white'>Chat</h1>
+        <div className='block space-y-2 flex flex-wrap space-x-2 mt-10'>
              <div className='absolute w-100 h-100 z-40 gap-4 mx-12'>
                     {
                         bankConnection ?

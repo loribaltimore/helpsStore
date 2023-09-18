@@ -11,22 +11,6 @@ export default function ProfileCard({ user, setAllLikedBy, setCounter, counter, 
   const { name, age, description, hobbies, rating, sign, photos } = user;
   const currentUserFormatted = JSON.parse(currentUser);
   const canVoteNegative = currentUserFormatted.rating.looks.count % 10 === 0; 
-
-  // useEffect(() => {
-  //   const asyncWrapper = async () => {
-  //     const searchParams = new URLSearchParams();
-  //     user.photos.forEach(photo => {
-  //       searchParams.append('photos[]', photo);
-  //     })
-  //     const url = `https://datr-lyart.vercel.app/api/user/photos?${searchParams.toString()}`;
-  //     await fetch(url, {
-  //       method: 'GET',
-  //     }).then(async data => {
-  //       setPhotos(await data.json());
-  //     }).catch(err => console.log(err));
-  //   }
-  //   asyncWrapper();
-  // }, [user, counter, setCounter]);
   const flooredRating = Math.round(rating.looks.total / rating.looks.count);
     return (
         <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8">

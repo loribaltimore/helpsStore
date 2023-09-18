@@ -3,11 +3,7 @@ import { useState, useContext } from 'react';
 import ReviewPanel from 'components/ReviewPanel';
 import ReviewInput from 'components/ReviewInput';
 import { ReviewContext } from 'components/ReviewContext';
-
- const user = {
-  imageUrl:
-    'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
+import Image from 'next/image';
 
 export default function Reviews({ connection }) {
     const { currentMongoConnection, setShowReviews } = useContext(ReviewContext);
@@ -21,7 +17,11 @@ export default function Reviews({ connection }) {
                     <div className='w-full flex'>
                         <div className="p-5 sm:flex space-x-5">
             <div className=" flex-shrink-0">
-              <img className="mx-auto h-12 w-12 rounded-full" src={user.imageUrl} alt="" />
+              <Image src={`/api/user/photos/${connection.photos}`}
+                  width={500}
+                  height={500}
+                  alt="profile picture"
+                  className='w-[3rem] h-[3rem] object-cover object-center rounded-full'/>
             </div>
             <div className=" mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
               <p className="text-4xl font-extralight text-gray-900">{formattedConnection.name}</p>
@@ -47,3 +47,7 @@ export default function Reviews({ connection }) {
       </div> 
       </div>
 };
+
+//hobby input limit and reactivity
+//location input
+//user sort
