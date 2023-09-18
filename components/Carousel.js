@@ -6,7 +6,6 @@ export default function Carousel({ photos }) {
     const [counter, setCounter] = useState(0);
         console.log(photos[counter], 'HEREHERE')
 
-
     const nextPhoto = () => {
         if (counter + 1 <= photos.length -1) {
              setCounter(prev => prev + 1)

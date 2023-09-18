@@ -6,7 +6,22 @@ const nextConfig = {
     config.experiments = { ...config.experiments, topLevelAwait: true }
     return config
   },
+   images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'datr-lyart.vercel.app',
+        pathname: '/api/user/photos/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost:3000',
+        pathname: '/api/user/photos/**',
+      },
+    ],
+  },
 };
+
 module.exports = nextConfig;
 // module.exports = {
 //   async headers() {
