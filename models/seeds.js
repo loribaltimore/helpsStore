@@ -360,7 +360,8 @@ const populatePending = async () => {
     // console.log(test);
    
     const currentUser = await User.findOne({ username: 'Powerman5000' });
-    console.log(currentUser);
+    currentUser.photos = ['65062d54c9ecc5f12f4a9a5a'];
+    await currentUser.save();
     // currentUser.membership.membershipType = 'basic';
     // await currentUser.save();
     // console.log(currentUser.interestAndPass);
@@ -441,9 +442,9 @@ const seedMetricChanges = async () => {
 };
 
 // seedMetricChanges();
-// populatePending();
+populatePending();
 // sortingCheck();
-seedUser();
+// seedUser();
 // seedConnections();
 // seedSocketUser();
 // showResource();

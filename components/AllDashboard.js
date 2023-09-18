@@ -21,15 +21,6 @@ export default function AllDashboard({likedLineData, currentUser, looksMetrics, 
                             </div>
                 </div>
                 <DashboardOverview user={JSON.parse(currentUser)} currentUser={currentUser} isCurrentUser={true} />
-                    {/* <div className='flex space-x-2'>
-
-            <div className="rounded text-center mx-auto w-1/2 p-5 drop-shadow-lg">
-                <DashboardWidget likeRatio={{passed: totalRejectedBy, liked: totalLikedBy}} />
-            </div>  
-            <div className="rounded text-center mx-auto w-1/2 p-5 drop-shadow-lg">
-                <DashboardWidget pieDataTest={true} />
-            </div>  
-                        </div> */}
                     </div> 
         </div>
 

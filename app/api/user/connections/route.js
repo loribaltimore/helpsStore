@@ -150,7 +150,3 @@ export async function GET(request) {
     formattedPhotos: allFormattedPhotos
   })
 }
-
-
-
-// compatibilityResults show up instead of isMatch trivia game

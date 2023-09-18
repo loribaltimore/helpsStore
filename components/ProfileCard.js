@@ -1,6 +1,6 @@
 "use client"
 import Carousel from 'components/Carousel';
-import { useEffect, useState, useContext } from 'react';
+import { useContext } from 'react';
 import Rater from 'components/Rater';
 import { ReviewContext } from 'components/ReviewContext';
 import Upgrade from 'components/Upgrade';
@@ -8,31 +8,30 @@ import Upgrade from 'components/Upgrade';
 export default function ProfileCard({ user, setAllLikedBy, setCounter, counter, currentUser, distance,
   setConnection, isBank, isRev, setCompatibility, isCurrentUser }) {
   const { setShowReviews, setShowUpgrade, showUpgrade, setBankConnection } = useContext(ReviewContext);
-  const { name, age, description, hobbies, rating, sign } = user;
+  const { name, age, description, hobbies, rating, sign, photos } = user;
   const currentUserFormatted = JSON.parse(currentUser);
-  const [photos, setPhotos] = useState(undefined);
   const canVoteNegative = currentUserFormatted.rating.looks.count % 10 === 0; 
 
-  useEffect(() => {
-    const asyncWrapper = async () => {
-      const searchParams = new URLSearchParams();
-      user.photos.forEach(photo => {
-        searchParams.append('photos[]', photo);
-      })
-      const url = `https://datr-lyart.vercel.app/api/user/photos?${searchParams.toString()}`;
-      await fetch(url, {
-        method: 'GET',
-      }).then(async data => {
-        setPhotos(await data.json());
-      }).catch(err => console.log(err));
-    }
-    asyncWrapper();
-  }, [user, counter, setCounter]);
+  // useEffect(() => {
+  //   const asyncWrapper = async () => {
+  //     const searchParams = new URLSearchParams();
+  //     user.photos.forEach(photo => {
+  //       searchParams.append('photos[]', photo);
+  //     })
+  //     const url = `https://datr-lyart.vercel.app/api/user/photos?${searchParams.toString()}`;
+  //     await fetch(url, {
+  //       method: 'GET',
+  //     }).then(async data => {
+  //       setPhotos(await data.json());
+  //     }).catch(err => console.log(err));
+  //   }
+  //   asyncWrapper();
+  // }, [user, counter, setCounter]);
   const flooredRating = Math.round(rating.looks.total / rating.looks.count);
     return (
         <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8">
         <div className="space-y-16 sm:col-span-4 lg:col-span-5">
-            <Carousel photos={photos} />
+          <Carousel photos={photos} />
              {
           isBank || isRev?
             <button

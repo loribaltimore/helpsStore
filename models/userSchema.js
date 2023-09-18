@@ -281,13 +281,12 @@ userSchema.static('interestAndPass', async (currentUserId, isInterested) => {
     await database();
     const User = models.User || model('User', userSchema);
     const currentUser = await User.findById(currentUserId);
-    console.log(currentUserId, 'IS HERE IS HERE');
     const totalInteractions = currentUser.interestAndPass.interested.count + currentUser.interestAndPass.pass.count;
     const increment = totalInteractions <= 50 ? 1: Math.floor(totalInteractions / 50);
     if (!currentUser.interestAndPass.byTotal[increment]) {
             currentUser.interestAndPass.byTotal.push({ interested: 0, pass: 0, matched: 0, dated: 0 });
     };
-    currentUser.interestAndPass.byTotal[increment][isInterested] += 1;
+    currentUser.interestAndPass.byTotal[increment - 1][isInterested] += 1;
     isInterested !== 'matched' ?
         currentUser.interestAndPass[isInterested].count += 1 : null;
     
@@ -302,3 +301,9 @@ userSchema.virtual('dontQueue', async (currentUserId) => {
 });
 
 module.exports = models.User || model("User", userSchema);
+
+
+//     double check that you can fetch more possible profiles if needed
+//         have to reseed local db with new users
+
+//have to refactor how images are handled;

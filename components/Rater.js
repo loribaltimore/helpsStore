@@ -44,7 +44,6 @@ const svgRefNo = useRef(null);
         parsedConnection.activelyConnectedWith = parsedMatch.connectedWith;
         setConnection(parsedConnection);
         setCompatibility(compatibility);
-
       } else if (isBank) {
         setAllLikedBy(res.isBank)
       } 

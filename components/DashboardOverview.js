@@ -1,30 +1,11 @@
 import Carousel from 'components/Carousel';
-import { useEffect, useState, useContext } from 'react';
+import { useState,  useContext } from 'react';
 import { ReviewContext } from 'components/ReviewContext';
 import ReviewPanel from 'components/ReviewPanel';
 
-export default function DashboardOverview({ user, setAllLikedBy, setCounter, currentUser, distance,
-  setConnection, isBank, isRev, setCompatibility, isCurrentUser }) {
-  const { setShowReviews, setShowUpgrade, showUpgrade, setBankConnection } = useContext(ReviewContext);
-  const { name, age, description, hobbies, rating } = user;
-  const currentUserFormatted = JSON.parse(currentUser);
-  const [photos, setPhotos] = useState(undefined);
-  useEffect(() => {
-    const asyncWrapper = async () => {
-      const searchParams = new URLSearchParams();
-      user.photos.forEach(photo => {
-        searchParams.append('photos[]', photo);
-      });
-      // ${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}
-     const url = `/api/user/photos?${searchParams.toString()}`;
-      await fetch(url, {
-        method: 'GET',
-      }).then(async data => {
-        setPhotos(await data.json());
-      }).catch(err => console.log(err));
-    }
-    asyncWrapper();
-  }, [user]);
+export default function DashboardOverview({ user, currentUser, isBank, isRev}) {
+  const { setShowReviews, setShowUpgrade, setBankConnection } = useContext(ReviewContext);
+  const { name, age, description, hobbies, rating, photos } = user;
   const flooredRating = Math.round(rating.looks.total / rating.looks.count);
     return (
         <div className=" space-y-10 border border-black m-auto mt-10 mb-10 items-center overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 rounded w-3/4">
