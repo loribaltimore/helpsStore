@@ -54,10 +54,10 @@ const svgRefNo = useRef(null);
       <div className="flex space-x-16 w-3/4 mx-auto pt-5">
         <div>        
                         <h1 className="text-black text-2xl font-extralight mb-2 text-center">Rate</h1>
-        <div className="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="mt-1 grid grid-cols-1 gapy-4 gap-3 sm:grid-cols-3">
             {
               canVoteNegative || rating + 2 >= 11 ?
-                    <div className={`${newRating === rating - 1 ? 'bg-[#02F3B0]' : null} cursor-pointer hover:ring ring-[#02F3B0] ring-inset hover:scale-110 transition-all duration-300 ease-in-out relative block rounded border border-black p-4 active:scale-100 transition-all duration-100 ease-in-out`}
+                    <div className={`${newRating === rating - 1 ? 'bg-[#02F3B0]' : null} cursor-pointer hover:ring ring-[#02F3B0] ring-inset hover:scale-110 transition-all duration-300 ease-in-out relative block rounded border border-black py-4 px-3 active:scale-100 transition-all duration-100 ease-in-out`}
                   onClick={async() => {
                     setNewRating(rating - 1);
                   }}
@@ -66,7 +66,7 @@ const svgRefNo = useRef(null);
                   </div>
                   : null
             }
-                    <div className={`${newRating === rating ? 'bg-[#02F3B0]' : null} cursor-pointer hover:ring ring-[#02F3B0] ring-inset hover:scale-110 transition-all duration-300 ease-in-out relative block rounded border border-black p-4 active:scale-100 transition-all duration-100 ease-in-out`}
+                    <div className={`${newRating === rating ? 'bg-[#02F3B0]' : null} cursor-pointer hover:ring ring-[#02F3B0] ring-inset hover:scale-110 transition-all duration-300 ease-in-out relative block rounded border border-black py-4 px-3 active:scale-100 transition-all duration-100 ease-in-out`}
               onClick={async () => {
                 setNewRating(rating);
               }}
@@ -74,7 +74,7 @@ const svgRefNo = useRef(null);
                           <p id="size-choice-1-label" className="text-base text-lg font-medium text-black text-center">{flooredRating}</p>
               </div>
             
-                    <div className={`${newRating === rating + 1 ? 'bg-[#02F3B0]' : null} cursor-pointer hover:ring ring-[#02F3B0] ring-inset hover:scale-110 transition-all duration-300 ease-in-out relative block rounded border border-black p-4 active:scale-100 transition-all duration-100 ease-in-out`}
+                    <div className={`${newRating === rating + 1 ? 'bg-[#02F3B0]' : null} cursor-pointer hover:ring ring-[#02F3B0] ring-inset hover:scale-110 transition-all duration-300 ease-in-out relative block rounded border border-black py-4 px-3 active:scale-100 transition-all duration-100 ease-in-out`}
               onClick={async () => {
                 setNewRating(rating + 1);
               }}
@@ -83,7 +83,7 @@ const svgRefNo = useRef(null);
             </div>
             {
               !canVoteNegative && rating + 2 < 11?
-                    <div className={`${newRating === rating + 2 ? 'bg-[#02F3B0]' : null} cursor-pointer hover:ring ring-[#02F3B0] ring-inset hover:scale-110 transition-all duration-300 ease-in-out relative block rounded border border-black p-4 active:scale-100 transition-all duration-100 ease-in-out`}
+                    <div className={`${newRating === rating + 2 ? 'bg-[#02F3B0]' : null} cursor-pointer hover:ring ring-[#02F3B0] ring-inset hover:scale-110 transition-all duration-300 ease-in-out relative block rounded border border-black py-4 px-3 active:scale-100 transition-all duration-100 ease-in-out`}
                   onClick={async () => {
                     setNewRating(rating + 2);
                   }}
