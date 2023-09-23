@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 
 //THIS EDIT MADE BY SYDNEY ON GITHUB
-let uri = process.env.NODE_ENV === "development" || process.env.NODE_ENV === undefined? 'mongodb://localhost:27017/datr' :  "mongodb+srv://vercel-admin-user:ETPIicfqVnzDNJNr@portfolio.s3wva9j.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+let uri = process.env.NODE_ENV === "development" || process.env.NODE_ENV === undefined? 'mongodb://localhost:27017/helps' :  "mongodb+srv://vercel-admin-user:ETPIicfqVnzDNJNr@portfolio.s3wva9j.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const options = {};
 let client;
 let clientPromise;

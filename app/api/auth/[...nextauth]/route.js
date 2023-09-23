@@ -36,6 +36,7 @@ export const authOptions = {
       session = await Session.findOne({ userId: convertedId }).then(data => { return data }).catch(err => console.log(err));
       if (newSession) {
         session.flash = newSession.flash;
+        session.cart = newSession.cart;
        await session.save();
       };
       return  session;
