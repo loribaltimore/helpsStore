@@ -12,8 +12,8 @@ import { NotifProvider } from 'components/NotifContext';
 
 import User from 'models/userSchema';
 export const metadata = {
-  title: 'Datr',
-  description: 'A Dating App for Pros',
+  title: 'helps',
+  description: 'A New Way to Give',
 }
 export const dynamic = 'force-dynamic';
 const url = process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL;
