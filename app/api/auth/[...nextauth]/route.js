@@ -38,6 +38,7 @@ export const authOptions = {
         session.flash = newSession.flash;
        await session.save();
       };
+      console.log('test')
       return  session;
     },
     async jwt({ token, user, account, profile, isNewUser }) {
