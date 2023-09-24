@@ -12,6 +12,7 @@ import AltNav from 'components/AltNav';
 import NewCart from 'components/NewCart';
 import User from 'models/userSchema';
 import { SignUpProvider } from '@/components/SignUpContext';
+
 export const metadata = {
   title: 'Helps',
   description: 'A New Way to Give',
@@ -37,6 +38,8 @@ async function getSession(cookie) {
 
 
 export default async function RootLayout({ children }) {
+  let session;
+  let currentUser;
   const sessionObj = await getSession(headers().get('cookie') ?? '').then(data => {
     if (data) {
       return data
@@ -44,7 +47,10 @@ export default async function RootLayout({ children }) {
       return null
     };
   }).catch(err => console.log(err));
-  const { session, currentUser } = sessionObj;
+  if (sessionObj) {
+    session = sessionObj.session;
+    currentUser = sessionObj.currentUser;
+  }
   return (
     <html lang="en">
       <body className={`${inter.className} block p-5 bg-white w-full`}>

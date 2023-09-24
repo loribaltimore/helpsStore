@@ -4,8 +4,6 @@ import { useContext } from 'react';
 
 function CartBtn({ serverCart }) {
     let { renderCart, setRenderCart, cart, setCart } = useContext(MainContext);
-    console.log(cart.items)
-    console.log()
     const handleClick = async () => {
         setRenderCart(!renderCart);
         if (!cart) {

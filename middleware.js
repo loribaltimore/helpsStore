@@ -39,7 +39,7 @@ export async function middleware(request) {
                 }
             }).catch(err => console.log(err));
         if (response) {
-            return NextResponse.redirect(`${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/dashboard`)
+            return NextResponse.redirect(`${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/home`)
         };
     }
 };
