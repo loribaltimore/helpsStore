@@ -3,10 +3,24 @@ import { updateCoin } from 'lib/updateCart';
 import { useState, useContext, useEffect } from 'react';
 import { CheckoutContext } from './CheckoutContext';
 
+const canCheckout = (totalCoin, chosenCharities) => {
+    let canCheckout = true;
+    if (totalCoin === 0) {
+        for (let i = 0; i < chosenCharities.length; i++) {
+        if (chosenCharities[i].qty < 2) {
+            canCheckout = false;
+            break;
+        };
+    };
+    } else { canCheckout = false };
+    return canCheckout;
+}
+
 export default function CheckoutBtn({ cart }) {
-    const { chosenCharities, setOpen } = useContext(CheckoutContext);
+    const { chosenCharities, setOpen, totalCoin } = useContext(CheckoutContext);
 
     const [updatedCart, setUpdatedCart] = useState(undefined);
+    const [userCanCheckout, setUserCanCheckout] = useState(false);
 
     useEffect(() => {
         const query = new URLSearchParams(window.location.search);
@@ -18,16 +32,9 @@ export default function CheckoutBtn({ cart }) {
             console.log('Order canceled -- continue to shop around and checkout when you’re ready.');
         }
     }, []);
-
+    
     const handleClick = async (event) => {
-        // event.preventDefault();
-        // if (chosenCharities.length > 0) {
-        //     await updateCoin(cart, chosenCharities)
-        //         .then(data => { setUpdatedCart(data) })
-        //         .catch(err => console.log(err));
-        // } else {
-        //     setOpen(true);
-        // }
+        canCheckout(totalCoin, chosenCharities) ? setUserCanCheckout(true) : setOpen(true);
     };
 
     const buttonStyle = {
@@ -49,10 +56,10 @@ export default function CheckoutBtn({ cart }) {
                     <input name="cart[]" defaultValue={element.code + ':' + element.config.qty} key={index} hidden />
                 )) : ''}
                 <section style={{ background: '#ffffff', display: 'flex', flexDirection: 'column', width: '400px', borderRadius: '6px', justifyContent: 'space-between' }}>
-                    {updatedCart === undefined ?
-                        <button type="submit" role="link" style={buttonStyle} onClick={(event) => handleClick(event)} onMouseOver={() => buttonStyle.opacity = '0.8'}>
+                    {!userCanCheckout ?
+                        <div className='border border-black rounded p-2 text-center' onClick={(event) => handleClick(event)} onMouseOver={() => buttonStyle.opacity = '0.8'}>
                             Confirm Charities
-                        </button>
+                        </div>
                         :
                         <button type='submit' style={{ ...buttonStyle, backgroundColor: 'green' }} onMouseOver={() => buttonStyle.opacity = '0.8'}>
                             Checkout

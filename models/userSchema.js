@@ -1,6 +1,6 @@
 let mongoose = require('mongoose');
 let { Schema, model, models } = mongoose;
-import database from 'models/database';
+const database = require('./database');
 
 let userSchema = new Schema({
     username: {
@@ -307,7 +307,8 @@ userSchema.method('likeCharity', async (id, org, cause) => {
     await database();
     const User = models.User || model("User", userSchema);
     let currentUser = await User.findById(id);
-    currentUser.charities.liked.orgs.push(org);
+    console.log(org, 'ORG IS');
+    currentUser.charities.liked.orgs = [...currentUser.charities.liked.orgs, org];
     let allTags = {};
     org.tags.forEach(function (element, index) {
         allTags[element] = 1;
@@ -315,21 +316,26 @@ userSchema.method('likeCharity', async (id, org, cause) => {
     if (currentUser.charities.interests.get(cause) === undefined) {
         currentUser.charities.interests.set(cause, { score: 1, tags: allTags })
         console.log('is new cause');
-        return currentUser.charities.interests;
+        // return currentUser.charities.interests;
     } else {
         let updatedScore = currentUser.charities.interests.get(cause).score += 1;
         let updatedTags = currentUser.charities.interests.get(cause).tags;
         Object.keys(allTags).forEach(function (element, index) {
             updatedTags[element] = updatedTags[element] + 1 || 1;
         });
-        currentUser.charities.interests.set(cause, {score: updatedScore, tags: updatedTags})
-        return currentUser.charities.interests;
+        currentUser.charities.interests.set(cause, { score: updatedScore, tags: updatedTags })
     };
+            // return currentUser.charities.interests;
+        await currentUser.save();
+
 });
 
 module.exports = models.User || model("User", userSchema);
 
 
+
+running through full UX.Want to complete purchase -> have to build api / checkout to do that first. 
+Then want to make sure queue logs works and stuff
 
 
 

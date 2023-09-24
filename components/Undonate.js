@@ -2,32 +2,55 @@ import { MainContext } from 'components/MainContext';
 import { CheckoutContext } from 'components/CheckoutContext';
 import { useContext } from 'react';
 import { updateCoin } from 'lib/updateCart';
-import {createCart, CartItem, CartBuilder} from 'lib/createCart';
+import { createCart, CartItem, CartBuilder } from 'lib/createCart';
 
-function Undonate({org, setAmt}) {
-    const { setCart, currentUser, cart } = useContext(MainContext);
-    const { setChosenCharities, setTotalCoin } = useContext(CheckoutContext);
-
-    const currentCoin =
-        cart.toDonate.length ?
-            cart.toDonate.filter(x => x.name === org.name)[0].coinTotal > 2 : true;
-    
-    const possibleCoin = {
-        true: 1,
-        false: 2
+const findCoin = (toDonate, org, coinTotal) => {
+    let totalSubtracted = 0;
+    let updatedCharities = toDonate;
+    const charitiesByName = toDonate.map(x => x.name);
+console.log(coinTotal, 'COIN TOTAL');
+     if (org.qty === 1) {
+         updatedCharities = updatedCharities.filter(x => x.name !== org.name);
+     } else {
+         updatedCharities = toDonate.map(x => {
+                if (x.name === org.name) {
+                    x.qty -= 1;
+                };
+                return x;
+            });
     };
-    console.log(currentUser._id, cart, org, possibleCoin[currentCoin]);
+
+    if (updatedCharities.length) {
+        for (let i = 0; i < updatedCharities.length; i++) {    
+                totalSubtracted -= 1 * updatedCharities[i].qty;
+                console.log("IS");
+                console.log(totalSubtracted);
+            }
+    } else {
+        totalSubtracted = 1;
+    }
+    return {coin: coinTotal + totalSubtracted, charities: updatedCharities};
+};
+
+function Undonate({org, setAmt, amt}) {
+    const { setCart, currentUser, cart } = useContext(MainContext);
+    const { setChosenCharities, setTotalCoin, totalCoin } = useContext(CheckoutContext);
+
+    // const currentCoin =
+    //     cart.toDonate.length ?
+    //         cart.toDonate.filter(x => x.name === org.name)[0].coinTotal > 2 : true;
+    
+    // const possibleCoin = {
+    //     true: 1,
+    //     false: 2
+    // };
 
     const handleClick = async () => {
         console.log('CHARITY UN-DONATE IS CLICKED');
-        console.log(cart)
-            await updateCoin(currentUser._id, cart, org, possibleCoin[currentCoin])
-                .then(data => {
-                    console.log('COIN UPDATED'); console.log(data);
-                    setCart(data); setChosenCharities(data.toDonate);
-                    setTotalCoin(data.totalCoin)
-                })
-                    .catch(err => console.log(err));
+        const { coin, charities } = findCoin(cart.toDonate, org, totalCoin);
+        console.log(coin);
+        setTotalCoin(coin);
+        setChosenCharities(charities);
     };
 
     const size = {
@@ -39,8 +62,10 @@ function Undonate({org, setAmt}) {
         <button
             className='block m-2 px-2 bg-white text-black rounded border border-black text-2xl  hover:scale-110 transform transition-all active:scale-100 disabled:opacity-50 disabled:cursor-not-allowed'
             onClick={() => {
-                setAmt(prev => prev - 1);
+                if (amt > 0) {
+                   setAmt(amt - 1);
                 handleClick();
+                }
             }}
         >
             -

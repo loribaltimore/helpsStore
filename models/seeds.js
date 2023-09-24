@@ -1,9 +1,11 @@
 let mongoose = require('mongoose');
 const User = require('./userSchema');
+const database = require('./database')
 // let Product = require('./productSchema');
 // let Donation = require('./donationSchema');
 // let DonationQueue = require('./donationQueueSchema');
 let Purchase = require('./purchaseSchema');
+let Session = require('./sessionSchema');
 
 let casual = require('casual');
 let axios = require('axios');
@@ -284,8 +286,12 @@ let seedDonation = async () => {
 let test = async () => {
    
     // let user = await User.findOne({ username: 'testTwenty' });
-    let officialQueue = await DonationQueue.findOne({ name: 'officialQueue' });
-    console.log(officialQueue.queue);
+    // let officialQueue = await DonationQueue.findOne({ name: 'officialQueue' });
+    // console.log(officialQueue.queue);
+    await database();
+    let currentSession = await Session.findById("650a23fef5a678390767d292");
+    currentSession.cart = null;
+    await currentSession.save();
     // console.log(officialQueue);
     // officialQueue.queue = [];
     // await officialQueue.save();
@@ -293,7 +299,7 @@ let test = async () => {
     // let currentUser = await User.findOne({ username: 'testTwenty' });
     // console.log(currentUser.membership);
 };
-// test()
+test()
 
 let seedPurchases = async () => {
   
@@ -331,4 +337,4 @@ let seedPurchases = async () => {
 
 // seedPurchases();
 
-seedUser()
+// seedUser()

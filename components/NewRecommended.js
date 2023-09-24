@@ -1,11 +1,12 @@
 import NewCharityCard from './NewCharityCard';
 import { ExploreContext } from './ExploreContext';
+import { MainContext } from 'components/MainContext';
 import { useContext } from 'react';
 
-function NewRecommended({ recommended, currentUser, likedCharities }) {
+function NewRecommended({ recommended, likedCharities }) {
     const { allLiked } = useContext(ExploreContext);
+    const { currentUser} = useContext(MainContext);
     const key = Object.keys(recommended)[0];
-
     return (
         <div className="w-full space-y-4">
             <div>
@@ -14,7 +15,7 @@ function NewRecommended({ recommended, currentUser, likedCharities }) {
             <div className='flex'>
 {
                 recommended[key].map((element, index) => {
-                    const liked = (allLiked || likedCharities).indexOf(element.name) > -1;
+                    const liked = JSON.parse(currentUser).charities.liked.orgs.indexOf(element.name) > -1;
                     return <NewCharityCard org={element} type={'like'} currentUser={currentUser} liked={liked} recommendedCause={key} />
                 })
             }

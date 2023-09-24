@@ -7,22 +7,24 @@ import CheckoutBtn from 'components/CheckoutBtn';
 import ExplorePanel from 'components/ExplorePanel';
 import DonationAlert from 'components/DonationAlert';
 import { MainContext } from 'components/MainContext';
+import NewCart from 'components/NewCart';
 
 function NewCheckout({  }) {
     let { setTotalCoin, totalCoin, open, chosenCharities } = useContext(CheckoutContext);
     const {cart, currentUser} = useContext(MainContext);
     let { orgs } = JSON.parse(currentUser).charities.liked;
-
     totalCoin === undefined ? setTotalCoin(cart.total / 10) : '';
-
+    console.log(orgs);
     return (
-        <div className="p-10 h-full">
-
+        <div className="p-32 h-full font-extralight">
+            <p>Youre paying ${cart.total}</p>
+            <p>Were paying the manufacturer ${cart.total / 4}</p>
+            <p>Were paying ourselves ${cart.total / 4}</p>
+            <p>Were helping you donate ${cart.total / 2}</p>
             {open === true && <DonationAlert />}
 
             <div className="flex justify-center items-center space-x-4">
-                <div className="w-24 h-24 bg-goldenrod rounded-full"></div>
-                <h1 className="text-6xl w-24 text-center">{totalCoin}</h1>
+                <h1 className="text-[10rem] text-center">{totalCoin} donations left</h1>
             </div>
 
             <div className="flex mt-10 w-full h-full">

@@ -1,5 +1,5 @@
 
-import mongoose from 'mongoose';
+const mongoose = require('mongoose') ;
 const{ Schema, models } = mongoose;
 
 const sessionSchema = new Schema({
@@ -33,4 +33,4 @@ const sessionSchema = new Schema({
 });
 
 
-export default models.Session || mongoose.model('Session', sessionSchema);
+module.exports = models.Session || mongoose.model('Session', sessionSchema);

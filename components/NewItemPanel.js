@@ -9,7 +9,7 @@ function NewItemPanel({ item, currentUserId, coin, currentMembership }) {
             <img
                 src={item.img[0].path}
                 className="bg-center object-cover object-center text-center rounded"
-           / >  
+           />  
             </div>
             <div>
                 <div className="flex  px-5 w-full">
