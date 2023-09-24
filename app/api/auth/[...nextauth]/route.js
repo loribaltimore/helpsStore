@@ -39,7 +39,6 @@ export const authOptions = {
         session.cart = newSession.cart;
        await session.save();
       };
-      console.log('test')
       return  session;
     },
     async jwt({ token, user, account, profile, isNewUser }) {

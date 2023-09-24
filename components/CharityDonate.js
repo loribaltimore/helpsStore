@@ -1,4 +1,5 @@
-import { useContext } from 'react';
+"use client"
+import { useContext, useState } from 'react';
 import { CheckoutContext } from 'components/CheckoutContext';
 import { MainContext } from 'components/MainContext';
 import Undonate from 'components/Undonate';
@@ -7,7 +8,7 @@ function CharityDonate({ org }) {
     let { totalCoin, setTotalCoin, chosenCharities,
         setChosenCharities, setOpen } = useContext(CheckoutContext);
     const { cart } = useContext(MainContext);
-    
+    const [amt, setAmt] = useState(0);
     const charitiesByName = chosenCharities.map(x => x.name);
 
     const handleClick = async () => {
@@ -40,18 +41,25 @@ function CharityDonate({ org }) {
     let isDisabled = totalCoin === 1 && org.name !== 'helps Pool' || totalCoin === 0;
 
     return (
-        <div className='flex space-x-2'>
+        <div className=' mx-auto block'>
+<div className='flex w-100'>
+                <Undonate org={org} cart={cart} setAmt={setAmt} />
+            <div className='text-center'>
+                <p className='text-6xl text-center py-2 px-5'>{amt}</p>
+            </div>
         <button
-            className='block m-2 p-2 bg-white text-black rounded border border-black mx-auto w-1/2'
-            onClick={handleClick}
+                    className='block m-2 px-2 bg-white text-black rounded border border-black text-2xl hover:scale-110 transform transition-all active:scale-100 disabled:opacity-50 disabled:cursor-not-allowed'
+                    onClick={() => {
+                        setAmt(amt + 1);
+                        handleClick();
+                    }}
         >
-            Donate
+            +
         </button>
-         {
-            charitiesByName.indexOf(org.name) > -1 ?
-        <Undonate org={org} cart={cart} /> : null
-        }
+
     </div>
+        </div>
+        
 
     );
 }

@@ -21,20 +21,9 @@ function NewCheckout({  }) {
             {open === true && <DonationAlert />}
 
             <div className="flex justify-center items-center space-x-4">
-                {/* Replaced icon with a placeholder */}
                 <div className="w-24 h-24 bg-goldenrod rounded-full"></div>
-                <h1 className="text-6xl w-24 text-center">:{totalCoin}</h1>
+                <h1 className="text-6xl w-24 text-center">{totalCoin}</h1>
             </div>
-
-            {/* <div className='flex'>
-            <ChooseCharity charity={chosenCharities[0] || false} cart={cart} />
-            <ChooseCharity charity={chosenCharities[2] || false} cart={cart} />
-            <ChooseCharity charity={chosenCharities[1] || false} cart={cart} />
-            <ChooseCharity charity={chosenCharities[3] || false} cart={cart} />
-
-            </div> */}
-
-            
 
             <div className="flex mt-10 w-full h-full">
                 {orgs.map((element, index) => (
@@ -53,3 +42,6 @@ function NewCheckout({  }) {
 }
 
 export default NewCheckout;
+
+//separate the final coin update from the front end exprience of adding and subtracting coins with donate btn
+//create okay looking summation of coin
