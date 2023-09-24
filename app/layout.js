@@ -1,18 +1,19 @@
 import './globals.css'
 import "@maptiler/sdk/dist/maptiler-sdk.css";
 import { Inter } from 'next/font/google'
-import Nav from '../components/Nav';
 const inter = Inter({ subsets: ['latin'] })
 import { NextAuthProvider } from 'components/NextAuthProvider';
 import { headers } from 'next/headers'
 import Flash from 'components/Flash';
-import { ReviewProvider } from 'components/ReviewContext';
-import { RegistrationProvider } from 'components/RegistrationContext';
-import { NotifProvider } from 'components/NotifContext';
-
+import { MainProvider } from 'components/MainContext';
+import { ExploreProvider } from 'components/ExploreContext';
+import { CheckoutProvider } from 'components/CheckoutContext';
+import AltNav from 'components/AltNav';
+import NewCart from 'components/NewCart';
 import User from 'models/userSchema';
+import { SignUpProvider } from '@/components/SignUpContext';
 export const metadata = {
-  title: 'helps',
+  title: 'Helps',
   description: 'A New Way to Give',
 }
 export const dynamic = 'force-dynamic';
@@ -25,42 +26,47 @@ async function getSession(cookie) {
     },
   }).then(async data => { return data}).catch(err => console.log(err));
   const session = await response.json();
-  return Object.keys(session).length > 0 ? session : null;
+  let currentUser;
+  if (Object.keys(session).length > 0) {
+  const currentUser = await User.findById(session.userId).then(data => {return data}).catch(err => console.log(err));
+    return {session, currentUser}
+  } else {return null}
 };
 
-async function getNotifications(userId) {
-  const currentUser = await User.findById(userId).then(data => data).catch(err => console.log(err));
-  return currentUser.notifications;
-};
+
 
 
 export default async function RootLayout({ children }) {
-  const session = await getSession(headers().get('cookie') ?? '').then(data => {
+  const sessionObj = await getSession(headers().get('cookie') ?? '').then(data => {
     if (data) {
       return data
     } else {
       return null
     };
   }).catch(err => console.log(err));
-
+  const { session, currentUser } = sessionObj;
   return (
     <html lang="en">
-      <body className={`${inter.className} overflow-hidden` } style={{backgroundColor: 'gray'}}>
-        <NextAuthProvider session={session}>
-          <RegistrationProvider>
-            <ReviewProvider>
-              <NotifProvider>
-              <Nav>
+      <body className={`${inter.className} block p-5 bg-white w-full`}>
+        <MainProvider currentUser={JSON.stringify(currentUser)} serverCart={session ? session.cart : null}>
+          <AltNav cart={session ? session.cart : null} />
+            <NextAuthProvider session={session}>
             {
              session && session.flash && session.flash.message ?
               <Flash flash={session.flash} /> : null
-            }
-            {children}
-              </Nav>
-              </NotifProvider>
-            </ReviewProvider>
-            </RegistrationProvider>
+          }
+              <CheckoutProvider>
+                <ExploreProvider>
+                  <div className='mx-auto my-auto w-1/4 h-1/4'>
+                    <NewCart cart={session ? session.cart : null}/>
+                </div>
+                <SignUpProvider>
+                        {children}
+                </SignUpProvider>
+                </ExploreProvider>
+              </CheckoutProvider>
           </NextAuthProvider>
+        </MainProvider>
       </body>
     </html>
   )

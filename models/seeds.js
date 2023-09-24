@@ -1,456 +1,334 @@
-const mongoose = require('mongoose');
-const database = require('./database');
+let mongoose = require('mongoose');
 const User = require('./userSchema');
-const Connection = require('./connectionSchema');
-const hobbies = require('../util/hobbies');
-const casual = require('casual');
-const coords = require('../util/coords');
-const userSorting = require('../lib/userSorting');
-const fs = require('fs');
-const { GridFSBucket } = require('mongodb');
-const { sortFunction } = require('../lib/userSorting');
+// let Product = require('./productSchema');
+// let Donation = require('./donationSchema');
+// let DonationQueue = require('./donationQueueSchema');
+let Purchase = require('./purchaseSchema');
 
-const zodiacSigns = [
-    "Aries",
-    "Taurus",
-    "Gemini",
-    "Cancer",
-    "Leo",
-    "Virgo",
-    "Libra",
-    "Scorpio",
-    "Sagittarius",
-    "Capricorn",
-    "Aquarius",
-    "Pisces"
-];
+let casual = require('casual');
+let axios = require('axios');
 
-const sortingCheck = async () => {
-    await database();
-    const results = await userSorting('male', 20, 5, [-122.257935, 47.784021], "64b6950daa27fe5fa6c399d7");
-    console.log(results.length);
-};
+mongoose.connect('mongodb://localhost:27017/helps', {
+    family: 4
+}).then(console.log('Database is Live')).catch(err => console.log(err));
 
-const seedUser = async () => {
-    const client = await database();
-
-    for (let i = 0; i < 50; i++){
-        const randHobby = Math.floor(Math.random() * (hobbies.length / 2));
-        const randAge = Math.floor(Math.random() * 30);
-        const randCoord = Math.floor(Math.random() * coords.length -1);
-        const randPhoto = Math.floor(Math.random() * 23 + 1);
-       const currentUser = await new User({
-        username: casual.username,
-        name: casual.first_name,
-           description: casual.sentences(n = 4),
-        sign: zodiacSigns[Math.floor(Math.random() * zodiacSigns.length)],
-           hobbies: hobbies.slice(randHobby, randHobby + 6),
-            location: {
-                geo: {
-                coordinates: coords[randCoord] || [-122.257935, 47.784021]
-        }
-           },
-            preferences: {
-        range: Math.floor(Math.random() * 20),
-        gender: randAge % 2 === 0 ? 'female' : 'male',
-        age: randAge + 18
-    },
-        genderId: randAge % 2 === 0 ? 'female' : 'male',
-        age: randAge + 18
-       })
-        fs.readFile(randAge % 2 === 0 ? `../public/Women Photos Datr/${randPhoto}.jpg` : `../public/Men Photos Datr/${randPhoto}.jpg`, (err, data) => {
-            if (err) {
-                throw err;
-            };
-            const buffer = Buffer.from(data);
-            const db = client.useDb('myFirstDatabase');
-            const bucket = new GridFSBucket(db);
-            console.log(buffer);
-            const filename = casual.word + '.jpg';
-            const uploadStream = bucket.openUploadStream(filename,  {contentType:'image/jpg'});
-            uploadStream.write(buffer);
-            uploadStream.on('close', async function (file) {
-                currentUser.photos.push(uploadStream.id.toString());
-                if (currentUser.photos.length === 1) {
-                    await currentUser.save();
+let seedUser = async () => {
+    await User.deleteMany({});
+    for (let i = 0; i < 10; i++) {
+        let newUser = await new User({
+            username: `dev${i}`,
+            bio: {
+                firstName: casual.first_name,
+                lastName: casual.last_name,
+                age: casual.integer(from = 18, to = 64)
+            },
+            address: {
+                shipping: {
+                    number: casual.integer(from = 1, to = 400),
+                    street: casual.street,
+                    city: casual.city,
+                    state: casual.state,
+                },
+                billing: {
+                    number: casual.integer(from = 1, to = 400),
+                    street: casual.street,
+                    city: casual.city,
+                    state: casual.state,
                 }
-            });
-            uploadStream.end();
-            uploadStream.on('finish', function () {
-                console.log('PHOTO UPLOADED');
-            });
+            },
+            contact: {
+                phone: casual.phone,
+                email: `dev${i}@dev.com`
+            }
         });
-
-        await currentUser.save();
-        console.log(currentUser);
-        console.log('User saved')
+        // let password = 'dev';
+        // await User.register(newUser, password);
+        await newUser.save();
+        console.log(newUser);
     };
-};
-const seedThemTrivia = async () => {
-    await database();
-    const currentUser = await User.findById('64811cb221c21a50a0ee5ae5');
-    currentUser.connections.set('6483673fec9f01df94986700', {
-        id: '6483673fec9f01df94986700', status: 'reciprocated', conversation: [], trivia: {
-            me: false,
-            them: [
-                {
-                    question: 'What kind of music do you enjoy2?',
-                    answer: 'Pop'
-                },
-                {
-                    question: 'What is your favorite movie genre?',
-                    answer: 'Action'
-                },
-                {
-                    question: 'Are you an early bird or a night owl?',
-                    answer: 'Early bird'
-                },
-                {
-                    question: 'What is your favorite movie genre?',
-                    answer: 'Action'
-                },
-                {
-                    question: 'Do you prefer coffee or tea?',
-                    answer: 'Coffee'
-                }
-            ]
-        }, review: {}
-    });
-
-    const connection = await User.findById('6483673fec9f01df94986700');
-    connection.connections.set(currentUser._id, {
-        id: currentUser._id, status: 'reciprocated', conversation: [], trivia: {
-            them: false,
-            me: [
-                {
-                    question: 'What kind of music do you enjoy1?',
-                    answers: ['Pop', 'Rock', 'Country', 'Rap'],
-                    chosen: 'Pop'
-                },
-                {
-                    question: 'What is your favorite movie genre?',
-                    answers: ['Action', 'Comedy', 'Drama', 'Horror'],
-                    chosen: 'Action'
-                },
-                {
-                    question: 'Are you an early bird or a night owl?',
-                    answers: ['Early bird', 'Night owl', 'Neither', 'Both'],
-                    chosen: 'Early bird'
-                },
-                {
-                    question: 'What is your favorite season?',
-                    answers: ['Summer', 'Winter', 'Spring', 'Fall'],
-                    chosen: 'Summer'
-                },
-                {
-                    question: 'Do you prefer coffee or tea?',
-                    answers: ['Coffee', 'Tea', 'Neither', 'Both'],
-                    chosen: 'Coffee'
-                },
-                {
-                    question: 'Do you prefer forest or beack?',
-                    answers: ['Forest', 'Beach', 'Neither', 'Both'],
-                    chosen: 'Beach'
-                }
-            ]
-        }, review: {}
-    });
-    
-    await connection.save();
-    await currentUser.save();
-console.log("THEM TRIVIA SEEDED")
+    let allUsers = await User.find({});
+    allUsers[0].username = 'dev';
+    await allUsers[0].save();
 };
 
-const seedConnections = async () => {
-    await database();
-    const currentUser = await User.findOne({ username: 'Powerman5000' }).then(data => { return data} ).catch(err => console.log(err));
-    const users = await User.find({})
-        .then(data => { return data }).catch(err => console.log(err));
-    currentUser.connections.reciprocated = [];
-    currentUser.rating.looks.count = 1;
-    currentUser.rating.looks.total = 5;
-    currentUser.rating.looks.avg = 5;
-    currentUser.rating.looks.metricsByAge = new Map();
-    currentUser.connections.pending = [];
-    currentUser.connections.matched = [];
-    currentUser.connections.rejectedBy = [];
-    currentUser.interestAndPass.byTotal = [{ interested: 0, pass: 0 }];
-    currentUser.interestAndPass.interested.count = 0;
-    currentUser.interestAndPass.pass.count = 0;
-    currentUser.rating.looks.metricsByAge.set(currentUser.age.toString(), { total: 5, count: 1 });
-        await currentUser.save();
-    for (let i = 1; i < 498; i++) {
-        users[i].rating.looks.avg = Math.floor(Math.random() * 7 + 3);
-        
-        const rand = Math.floor(Math.random() * 2);
-        users[i].personality = {
-        openness: rand % 2 === 0 ? Math.floor(Math.random() * 4) : -Math.floor(Math.random() * 4),
-        conscientiousness: rand % 2 === 0 ? Math.floor(Math.random() * 4) : -Math.floor(Math.random() * 4),
-        extraversion: rand % 2 === 0 ? Math.floor(Math.random() * 4) : -Math.floor(Math.random() * 4),
-        agreeableness: rand % 2 === 0 ? Math.floor(Math.random() * 4) : -Math.floor(Math.random() * 4),
-            neuroticism: rand % 2 === 0 ? Math.floor(Math.random() * 4) : -Math.floor(Math.random() * 4)
-        }
-        users[i].rating.looks.count = 5;
-        users[i].rating.looks.total = users[i].rating.looks.avg * 5;
-        await users[i].save();
-        if (currentUser._id !== users[i]._id) {
-            if (i % 2 === 0 && i % 3 !== 0) {
-                currentUser.connections.matched.push(users[i]._id);
-
-            } else if (i % 2 === 0 && i % 3 === 0 && i % 5 !== 0) { 
-                currentUser.connections.pending.push(users[i]._id);
-            } else {
-                currentUser.connections.rejectedBy.push(users[i]._id);
-            }
-            const rand2 = Math.floor(Math.random() * 100);
-            let isInterested;
-                if (i % 3 === 0 && i % 4 !== 0 && i % 5 === 0)  {
-                    isInterested = 'dated';
-                } else if (i % 2 === 0 && i % 3 === 0 && i % 4 !== 0)  {
-                    isInterested = 'matched';
-                } else if (i % 2 === 0) {
-                    isInterested = 'interested';
-                } else {
-                    isInterested = 'pass';
-            };
-                const totalInteractions = currentUser.interestAndPass.interested.count + currentUser.interestAndPass.pass.count;
-            const increment = Math.floor(totalInteractions / 50);
-    console.log(totalInteractions);
-    console.log(increment, 'increment');
-    if (!currentUser.interestAndPass.byTotal[increment]) {
-            currentUser.interestAndPass.byTotal.push({ interested: 0, pass: 0, matched: 0, dated: 0 });
-    };
-            currentUser.interestAndPass.byTotal[increment][isInterested] += 1;
-                
-    isInterested !== 'matched' && isInterested !== 'dated' ?
-        currentUser.interestAndPass[isInterested].count += 1 : null;
-
-            const choices = { 0: 1 * Math.abs(currentUser.rating.looks.avg - users[i].rating.looks.avg)  , 1: -1 * Math.abs(currentUser.rating.looks.avg - users[i].rating.looks.avg), 2: 2 * Math.abs(currentUser.rating.looks.avg - users[i].rating.looks.avg), 3: 0 };
-            currentUser.rating.looks.count+=1;
-            currentUser.rating.looks.total += currentUser.rating.looks.avg + choices[rand2 <= 25 ? '0' : rand2 >= 50 ?  '3' : rand2 < 75 && i % 3 === 0 ? '1' : rand2 < 75  ? '2': '0'  ]; 
-            currentUser.rating.looks.avg = Math.round(currentUser.rating.looks.total / currentUser.rating.looks.count);
-            // console.log(Math.abs(users[i].rating.looks.avg - currentUser.rating.looks.avg), 'DIFFERENCE');
-            // console.log(rand2)
-            // console.log(currentUser.rating.looks.avg, 'AVERAGE');
-            // console.log('PLUS')
-            // console.log(choices[rand2 <= 25 ? '0' : rand2 > 50 ? '1' : '2'], 'RaND');
-            // console.log('EQUALS')
-            console.log(currentUser.rating.looks.total);
-            console.log(currentUser.rating.looks.count);
-            // console.log(currentUser.rating.looks.avg + choices[rand2 <= 25 ? '0' : rand2 > 50 ? '1' : '2']);
-            currentUser.rating.looks.avg = Math.floor(currentUser.rating.looks.total / currentUser.rating.looks.count);
-            currentUser.rating.looks.metricsByAge.get(users[i].age.toString()) ?
-                currentUser.rating.looks.metricsByAge.set(users[i].age.toString(), {total: currentUser.rating.looks.metricsByAge.get(users[i].age.toString()).total  + Math.floor(currentUser.rating.looks.avg) + choices[rand2 <= 25 ? '0' : rand2 > 50 ? '1' : '2'], count: currentUser.rating.looks.metricsByAge.get(users[i].age.toString()).count + 1 })
-                : currentUser.rating.looks.metricsByAge.set(users[i].age.toString(), {total: currentUser.rating.looks.avg + choices[rand2 <= 25 ? '0' : rand2 > 50 ? '1' : '2'], count: 1});
-                   await currentUser.save();
-
-        }
-
-    };
-    // seedThemTrivia();
-};
-
-//seed coordinates so I can use algorithm to find distance between users
-
-const showResource = async function () {
-    await database();
-    const users = await User.find({})
-        .then(data => { return data }).catch(err => console.log(err));
-    // console.log(Object.fromEntries(users[2].connections)['64811cb221c21a50a0ee5ae5']);
-    console.log(users[1].connections.get('64811cb221c21a50a0ee5ae5'));
-    console.log(users.map(user => { return { id: user._id, name: user.name, connections: user.connections } }));
-};
-
-const seedLoc = async () => {
-    await database();
-    const allUsers = await User.find({});
-    allUsers.forEach(async (user, index) => {
-        const randCoord = Math.floor(Math.random() * 5);
-        user.location.geo.coordinates = coords[randCoord] || [-122.257935, 47.784021];
-        user.hobbies = [hobbies[index], hobbies[index + 1], hobbies[index + 2], hobbies[index + 3], hobbies[index + 4], hobbies[index + 5]]
-        await user.save();
-    })
-};
-
-const seedSocketUser = async () => {
-    await database();
-    const socketUser = await User.findById('649f01847167490c3d622445');
-    const currentUser = await User.findById('64811cb221c21a50a0ee5ae5');
-    currentUser.connections.set('649f01847167490c3d622445', {
-        id: '649f01847167490c3d622445', status: 'reciprocated', conversation: [], trivia: {
-            me: false,
-            them: [
-                {
-                    question: 'What kind of music do you enjoy?',
-                    answer: 'Pop'
-                },
-                {
-                    question: 'What is your favorite movie genre?',
-                    answer: 'Action'
-                },
-                {
-                    question: 'Are you an early bird or a night owl?',
-                    answer: 'Early bird'
-                },
-                {
-                    question: 'What is your favorite movie genre?',
-                    answer: 'Action'
-                },
-                {
-                    question: 'Do you prefer coffee or tea?',
-                    answer: 'Coffee'
-                }
-            ]
-        }, review: {}
-    });
-
-    socketUser.connections.set('64811cb221c21a50a0ee5ae5', {
-        id: '64811cb221c21a50a0ee5ae5', status: 'reciprocated', conversation: [], trivia: {
-            them: false,
-            me: [
-                {
-                    question: 'What kind of music do you enjoy?',
-                    answers: ['Pop', 'Rock', 'Country', 'Rap'],
-                    chosen: 'Pop'
-                },
-                {
-                    question: 'What is your favorite movie genre?',
-                    answers: ['Action', 'Comedy', 'Drama', 'Horror'],
-                    chosen: 'Action'
-                },
-                {
-                    question: 'Are you an early bird or a night owl?',
-                    answers: ['Early bird', 'Night owl', 'Neither', 'Both'],
-                    chosen: 'Early bird'
-                },
-                {
-                    question: 'What is your favorite season?',
-                    answers: ['Summer', 'Winter', 'Spring', 'Fall'],
-                    chosen: 'Summer'
-                },
-                {
-                    question: 'Do you prefer coffee or tea?',
-                    answers: ['Coffee', 'Tea', 'Neither', 'Both'],
-                    chosen: 'Coffee'
-                },
-                {
-                    question: 'Do you prefer forest or beack?',
-                    answers: ['Forest', 'Beach', 'Neither', 'Both'],
-                    chosen: 'Beach'
-                }
-            ]
-        }, review: {}
-    });
-    await currentUser.save();
-    await socketUser.save();
-};
-
-const populatePending = async () => {
-    await database();
-    // const currentConnection = await Connection.findById("64ef77dc767dc5b2675e7748");
-    // currentConnection.date.shown.bothShown = true;
-
-    // await currentConnection.save();
-    // const allUsers = await User.find({});
-    // allUsers.forEach(async (user, index) => {
-    //     await user.save();
-    // })
-    // console.log('DONE!')
-    // const test = await User.findById("64f0a36ed5d85f1e060c516f");
-    // console.log(test);
-   
-    const currentUser = await User.findOne({ username: 'Powerman5000' });
-    currentUser.connections.reciprocated = [];
-    await currentUser.save();
-    // currentUser.membership.membershipType = 'basic';
-    // await currentUser.save();
-    // console.log(currentUser.interestAndPass);
-    // console.log(currentUser.interestAndPass.byTotal);
-    // currentUser.membership.membershipType = 'pro';
-    // await currentUser.save();
-    // await sortFunction(currentUser._id).then(data => { console.log(data.map(x => x.name)) }).catch(err => console.log(err));
-    // console.log(currentUser.membershipType);
-    // const currentConnection = await Connection.findById("64e6343960d64b74d51ee28c");
-    
-    // currentConnection.date.invite.accepted = true;
-    // currentConnection.date.shown.bothShown = true;
-    // currentConnection.date.review = { connection1: {}, connection2: {} };
-    // await currentConnection.save();
-    // console.log(currentConnection);
-    // currentUser.connections.pending = currentUser.connections.pending.slice(0, 30);
-    // await currentUser.save();
-}
-
-const seedMetricChanges = async () => {
-    await database();
-    const currentUser = await User.findOne({ username: "Powerman5000" });
-    console.log("BEFORE");
-    console.log(currentUser.rating.weekly);
-    console.log(currentUser.connections.weekly)
-
-    const currentWeek = 37;
-    currentUser.rating.looks.avg = Math.floor(Math.random() * 7 + 3);
-    currentUser.rating.date.avg = Math.floor(Math.random() * 7 + 3);
-    const totalInteractedWith = currentUser.connections.pending.length + currentUser.connections.matched.length + currentUser.connections.rejectedBy.length;
-    const totalLikedByPercentage = 49;
-    if (currentWeek !== currentUser.membership.week) {
-        currentUser.membership.week = currentWeek;
-        if (currentUser.rating.weekly.currentWeek.looks.rating !== currentUser.rating.looks.avg) {
-            if (currentUser.rating.weekly.currentWeek.looks.rating > currentUser.rating.looks.avg) {
-                currentUser.rating.weekly.currentWeek.looks.trend = 'down';
-            } else {
-              currentUser.rating.weekly.currentWeek.looks.trend = 'up';
-            }
-            currentUser.rating.weekly.lastWeek.looks.rating = currentUser.rating.weekly.currentWeek.looks.rating;
-            currentUser.rating.weekly.currentWeek.looks.rating = currentUser.rating.looks.avg;
-        } else {
-            if (currentUser.rating.weekly.currentWeek.looks.trend !== 'none') {
-                currentUser.rating.weekly.currentWeek.looks.trend = 'none';
-            }
-        }
-        if (currentUser.rating.weekly.currentWeek.date.rating !== currentUser.rating.date.avg) {
-            if (currentUser.rating.weekly.currentWeek.date.rating > currentUser.rating.date.avg) {
-                currentUser.rating.weekly.currentWeek.date.trend = 'down';
-            } else {
-              currentUser.rating.weekly.currentWeek.date.trend = 'up';
-            }
-            currentUser.rating.weekly.lastWeek.date.rating = currentUser.rating.weekly.currentWeek.date.rating;
-            currentUser.rating.weekly.currentWeek.date.rating = currentUser.rating.date.avg;
-        } else {
-            if (currentUser.rating.weekly.currentWeek.date.trend !== 'none') {
-                currentUser.rating.weekly.currentWeek.date.trend = 'none';
-            }
-        };
-        if (currentUser.connections.weekly.currentWeek.likedPercentage !== totalLikedByPercentage) {
-            if (currentUser.connections.weekly.currentWeek.likedPercentage > totalLikedByPercentage) {
-                currentUser.connections.weekly.currentWeek.trend = 'down';
-            } else {
-              currentUser.connections.weekly.currentWeek.trend = 'up';
-            };
-            currentUser.connections.weekly.lastWeek.likedPercentage = currentUser.connections.weekly.currentWeek.likedPercentage;
-            currentUser.connections.weekly.currentWeek.likedPercentage = totalLikedByPercentage;
-        } else {
-            if (currentUser.connections.weekly.currentWeek.trend !== 'none') {
-                currentUser.connections.weekly.currentWeek.trend = 'none';
-            }
-        };
-    };
-    console.log("AFTER");
-    console.log(currentUser.rating.weekly);
-    console.log(currentUser.connections.weekly)
-    await currentUser.save();
-};
-
-// seedMetricChanges();
-populatePending();
-// sortingCheck();
 // seedUser();
-// seedConnections();
-// seedSocketUser();
-// showResource();
-// seedLoc();
-// seedThemTrivia();
 
+// let cleanUsers = async () => {
+//     await User.deleteMany({});
+//     console.log('Users Deleted!')
+// };
 
-// change it so that compatibility results show up based on calculatePersonality function on match
-// no more trivia
+// cleanUsers();
+
+let seedInterests = async () => {
+    let currentUser = await User.findOne({ username: 'testTwenty' });
+        let newMap = new Map();
+        let interests = [
+            'animals',
+            'climate',
+            'conservation',
+            'coronavirus',
+            'culture'];
+        interests.forEach(function (element, index) {
+            newMap.set(element, { score: 1, tags: {} });
+        });
+    currentUser.charities.interests = newMap;
+    // currentUser.charities.liked.tags.set('research', 1);
+    // currentUser.charities.liked.tags.set('humans', 1);
+    await currentUser.save();
+    
+console.log(currentUser);
+console.log('finished!')
+};
+
+// seedInterests();
+
+let seedProducts = async () => {
+    await Product.deleteMany({});
+    let shirt = await new Product({
+        name: 'shirt',
+        price: 30
+    }).save();
+
+    let hat = await new Product({
+        name: 'hat',
+        price: 20,
+    }).save();
+
+    let hoodie = await new Product({
+        name: 'hoodie',
+        price: 50
+    }).save();
+
+    let stickers = await new Product({
+        name: 'stickers',
+        price: 10
+    }).save();
+};
+
+// seedProducts();
+
+let seedTags = async () => {
+    let currentUser = await User.findOne({ username: 'dev' });
+    let allKeys = [...currentUser.charities.interests.keys()];
+    allKeys.forEach(function (element, index) {
+        console.log(currentUser.charities.interests.get(element).tags);
+    });
+    await currentUser.save();
+};
+
+// seedTags();
+
+let allProducts = async () => {
+    // await Product.deleteMany({});
+    let allProducts = await Product.find({});
+    await Product.deleteOne({ name: 'sdf' });
+};
+// allProducts();
+
+let seedDonations = async () => {
+    let currentUser = await User.findOne({ username: 'dev' });
+    currentUser.charities.liked.orgs = [];
+
+    // console.log(currentUser.charities.liked.orgs.slice(0, 5))
+    // currentUser.charities.liked.orgs = currentUser.charities.liked.orgs.slice(0, 3);
+    await currentUser.save();
+    // currentUser.charities.liked.orgs = currentUser.charities.liked.orgs.map(function (element, index) {
+    //     if (element === undefined || element === null) {
+    //         return {sort: 1}
+    //     } else {
+    //         console.log(element)
+    //         element.sort = 0;
+    //         return element;
+    //     }
+        
+    // });
+    // console.log(currentUser.charities.liked.orgs);
+
+};
+
+// seedDonations();
+
+let seedPermissions = async () => {
+    let currentUser = await User.findOne({ username: 'dev' });
+    currentUser.admin.permissions.push('admin');
+    await currentUser.save();
+console.log('Permissions Seeded!')
+};
+
+// seedPermissions();
+
+let getProducts = async () => {
+    // let allProducts = await Product.find({});
+    let stickers = await Product.findOne({ name: 'Coin' })
+    stickers.code = 'price_1MRIq1JdX2WdfgCJLpJ9fD61';
+    stickers.price = 5;
+    await stickers.save();
+    console.log(stickers);
+
+    // await Product.deleteOne({ name: 'Coin' });
+    // allProducts.forEach(async (element, index) => {
+    //     element.price += 0.01;
+    //     await element.save();
+    // })
+};
+// getProducts();
+
+let seedDonationQueue = async () => {
+    // let allDonations = await Donation.find({});
+    // console.log(allDonations);
+    let newQueue = await new DonationQueue({
+        name: 'officialQueue'
+    }).save();
+    // let queue = await DonationQueue.findOne({ name: 'officialQueue' });
+    // queue.pool = new Map();
+    // console.log(queue.queue.length);
+    // allDonations = allDonations.map(x => x.id);
+    // await DonationQueue.deleteMany({});
+    // newQueue.queue = [...allDonations];
+    // console.log(newQueue);
+};
+
+// seedDonationQueue();
+
+let seedDonation = async () => {
+    let cause = 'climate';
+    let response = await axios({
+        method: 'get',
+        url: `https://partners.every.org/v0.2/browse/${cause}?apiKey=5650c89629828b8990f49fa4aeb665fd`,
+        params: {
+            take: '10',
+        }
+    }).then(data => { return data.data.nonprofits }).catch(err => console.log(err));
+    console.log(response);
+    let allUsers = await User.find({});
+    let officialQueue = await DonationQueue.findOne({ name: 'officialQueue' });
+    officialQueue.queue = [];
+    
+    await officialQueue.save();
+    let currentUser = await User.findOne({ username: 'dev' });
+    currentUser.charities.donatedTo = new Map();
+    for (let i = 0; i < 10; i++){
+        response[i].coinTotal = 2;
+        currentUser.charities.donatedTo.set(response[i].name, response[i]);
+    };
+
+    await currentUser.save();
+    await Donation.deleteMany({});
+        let rand = Math.floor(Math.random() * 10);
+        let receipts = ['123987657', '9870987', '09834567', '98765678'];
+    let warehouses = ['dales', 'martins', 'discount', 'sales'];
+    allUsers.slice(0, 10).forEach(async (element, index) => {
+        let org = response[rand];
+        let randReceipt = receipts[Math.floor(Math.random() * receipts.length - 1)];
+        let randWarehouse = warehouses[Math.floor(Math.random() * receipts.length - 1)];
+        let newDonation = await new Donation({
+            user: {
+                user_id: element.id,
+                firstName: element.bio.firstName,
+                lastName: element.bio.lastName,
+                email: element.contact.email,
+            },
+            org: {
+                name: org.name,
+                ein: org.ein,
+                img: org.logoUrl
+            },
+            transaction: {
+                amount: {
+                    total: 2,
+                    final: 2,
+                },
+                items: [
+                    {
+                        name: 'Classic Hoodie',
+                        price: 30,
+                        config: { size: 'l', colors: ['blue', 'orange'], qty: 1 },
+                        img: 'https://res.cloudinary.com/demgmfow6/image/upload/v1673462847/helps/kje0cwgkhmg8ju3ivopc.jpg',
+                        code: 'price_1MPUf4JdX2WdfgCJByrw5EoK',
+                        sort: 0
+                    },
+                    {
+                        name: 'Classic Hoodie',
+                        price: 30,
+                        config: { size: 'l', colors: ['blue', 'green'], qty: 1 },
+                        img: 'https://res.cloudinary.com/demgmfow6/image/upload/v1673462847/helps/kje0cwgkhmg8ju3ivopc.jpg',
+                        code: 'price_1MPUf4JdX2WdfgCJByrw5EoK',
+                        sort: 0
+                    }
+                ],
+                shipTo: element.address.shipping,
+            },
+            fulfillment: {
+                order: {
+                    allReceipts: [randReceipt],
+                    allOrderedFrom: [randWarehouse]    
+                }
+            }
+        }).save();
+        console.log(newDonation.fulfillment);
+        await officialQueue.addToQueue(newDonation.id);
+        element.charities.donations.push(newDonation);
+        element.membership.totalDonations += 2;
+        org.coinTotal = 2;
+        element.charities.donatedTo.set(org.name, org);
+        await element.save();
+    });
+  
+    console.log('ALL DONATIONS');
+    console.log(officialQueue.history);
+};
+
+// seedDonation();
+
+let test = async () => {
+   
+    // let user = await User.findOne({ username: 'testTwenty' });
+    let officialQueue = await DonationQueue.findOne({ name: 'officialQueue' });
+    console.log(officialQueue.queue);
+    // console.log(officialQueue);
+    // officialQueue.queue = [];
+    // await officialQueue.save();
+    // await Donation.deleteMany({});
+    // let currentUser = await User.findOne({ username: 'testTwenty' });
+    // console.log(currentUser.membership);
+};
+// test()
+
+let seedPurchases = async () => {
+  
+    // let currentUser = await User.findOne({ name: 'dev' });
+    // let shirt = await Product.findOne({ name: 'Classic T-Shirt' });
+    // for (let i = 0; i < 3; i++) {
+    //     let sizes = ['s', 'm', 'l', 'xl'];
+    //     let newPurchase = await new Purchase({
+    //         user: currentUser.id,
+    //         items: [
+    //             {
+    //                 id: shirt.id,
+    //                 name: shirt.name,
+    //                 qty: i + 1,
+    //                 size: sizes[i]
+    //             }
+    //         ],
+    //         address: {
+    //             num: currentUser.address.shipping.num,
+    //             street: currentUser.address.shipping.street,
+    //             city: currentUser.address.shipping.city,
+    //             state: currentUser.address.shipping.state,
+    //             country: 'USA'
+    //         },
+    //         orgs: [
+    //             'Example Charity'
+    //         ]
+    //     }).save();
+    //     currentUser.purchases.push(newPurchase.id);
+    //     await currentUser.save();
+    // };
+    // console.log(currentUser.purchases);
+   
+};
+
+// seedPurchases();
+
+seedUser()

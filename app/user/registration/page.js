@@ -1,7 +1,10 @@
-import Allregistration from 'components/AllRegistration';
+// import AllRegistration from 'components/AllRegistration';
 
 export default function page() {
   return (
-   <Allregistration />
+    <div>
+      example
+    </div>
+  //  <Allregistration />
   )
 }
