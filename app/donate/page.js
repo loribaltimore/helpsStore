@@ -7,8 +7,6 @@ import AllDonation from 'components/AllDonation';
 async function getData(userId) {
   await database();
         const currentUser = await User.findById(userId);
-
-    // const currentUser = await User.findById("6509cfe69a9593fab11f4e56");
  return JSON.stringify(currentUser)
 }
 

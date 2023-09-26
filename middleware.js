@@ -1,6 +1,5 @@
 import {NextResponse} from 'next/server';
 import { headers } from 'next/headers';
-console.log(process.env.LOCAL_URL)
 export async function middleware(request) {
     const cookie = headers().get('cookie') ?? '';
     const regex = /_next|\/api\/auth/g;

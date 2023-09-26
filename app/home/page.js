@@ -1,12 +1,14 @@
 import NewHome from 'components/NewHome';
 import User from 'models/userSchema';
 import database from 'models/database';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../api/auth/[...nextauth]/route';
 
-export async function getData() {
+
+export async function getData(userId) {
     await database();
     // let user = req.user;
-
-    let user = await User.findById("6509cfe69a9593fab11f4e56");
+    const user = await User.findById(userId);
     let donatedTo = Object.fromEntries(user.charities.donatedTo);
     let items = user.charities.items;
     let likedCharities = user.charities.liked.orgs;
@@ -27,7 +29,9 @@ return { user, donations: donatedTo, items, likedCharities, flash:{type: undefin
 }
 
 export default async function page() {
-    const { user, donations, items, likedCharities, flash } = await getData();
+        const session = await getServerSession(authOptions);
+
+    const { user, donations, items, likedCharities, flash } = await getData(session.userId);
 
     return (
         <div className='w-100'>

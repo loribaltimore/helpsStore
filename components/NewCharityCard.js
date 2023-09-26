@@ -27,7 +27,7 @@ function NewCharityCard({ org, setSlice, slice, type, currentUser, recommendedCa
             <div className="flex items-center justify-between pt-4">
                 {
                     type === 'donation' 
-                    ? <div className="text-5xl text-green-500">${org.coinTotal * 5}</div>
+                    ? <div className="text-5xl w-full text-green-500 text-center">${org.qty * 10}</div>
                     : null
                 }
             </div>
@@ -37,10 +37,11 @@ function NewCharityCard({ org, setSlice, slice, type, currentUser, recommendedCa
                     type === 'purchase' ?
                         <CharityDonate currentUser={currentUser} org={org} />
                         : 
+                        type !== 'donation' ?
                 <div className='flex space-x-5 p-3'>
             <CharityLike currentUser={currentUser} org={org} recommendedCause={recommendedCause} />
                 <CharityUnlike org={org} recommendedCause={recommendedCause} />
-            </div>
+            </div> : null
                 }
          </div>
         </div>

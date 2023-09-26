@@ -8,6 +8,7 @@ const findCoin = (toDonate, org, coinTotal) => {
     let totalSubtracted = 0;
     let updatedCharities = toDonate;
     let canCheckout = false;
+    console.log('toDonate', toDonate);
     const charitiesByName = toDonate.map(x => x.name);
 
      if (charitiesByName.indexOf(org.name) < 0) {
@@ -24,11 +25,7 @@ const findCoin = (toDonate, org, coinTotal) => {
     
     // if (toDonate.length) {
         for (let i = 0; i < updatedCharities.length; i++) {
-            if (updatedCharities[i].name !== 'helps Pool') {
-                totalSubtracted -= 2 * updatedCharities[i].qty
-            } else {
-                totalSubtracted -= 1 * updatedCharities[i].qty;
-            }
+              totalSubtracted -= 1 * updatedCharities[i].qty;
         // };
     };
     console.log(updatedCharities);
@@ -37,8 +34,7 @@ const findCoin = (toDonate, org, coinTotal) => {
 };
 
 function CharityDonate({ org }) {
-    let { totalCoin, setTotalCoin, chosenCharities,
-        setChosenCharities, setOpen } = useContext(CheckoutContext);
+    let { totalCoin, setTotalCoin, chosenCharities, setChosenCharities } = useContext(CheckoutContext);
     const { cart } = useContext(MainContext);
     const [amt, setAmt] = useState(0);
 
@@ -48,7 +44,6 @@ function CharityDonate({ org }) {
         setTotalCoin(coin);
         setChosenCharities(charities);
     };
-    
     return (
         <div className=' mx-auto block'>
 <div className='flex w-100'>
@@ -59,7 +54,7 @@ function CharityDonate({ org }) {
         <button
                     className='block m-2 px-2 bg-white text-black rounded border border-black text-2xl hover:scale-110 transform transition-all active:scale-100 disabled:opacity-50 disabled:cursor-not-allowed'
                     onClick={() => {
-                        if (amt < cart.total / 10) {
+                        if (totalCoin > 0) {
                             setAmt(amt + 1);
                         handleClick();
                         }

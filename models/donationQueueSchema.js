@@ -1,6 +1,7 @@
 let mongoose = require('mongoose');
 let { Schema, model, models } = mongoose;
-// let { donationSchema } = mongoose;
+let { donationSchema } = mongoose;
+const database = require('./database');
 let Donation = require('./donationSchema');
 
 let donationQueueSchema = new Schema({
@@ -36,6 +37,8 @@ let donationQueueSchema = new Schema({
 
 
 donationQueueSchema.method('removeFromQueue', async (donationId) => {
+    await database();
+   const DonationQueue = models.DonationQueue || model('DonationQueue', donationQueueSchema)
     let queue = await DonationQueue.findOne({ name: 'officialQueue' });
     console.log('QUEUE length')
     console.log(queue.queue.length);
@@ -60,6 +63,9 @@ donationQueueSchema.method('removeFromQueue', async (donationId) => {
 });
 
 donationQueueSchema.method('fulfillDonation', async (id) => {
+        await database();
+   const DonationQueue = models.DonationQueue || model('DonationQueue', donationQueueSchema)
+
     let currentDonation = await Donation.findById(id);
     currentDonation.fulfillment.donation.fulfilled = true;
 
@@ -74,6 +80,8 @@ donationQueueSchema.method('fulfillDonation', async (id) => {
 });
 
 donationQueueSchema.method('fulfillOrder', async (donationId, receiptNum, ordered, itemId) => {
+        await database();
+
     let currentDonation = await Donation.findById(donationId,);
     currentDonation.transaction.items = currentDonation.transaction.items.map(function (element, index) {
         let { name, price, config, img, code, sort, id, receiptNo, orderedFrom, received } = element;
@@ -131,12 +139,18 @@ donationQueueSchema.method('received', async (donationId, itemId) => {
 
 
 donationQueueSchema.method('addToQueue', async (donationId) => {
+        await database();
+   const DonationQueue = models.DonationQueue || model('DonationQueue', donationQueueSchema)
+
     let queue = await DonationQueue.findOne({ name: 'officialQueue' });
     queue.queue.push(donationId);
     await queue.save();
 });
 
 donationQueueSchema.method('addToPool', async (amount, name, id) => {
+        await database();
+   const DonationQueue = models.DonationQueue || model('DonationQueue', donationQueueSchema)
+
     let queue = await DonationQueue.findOne({ name: 'officialQueue' });
     let currentDonator = queue.pool.get(id);
     currentDonator === undefined ?
@@ -145,12 +159,18 @@ donationQueueSchema.method('addToPool', async (amount, name, id) => {
 });
 
 donationQueueSchema.method('removeFromPool', async (amount, name, id) => {
+        await database();
+   const DonationQueue = models.DonationQueue || model('DonationQueue', donationQueueSchema)
+
     let queue = await DonationQueue.findOne({ name: 'officialQueue' });
     queue.pool.delete(id) 
     await queue.save();
 })
 
 donationQueueSchema.method('populateQueue', async () => {
+        await database();
+   const DonationQueue = models.DonationQueue || model('DonationQueue', donationQueueSchema)
+
     let queue = await DonationQueue.findOne({ name: 'officialQueue' });
     let popQueue = await queue.populate('queue')
         .then(data => { return data.queue.slice(0, 150) })
@@ -159,6 +179,9 @@ donationQueueSchema.method('populateQueue', async () => {
 });
 
 donationQueueSchema.method('addToHistory', async (org, amt) => {
+        await database();
+   const DonationQueue = models.DonationQueue || model('DonationQueue', donationQueueSchema)
+
     let queue = await DonationQueue.findOne({ name: 'officialQueue' });
 
     if (queue.history.get(org) === undefined) {

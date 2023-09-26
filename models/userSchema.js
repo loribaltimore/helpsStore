@@ -220,22 +220,11 @@ userSchema.method('changeTier').get(async () => {
 }, this);
 
 userSchema.method('addDonation', async (val, id) => {
+         await database();
+    const User = models.User || model("User", userSchema);
+
     let currentUser = await User.findById(id);
-    if (currentUser.membership.tier !== 'top') {
-        if (((currentUser.membership.totalDonations + val)) * 5 >= 250) {
-        currentUser.membership.tier = 'top'
-        currentUser.membership.unlockedColors.push('black');
-        currentUser.membership.unlockedColors.push('white');
-    } else if (((currentUser.membership.totalDonations + val) * 5) >= 150 ) {
-        currentUser.membership.tier = 'middle';
-        currentUser.membership.unlockedColors.push('blue');
-        currentUser.membership.unlockedColors.push('orange');
-    } else if (((currentUser.membership.totalDonations + val) * 5) >= 50) {
-        currentUser.membership.tier = 'low';
-        currentUser.membership.unlockedColors.push('pink');
-        currentUser.membership.unlockedColors.push('tan');
-    };
-    };
+    
     currentUser.membership.totalDonations += val;
     await currentUser.save();
     console.log(currentUser.membership.tier);
@@ -304,11 +293,11 @@ userSchema.method('unlikeCharity', async (id, org, cause) => {
 })
 
 userSchema.method('likeCharity', async (id, org, cause) => {
-    await database();
     const User = models.User || model("User", userSchema);
     let currentUser = await User.findById(id);
-    console.log(org, 'ORG IS');
-    currentUser.charities.liked.orgs = [...currentUser.charities.liked.orgs, org];
+        const charitiesByName = currentUser.charities.liked.orgs.map(x => x.name);
+        if (charitiesByName.indexOf(org.name) < 0) {
+            currentUser.charities.liked.orgs = [...currentUser.charities.liked.orgs, org];
     let allTags = {};
     org.tags.forEach(function (element, index) {
         allTags[element] = 1;
@@ -327,15 +316,15 @@ userSchema.method('likeCharity', async (id, org, cause) => {
     };
             // return currentUser.charities.interests;
         await currentUser.save();
-
+  }
 });
 
 module.exports = models.User || model("User", userSchema);
 
 
 
-running through full UX.Want to complete purchase -> have to build api / checkout to do that first. 
-Then want to make sure queue logs works and stuff
+// running through full UX.Want to complete purchase -> have to build api / checkout to do that first. 
+// Then want to make sure queue logs works and stuff
 
 
 

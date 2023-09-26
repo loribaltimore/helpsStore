@@ -22,15 +22,17 @@ function PurchaseFulfill({ item, donationId, setItemList }) {
     };
 
     let handleSubmit = async () => {
-        let response = await axios({
+        await fetch('http://localhost:3000/queue', {
             method: 'post',
-            url: 'http://localhost:3000/queue',
-            data: {
+            body: JSON.stringify({
                 receiptNo,
                 orderedFrom,
                 donationId,
                 itemId: id,
                 type: 'purchase'
+            }),
+            headers: {
+                'Content-Type': 'application/json'
             }
         }).then(data => {
             setItemList(data.data);

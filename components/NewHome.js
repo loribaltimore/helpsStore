@@ -4,8 +4,8 @@ import DonationSlider from 'components/DonationSlider';
 import TierProgress from 'components/TierProgress';
 import LikedSlider from 'components/LikedSlider';
 
-function NewHome({ user, donations, cart, serverFlash }) {
-   
+function NewHome({ user, donations }) {
+    console.log(user.membership)
     return (
         <div className="font-extralight p-10 w-full">
             <div className="grid grid-cols-2">
@@ -23,7 +23,7 @@ function NewHome({ user, donations, cart, serverFlash }) {
                     <div className="grid grid-cols-3">
                         <div className="col-span-2"></div>
                         <div className="col-span-1 text-center">
-                            <h1 className="text-6xl mt-0 py-5">${user.membership.totalDonations * 5}</h1>
+                            <h1 className="text-6xl mt-0 py-5">${user.membership.totalDonations * 10}</h1>
                         </div>
                     </div>
                 </div>

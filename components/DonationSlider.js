@@ -5,7 +5,7 @@ import ChooseCharity from 'components/ChooseCharity';
 
 function DonationSlider({ donations }) {
     let [donationSlice, setDonationSlice] = useState([0, 4]);
-
+    console.log(donations);
     let blankSpaces = [
         <div className='w-[23%]  h-[27rem] border border-dashed rounded'></div>,
         <div className='w-[23%]  h-[27rem] border border-dashed rounded'></div>,

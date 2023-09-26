@@ -13,7 +13,7 @@ function DonationSubPanel({ org, setCurrentQueue, currentPage, historyAmt, donat
     }
 
     return (
-        <div className='min-w-[15rem] h-full border border-black font-extralight text-black rounded'>
+        <div className='min-w-[15rem] h-full border border-black font-extralight text-black rounded '>
             <h4 className='text-center'>Donation</h4>
             <img src={org.img} className='w-full h-full border-t border-b border-black object-cover object-center'/>
                 <div className=" text-md text-center py-1 ">{org.name.length <= 20 ? org.name : org.name.slice(0, 20)+'...'}</div>

@@ -9,7 +9,7 @@ function QueuePanel({ donation, setCurrentQueue, currentPage, historyAmt }) {
             <div className=" h-90%">
                 <h1 className="text-3xl font-extralight p-5">{donation.user.firstName + ' ' + donation.user.lastName}</h1>
                 <div className="flex p-3">
-                    <div className="w-1/2 flex space-x-1 h-full overflow-x-scroll bg-white rounded p-5 border border-black">
+                    <div className="w-1/2 flex space-x-1 h-full overflow-x-scroll bg-white rounded p-10 border border-black">
                         {donation.orgs.map(function (element, index) {
                             return (
                                 <DonationSubPanel
@@ -28,8 +28,6 @@ function QueuePanel({ donation, setCurrentQueue, currentPage, historyAmt }) {
   <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
 </svg>
                     </div>
-                    
-
                     <div className="w-1/2">
                         <PurchaseSubPanel donation={donation} />
                     </div>
