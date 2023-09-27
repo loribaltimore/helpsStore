@@ -81,7 +81,6 @@ donationQueueSchema.method('fulfillDonation', async (id) => {
 
 donationQueueSchema.method('fulfillOrder', async (donationId, receiptNum, ordered, itemId) => {
         await database();
-
     let currentDonation = await Donation.findById(donationId,);
     currentDonation.transaction.items = currentDonation.transaction.items.map(function (element, index) {
         let { name, price, config, img, code, sort, id, receiptNo, orderedFrom, received } = element;
@@ -95,7 +94,7 @@ donationQueueSchema.method('fulfillOrder', async (donationId, receiptNum, ordere
     currentDonation.fulfillment.order.allOrderedFrom.push(ordered);
     await currentDonation.save();
     return currentDonation.transaction.items;
-    
+
 });
 
 donationQueueSchema.method('shipped', async (donationId, tracking) => {

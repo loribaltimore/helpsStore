@@ -93,12 +93,12 @@ let donationSchema = new Schema([{
     },
     fulfillment: {
         donation: {
-            fulfilled: {
+            fulfilled: [{
+                type: String
+            }],
+            allFulfilled: {
                 type: Boolean,
                 default: false
-            },
-            receiptNumber: {
-                type: String
             }
         },
         order: {

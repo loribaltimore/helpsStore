@@ -1,11 +1,9 @@
 "use client"
-import AltNav from 'components/AltNav';
 import DonationSlider from 'components/DonationSlider';
 import TierProgress from 'components/TierProgress';
 import LikedSlider from 'components/LikedSlider';
 
 function NewHome({ user, donations }) {
-    console.log(user.membership)
     return (
         <div className="font-extralight p-10 w-full">
             <div className="grid grid-cols-2">

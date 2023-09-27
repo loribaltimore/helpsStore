@@ -22,7 +22,7 @@ function PurchaseFulfill({ item, donationId, setItemList }) {
     };
 
     let handleSubmit = async () => {
-        await fetch('http://localhost:3000/queue', {
+        await fetch('/api/queue', {
             method: 'post',
             body: JSON.stringify({
                 receiptNo,
@@ -34,8 +34,9 @@ function PurchaseFulfill({ item, donationId, setItemList }) {
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(data => {
-            setItemList(data.data);
+        }).then(async data => {
+            data = await data.json();
+            setItemList(data.response);
         }).catch(err => console.log(err));
     };
 

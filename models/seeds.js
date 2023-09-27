@@ -2,8 +2,8 @@ let mongoose = require('mongoose');
 const User = require('./userSchema');
 const database = require('./database')
 // let Product = require('./productSchema');
-// let Donation = require('./donationSchema');
-// let DonationQueue = require('./donationQueueSchema');
+let Donation = require('./donationSchema');
+let DonationQueue = require('./donationQueueSchema');
 let Purchase = require('./purchaseSchema');
 let Session = require('./sessionSchema');
 
@@ -286,18 +286,22 @@ let seedDonation = async () => {
 let test = async () => {
    
     // let user = await User.findOne({ username: 'testTwenty' });
-    // let officialQueue = await DonationQueue.findOne({ name: 'officialQueue' });
     // console.log(officialQueue.queue);
     await database();
-    let currentSession = await Session.findById("650a23fef5a678390767d292");
-    currentSession.cart = null;
-    await currentSession.save();
-    // console.log(officialQueue);
-    // officialQueue.queue = [];
-    // await officialQueue.save();
-    // await Donation.deleteMany({});
-    // let currentUser = await User.findOne({ username: 'testTwenty' });
-    // console.log(currentUser.membership);
+    let officialQueue = await DonationQueue.findOne({ name: 'officialQueue' });
+    
+    officialQueue.history = new Map();
+    officialQueue.pool = new Map();
+    officialQueue.allTracking = [];
+    officialQueue.queue = [];
+    await officialQueue.save();
+    await Donation.deleteMany({});
+
+    let currentUser = await User.findById('650a02d1e5c0fbf735cb2d39');
+    currentUser.membership.totalDonations = 0;
+    currentUser.charities.donations = [];
+    currentUser.charities.donatedTo = new Map();
+    await currentUser.save()
 };
 test()
 

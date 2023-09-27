@@ -2,20 +2,17 @@
 import { useContext } from 'react';
 import { CheckoutContext } from 'components/CheckoutContext';
 import NewCharityCard from 'components/NewCharityCard';
-import ChooseCharity from 'components/ChooseCharity';
 import CheckoutBtn from 'components/CheckoutBtn';
 import ExplorePanel from 'components/ExplorePanel';
 import DonationAlert from 'components/DonationAlert';
 import { MainContext } from 'components/MainContext';
-import NewCart from 'components/NewCart';
 
 function NewCheckout({  }) {
     let { setTotalCoin, totalCoin, open } = useContext(CheckoutContext);
     const {cart, currentUser} = useContext(MainContext);
     let { orgs } = JSON.parse(currentUser).charities.liked;
-    console.log(JSON.parse(currentUser).charities.liked, 'TWO')
     totalCoin === undefined ? setTotalCoin(cart.total / 10) : '';
-   
+    console.log(cart);
     return (
         <div className="p-32 h-full font-extralight">
             <p>Youre paying ${cart.total}</p>

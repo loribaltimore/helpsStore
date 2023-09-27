@@ -11,7 +11,7 @@ function masterPage({ populatedQueue, officialHistory, allProducts }) {
     
     return (
         <div>
-            <div className="flex justify-end items-center p-4">
+            <div className="flex justify-end items-center p-4 w-1/2">
                 <button 
                     className="px-4 py-2 bg-blue-500 text-white rounded"
                     onClick={() => setIsQueue(!isQueue)}>

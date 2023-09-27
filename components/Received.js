@@ -4,30 +4,29 @@ function Received({ item, donationId, setItemList }) {
     let { id } = item;
 
     let handleClick = async () => {
-        let response = await axios({
+        await fetch('/api/queue', {
             method: 'post',
-            url: 'http://localhost:3000/queue',
-            data: {
+            body: JSON.stringify({
                 donationId,
                 itemId: id,
                 type: 'received',
-            },
-        })
-            .then((data) => {
+            }),
+        }).then(async (data) => {
+                data = await data.json();
                 console.log(data);
-                setItemList(data.data);
+                setItemList(data);
             })
             .catch((err) => console.log(err));
     };
 
     return (
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex' }} className='font-extralight border border-black p-3 rounded'>
             <div style={{ display: 'block' }}>
                 <h3 style={{ margin: '0%' }}>Receipt Number: {item.receiptNo}</h3>
                 <h4 style={{ margin: '0%' }}>Ordered From: {item.orderedFrom}</h4>
                 {!item.received ? (
                     <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        className="text-black border border-black py-2 px-4 rounded hover:scale-110 active:scale-90"  
                         style={{ margin: '0%', marginLeft: '5%' }}
                         onClick={() => handleClick()}
                     >

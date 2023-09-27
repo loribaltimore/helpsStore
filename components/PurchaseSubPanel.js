@@ -6,7 +6,6 @@ import Shipped from './Shipped';
 function PurchaseSubPanel({ donation }) {
     const { items } = donation.transaction;
     const [itemList, setItemList] = useState(items);
-
     return (
         <div className="w-full h-full p-10 border border-black text-black rounded overflow-y-auto font-extralight">
             <h1>Products</h1>
@@ -17,7 +16,7 @@ function PurchaseSubPanel({ donation }) {
                     } else {
                         return (
                             <div>
-                                <h3 className="mb-2">{element.name}</h3>
+                                <h3 className="mb-2">{element.name} x{element.config.qty}</h3>
                                 <Received item={element} setItemList={setItemList} donationId={donation._id} key={index} />
                             </div>
                         );

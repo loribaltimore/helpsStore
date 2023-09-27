@@ -14,7 +14,7 @@ function Queue({ populatedQueue }) {
         setCurrentPage(page);
         const startIndex = (page - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
-        const queueSlice = officialQueue.slice(startIndex, endIndex);
+        const queueSlice = currentQueue.slice(startIndex, endIndex);
         setCurrentQueue(queueSlice);
         window.scroll(0, 0);
     };
@@ -42,6 +42,7 @@ function Queue({ populatedQueue }) {
         <div className='space-y-3'>
             <QueueSearch setCurrentQueue={setCurrentQueue} />
             {currentQueue.map((element, index) => (
+                !element.fulfillment.donation.allFulfilled?
                 <QueuePanel
                     donation={element}
                     setCurrentQueue={setCurrentQueue}
@@ -49,7 +50,7 @@ function Queue({ populatedQueue }) {
                     setCurrentPage={setCurrentPage}
                     key={index}
                     historyAmt={2}
-                />
+                /> : null
             ))}
             <div className="flex justify-center mt-4">{renderPagination()}</div>
         </div>

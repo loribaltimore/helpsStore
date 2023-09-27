@@ -6,7 +6,7 @@ import addToQueue from 'lib/addToQueue';
 
 export default async function handler(req, res) {
   await database();
-  let { sessionId, cart, toDonate } = req.body;
+  let { sessionId, cart, toDonate } = JSON.parse(req.body);
   const { items } = cart;
   cart.toDonate = toDonate;
   if (req.method === 'POST') {
@@ -28,7 +28,8 @@ export default async function handler(req, res) {
       await currentSession.save();
       await addToQueue({items: cart.items, toDonate: cart.toDonate, sessionId: currentSession.id, currentUser: currentSession.userId})
                         .then(data => { return data }).catch(err => console.log(err));
-      res.redirect(303, session.url);
+          res.json(session.url);
+      // res.redirect(303, session.url);
     } catch (err) {
       res.status(err.statusCode || 500).json(err.message);
     }

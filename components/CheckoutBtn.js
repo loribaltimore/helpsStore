@@ -2,6 +2,7 @@
 import { useSession } from "next-auth/react";
 import { useState, useContext, useEffect } from 'react';
 import { CheckoutContext } from './CheckoutContext';
+import { useRouter } from 'next/navigation';
 
 const canCheckout = (totalCoin, chosenCharities) => {
     let canCheckout = true;
@@ -13,8 +14,6 @@ const canCheckout = (totalCoin, chosenCharities) => {
         };
     };
     } else { canCheckout = false };
-    console.log(chosenCharities, 'NON JSON');
-    console.log(JSON.stringify(chosenCharities),'is JSON')
     return canCheckout;
 }
 
@@ -22,6 +21,7 @@ export default function CheckoutBtn({ cart }) {
     const { data: session } = useSession();
     const { chosenCharities, setOpen, totalCoin } = useContext(CheckoutContext);
     const [userCanCheckout, setUserCanCheckout] = useState(false);
+    const router = useRouter();
     useEffect(() => {
         const query = new URLSearchParams(window.location.search);
         if (query.get('success')) {
@@ -39,7 +39,6 @@ export default function CheckoutBtn({ cart }) {
 
     const handleSubmit = async () => {
         if (session) {
-                    console.log(session)
             await fetch('/api/checkout_sessions', {
             method: 'POST',
             body: JSON.stringify({
@@ -47,12 +46,15 @@ export default function CheckoutBtn({ cart }) {
                 cart: session.cart,
                 toDonate: chosenCharities
             }),
+            mode: 'no-cors',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             }
-        }).then(data => data).catch(err => console.log(err));
+            }).then(async data => {
+                data = await data.json();
+                router.push(data)
+            }).catch(err => console.log(err));
         }
-        
     }
 
     const buttonStyle = {
@@ -75,7 +77,7 @@ export default function CheckoutBtn({ cart }) {
                             Confirm Charities
                         </div>
                         :
-                    <button  style={{ ...buttonStyle, backgroundColor: 'green' }} onMouseOver={() => buttonStyle.opacity = '0.8'}
+                    <button style={{ ...buttonStyle, backgroundColor: 'green' }} onMouseOver={() => buttonStyle.opacity = '0.8'}
                         onClick={() => handleSubmit()}
                     >
                             Checkout

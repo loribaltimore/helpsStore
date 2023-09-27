@@ -20,7 +20,7 @@ const nextConfig = {
         pathname: '/api/user/photos/**',
       },
     ],
-  },
+  }
 };
 
 module.exports = nextConfig;

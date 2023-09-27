@@ -15,7 +15,6 @@ export async function GET(req, res) {
   const limit = url.searchParams.get("limit")
   const search = url.searchParams.get("search")
     const filter = url.searchParams.get("filter");
-    console.log(filter);
 
     let officialQueue = await DonationQueue.findOne({ name: 'officialQueue' })
     .then(data => { return data }).catch(err => console.log(err));
@@ -59,7 +58,7 @@ export async function GET(req, res) {
 };
 
 export async function POST(req) {
-    let { receiptNo, orderedFrom, donationId, itemId, type, tracking } = req.body;
+    let { receiptNo, orderedFrom, donationId, itemId, type, tracking } = await req.json();
     let officialQueue = await DonationQueue.findOne({ name: 'officialQueue' });
     let response = undefined;
     switch (type) {
@@ -77,5 +76,5 @@ export async function POST(req) {
             break;
     };
 
-    res.send(response);
+    return NextResponse.json({response});
 };

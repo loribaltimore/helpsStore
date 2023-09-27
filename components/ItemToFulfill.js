@@ -19,8 +19,6 @@ function ItemToFulfill({item, donationId, setItemList}) {
                     <div className="w-3/4 text-center">
                       <h2 className="text-xl font-extralight">{item.name}</h2>
                             </div>
-                       
-
                         </div>
                         <div className="flex p-3 space-x-3 ">
                             <div className="w-1/4 text-center text-xl">
