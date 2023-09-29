@@ -121,7 +121,7 @@ let userSchema = new Schema({
                 type: Array,
                 default: [
                         {
-                            description: "the helps Pool will take all user donations and make on large donation to an organization voted on by each user.",
+                            description: "the helps Pool will take all user donations and make one large donation to an organization voted on by each user.",
                             name: "helps Pool",
                             profileUrl: 'https://www.every.org/lilbubsbigfund',
                             logoUrl: 'https://res.cloudinary.com/demgmfow6/image/upload/c_lfill,w_25,h_25,dpr_2/c_crop,ar_25:25/q_auto,f_auto,fl_progressive/v1671644999/helps/vggmorzngbqcniaejrrt.jpg',

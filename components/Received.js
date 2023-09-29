@@ -13,8 +13,7 @@ function Received({ item, donationId, setItemList }) {
             }),
         }).then(async (data) => {
                 data = await data.json();
-                console.log(data);
-                setItemList(data);
+                setItemList(data.response);
             })
             .catch((err) => console.log(err));
     };

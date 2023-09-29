@@ -18,7 +18,6 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackUrl: url
     }),
-
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
@@ -29,9 +28,10 @@ export const authOptions = {
     },
     async session({ session, user, token, trigger, newSession }) {
       await database();
+
       const currentUser = await User.findOne({ email: user.email }).then(data => {
         {return data}
-     }).catch(err => console.log(err));
+      }).catch(err => console.log(err));
       const convertedId = new mongoose.Types.ObjectId(currentUser.id);
       session = await Session.findOne({ userId: convertedId }).then(data => { return data }).catch(err => console.log(err));
       if (newSession) {

@@ -16,10 +16,14 @@ let donationQueueSchema = new Schema({
         }
     ],
     pool: {
-        type: Map,
-        of: Object,
-        default: new Map()
+        type: Number,
+        default: 0
     },
+    topVote:[{
+        name: String,
+        qty: Number
+    }],
+    totalDonated: Number,
     history: {
         type: Map,
         of: Object,

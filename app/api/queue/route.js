@@ -60,7 +60,7 @@ export async function GET(req, res) {
 export async function POST(req) {
     let { receiptNo, orderedFrom, donationId, itemId, type, tracking } = await req.json();
     let officialQueue = await DonationQueue.findOne({ name: 'officialQueue' });
-    let response = undefined;
+    let response;
     switch (type) {
         case 'purchase':
             console.log('IN PURCHASE')

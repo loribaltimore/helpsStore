@@ -6,7 +6,6 @@ import CartBtn from '../Cart/components/CartBtn';
 
 function Navbar({ currentUser }) {
     let { cart } = useContext(MainContext);
-
     let isAdmin = currentUser && currentUser.admin.permissions.includes('admin');
 
     let router = useRouter();

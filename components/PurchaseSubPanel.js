@@ -5,6 +5,7 @@ import Shipped from './Shipped';
 
 function PurchaseSubPanel({ donation }) {
     const { items } = donation.transaction;
+    console.log(donation)
     const [itemList, setItemList] = useState(items);
     return (
         <div className="w-full h-full p-10 border border-black text-black rounded overflow-y-auto font-extralight">

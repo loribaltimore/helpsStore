@@ -29,15 +29,17 @@ export async function middleware(request) {
                 headers: {
                     cookie
                 },
-            }).then(async data => {
+        }).then(async data => {
                 const session = await data.json();
                 if (Object.keys(session).length > 0) {
                     return true;
                 } else {
+                    console.log('jeepers')
                     return false;
                 }
             }).catch(err => console.log(err));
         if (response) {
+            console.log('jeepers')
             return NextResponse.redirect(`${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/home`)
         };
     }

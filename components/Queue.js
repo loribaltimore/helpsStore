@@ -2,7 +2,7 @@ import { useState } from 'react';
 import QueuePanel from './QueuePanel';
 import QueueSearch from './QueueSearch';
 
-function Queue({ populatedQueue }) {
+function Queue({ populatedQueue, setIsQueue, isQueue }) {
     const [currentQueue, setCurrentQueue] = useState(JSON.parse(populatedQueue));
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -40,7 +40,13 @@ function Queue({ populatedQueue }) {
     };
     return (
         <div className='space-y-3'>
+            <button 
+                    className="text-black rounded border border-black px-3 py-1 focus:outline-none"
+                    onClick={() => setIsQueue(!isQueue)}>
+                    back
+                </button>
             <QueueSearch setCurrentQueue={setCurrentQueue} />
+            
             {currentQueue.map((element, index) => (
                 !element.fulfillment.donation.allFulfilled?
                 <QueuePanel

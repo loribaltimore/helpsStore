@@ -4,23 +4,13 @@ import AllProducts from 'components/AllProducts';
 import Queue from 'components/Queue';
 import { useState } from 'react';
 
-function masterPage({ populatedQueue, officialHistory, allProducts }) {
+function MasterPage({ populatedQueue, officialHistory, allProducts }) {
     let [isQueue, setIsQueue] = useState(false);
     let [products, setProducts] = useState(allProducts);
     let [renderForm, setRenderForm] = useState(false);
     
     return (
         <div>
-            <div className="flex justify-end items-center p-4 w-1/2">
-                <button 
-                    className="px-4 py-2 bg-blue-500 text-white rounded"
-                    onClick={() => setIsQueue(!isQueue)}>
-                    {
-                        isQueue === true ? 'Products' : 'Orders'
-                    }
-                </button>
-            </div>
-            
             {
                 isQueue === false ?
                     <div>
@@ -30,13 +20,13 @@ function masterPage({ populatedQueue, officialHistory, allProducts }) {
                         }
                         
                         <AllProducts products={products} setProducts={setProducts}
-                            setRenderForm={setRenderForm} renderForm={renderForm} />
+                            setRenderForm={setRenderForm} renderForm={renderForm} setIsQueue={setIsQueue} isQueue={isQueue} />
                     </div>
                     : 
-                    <Queue populatedQueue={populatedQueue} officialHistory={officialHistory} />
+                    <Queue populatedQueue={populatedQueue} officialHistory={officialHistory} setIsQueue={setIsQueue} isQueue={isQueue}/>
                 }
         </div>
     )
 };
 
-export default masterPage;
+export default MasterPage;

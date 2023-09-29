@@ -4,13 +4,19 @@ import { CheckoutContext } from 'components/CheckoutContext';
 import { MainContext } from 'components/MainContext';
 import Undonate from 'components/Undonate';
 
+const convertArrToObj = (chosenCharities) => {
+    let obj = {};
+    for (let i = 0; i < chosenCharities.length; i++) {
+        obj[chosenCharities[i].name] = chosenCharities[i];
+    };
+    return obj;
+}
+
 const findCoin = (toDonate, org, coinTotal) => {
     let totalSubtracted = 0;
     let updatedCharities = toDonate;
-    let canCheckout = false;
     console.log('toDonate', toDonate);
     const charitiesByName = toDonate.map(x => x.name);
-
      if (charitiesByName.indexOf(org.name) < 0) {
          org.qty = 1;
          updatedCharities.push(org);
@@ -22,32 +28,27 @@ const findCoin = (toDonate, org, coinTotal) => {
                 return x;
             });
     };
-    
-    // if (toDonate.length) {
-        for (let i = 0; i < updatedCharities.length; i++) {
-              totalSubtracted -= 1 * updatedCharities[i].qty;
-        // };
-    };
-    console.log(updatedCharities);
-    console.log(totalSubtracted);
-    return {coin: coinTotal + totalSubtracted, charities: updatedCharities};
+
+    console.log(coinTotal - 1)
+    return {coin: coinTotal - 1, charities: updatedCharities};
 };
 
 function CharityDonate({ org }) {
     let { totalCoin, setTotalCoin, chosenCharities, setChosenCharities } = useContext(CheckoutContext);
     const { cart } = useContext(MainContext);
     const [amt, setAmt] = useState(0);
-
+    const charitiesObj = convertArrToObj(chosenCharities);
+    console.log(charitiesObj);
     const handleClick = async () => {
         console.log('CHARITY DONATE IS CLICKED');
-        const {coin, charities}= findCoin(chosenCharities, org, cart.total / 10);
+        const {coin, charities}= findCoin(chosenCharities, org, totalCoin);
         setTotalCoin(coin);
         setChosenCharities(charities);
     };
     return (
         <div className=' mx-auto block'>
 <div className='flex w-100'>
-                <Undonate org={org} cart={cart} setAmt={setAmt} amt={amt} />
+                <Undonate org={charitiesObj[org.name]} setAmt={setAmt} amt={amt} />
             <div className='text-center'>
                 <p className='text-6xl text-center py-2 px-5'>{amt}</p>
             </div>

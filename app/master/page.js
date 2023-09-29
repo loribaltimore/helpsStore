@@ -9,7 +9,6 @@ export async function getData() {
     const allProducts = await Product.find({}).then(data => { return data }).catch(err => console.log(err));
     const officialQueue = await DonationQueue.findOne({ name: 'officialQueue' }).then(data => { return data }).catch(err => console.log(err));
     const populatedQueue = await officialQueue.populate('queue').then(data => { return data.queue }).catch(err => console.log(err));
-    console.log(populatedQueue);
     return { allProducts, populatedQueue };
 }
 

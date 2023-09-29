@@ -4,7 +4,6 @@ import FilterBtn from './FilterBtn';
 function QueueSearch({ setCurrentQueue }) {
     let [search, setSearch] = useState('');
     let [filter, setFilter] = useState('Name');
-    let [isRender, setIsRender] = useState(false);
 
     let handleChange = (event) => {
         setSearch(event.target.value);
@@ -30,25 +29,23 @@ function QueueSearch({ setCurrentQueue }) {
     };
 
     return (
-        <div className="block items-center text-black font-extralight" onKeyDown={(event) => handleKeyPress(event)} style={{ width: '22%' }}>
+        <div className="block items-center text-black font-extralight  space-y-2" onKeyDown={(event) => handleKeyPress(event)} style={{ width: '22%' }}>
             <div className="flex space-x-3">
                 <input
                     placeholder={`Search By ${filter}`}
                     value={search}
                     onChange={(event) => handleChange(event)}
-                    className="p-2 w-full block rounded "
+                    className="p-2 w-full block rounded border border-black"
                 />
-                <FilterBtn setFilter={setFilter} setIsRender={setIsRender} isRender={isRender} />
-
+                <button className=' border border-black px-3 py-1 rounded'>Search</button>
+                {/* <FilterBtn setFilter={setFilter} setIsRender={setIsRender} isRender={isRender} /> */}
             </div>
             
-            <div className=" min-h-[3rem]">
-                {
-                    isRender ?
-                        <div className='flex p-2 text-center'>
+            <div className="">
+                        <div className='flex p-2 text-center space-x-1'>
                 <div className="w-3/12">
                     <div
-                        className="cursor-pointer"
+                        className="cursor-pointer border border-black px-2 py-1 rounded"
                         id="Name"
                         onClick={(event) => handleClick(event)}
                     >
@@ -57,7 +54,7 @@ function QueueSearch({ setCurrentQueue }) {
                 </div>
                 <div className="w-3/12">
                     <div
-                        className="cursor-pointer"
+                        className="cursor-pointer border border-black px-2 py-1 rounded"
                         id="Receipt"
                         onClick={(event) => handleClick(event)}
                     >
@@ -66,7 +63,7 @@ function QueueSearch({ setCurrentQueue }) {
                 </div>
                 <div className="w-3/12">
                     <div
-                        className="cursor-pointer"
+                        className="cursor-pointer border border-black px-2 py-1 rounded"
                         id="Manufacturer"
                         onClick={(event) => handleClick(event)}
                     >
@@ -75,17 +72,15 @@ function QueueSearch({ setCurrentQueue }) {
                 </div>
                 <div className="w-3/12">
                     <div
-                        className="cursor-pointer"
+                        className="cursor-pointer border border-black px-2 py-1 rounded"
                         id="Tracking"
                         onClick={(event) => handleClick(event)}
                     >
                         Tracking
                     </div>
                             </div>
-                            </div>: null
-                          }
+                            </div>
                     </div> 
-                      
         </div>
     );
 }

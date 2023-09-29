@@ -289,19 +289,20 @@ let test = async () => {
     // console.log(officialQueue.queue);
     await database();
     let officialQueue = await DonationQueue.findOne({ name: 'officialQueue' });
-    
-    officialQueue.history = new Map();
-    officialQueue.pool = new Map();
-    officialQueue.allTracking = [];
-    officialQueue.queue = [];
+    officialQueue.pool = 0;
+    // officialQueue.history = new Map();
+    // officialQueue.pool = new Map();
+    // officialQueue.allTracking = [];
+    // officialQueue.queue = [];
     await officialQueue.save();
-    await Donation.deleteMany({});
+    // await Donation.deleteMany({});
 
-    let currentUser = await User.findById('650a02d1e5c0fbf735cb2d39');
-    currentUser.membership.totalDonations = 0;
-    currentUser.charities.donations = [];
-    currentUser.charities.donatedTo = new Map();
-    await currentUser.save()
+    // let currentUser = await User.findById('650a02d1e5c0fbf735cb2d39');
+    // currentUser.membership.totalDonations = 0;n
+    // currentUser.charities.donations = [];
+    // currentUser.charities.donatedTo = new Map();
+    // currentUser.charities.liked.orgs = currentUser.charities.liked.orgs.slice(0, 2);
+    // await currentUser.save()
 };
 test()
 

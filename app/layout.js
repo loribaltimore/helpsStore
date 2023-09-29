@@ -53,9 +53,13 @@ export default async function RootLayout({ children }) {
   }
   return (
     <html lang="en">
-      <body className={`${inter.className} block p-5 bg-white w-full`}>
+      <body className={`${inter.className} block p-5 bg-white w-full min-w-full`}>
         <MainProvider currentUser={JSON.stringify(currentUser)} serverCart={session ? session.cart : null}>
-          <AltNav cart={session ? session.cart : null} />
+          {
+            session ?
+              <AltNav cart={session ? session.cart : null} />
+              : null
+          }
             <NextAuthProvider session={session}>
             {
              session && session.flash && session.flash.message ?
