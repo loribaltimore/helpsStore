@@ -18,6 +18,8 @@ function NewAddCart({ setAlert, setSize, size, back, front, setBack, setFront, c
         if (canAdd === true) {
             const config = { size: size, colors: [front, back], qty: 1 };
             item.config = config;
+            console.log(cart);
+            console.log(JSON.parse(currentUserId));
             await addToCart(JSON.parse(currentUserId), cart, item)
                 .then((data) => {
                     setCart(data);
@@ -30,7 +32,6 @@ function NewAddCart({ setAlert, setSize, size, back, front, setBack, setFront, c
     };
 
     return (
-    
                 <button className='w-full mx-auto p-1 border border-black rounded font-extralight text-black' onClick={() => handleClick()}>Add</button>
     );
 }

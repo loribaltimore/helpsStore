@@ -25,13 +25,14 @@ export async function getData(userId) {
     //     };
     // }
 
-return { user, donations: donatedTo, items, likedCharities, flash:{type: undefined, message: undefined} }
+return { user: JSON.stringify(user), donations: donatedTo, items, likedCharities, flash:{type: undefined, message: undefined} }
 }
 
 export default async function page() {
         const session = await getServerSession(authOptions);
 
-    const { user, donations, items, likedCharities, flash } = await getData(session.userId);
+    let { user, donations, items, likedCharities, flash } = await getData(session.userId);
+    user = JSON.parse(user);
 
     return (
         <div className='w-100'>

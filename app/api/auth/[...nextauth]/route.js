@@ -49,7 +49,7 @@ export const authOptions = {
     signIn: '/auth/signin',
     signOut: '/auth/signout',
     error: '/auth/error', // Error code passed in query string as ?error=
-    newUser: '/user/registration'
+    newUser: '/registration'
   },
   // debug: true,
 }

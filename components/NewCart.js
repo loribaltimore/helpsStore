@@ -4,17 +4,18 @@ import { useState, useContext } from 'react';
 import { MainContext } from 'components/MainContext';
 import Link from 'next/link';
 
-function NewCart({ currentUser, cart }) {
-  let { setCart, renderCart, setRenderCart } = useContext(MainContext);
+function NewCart({}) {
+  let { setCart, renderCart, setRenderCart, cart, currentUser } = useContext(MainContext);
   let [isHover, setIsHover] = useState(false);
+
   let handleClick = async (type, item) => {
     if (type === 'add') {
-      let response = await addToCart(currentUser, cart, item, cart.coin).then(data => { return data }).catch(err => console.log(err));
-      setCart(response);
+      let response = await addToCart(JSON.parse(currentUser)._id, cart, item).then(data => { console.log(data); return data }).catch(err => console.log(err));
+      setCart(response.cart);
     } else {
-      let response = await removeFromCart(cart, item).then(data => { console.log(data); return data }).catch(err => console.log(err));
-      !response.items.length ?
-        setCart(undefined) : setCart(response);
+      let response = await removeFromCart(JSON.parse(currentUser)._id, cart, item).then(data => { console.log(data); return data }).catch(err => console.log(err));
+      !response.cart.items.length ?
+        setCart({total: 0}) : setCart(response.cart);
     }
   };
 
@@ -31,7 +32,7 @@ function NewCart({ currentUser, cart }) {
         renderCart ?
           <div className='border border-black rounded '>
             {
-              cart && cart.items.map((element, index) => (
+              cart &&  cart.items && cart.items.map((element, index) => (
                 <div key={index} className="p-3 cursor-pointer w-full" onMouseEnter={handleHover} onMouseLeave={handleLeave}>
                   <div className="flex space-x-1">
                     <img src={element.img} className="rounded-full w-10 h-10" />
@@ -50,8 +51,16 @@ function NewCart({ currentUser, cart }) {
                     <div className="w-1/4 text-center">
                       <h2 className="font-extralight">${element.price}</h2>
                     </div>
-                    <div className="w-1/4 text-center">
-                      <h2 className="font-extralight">qty:{element.config.qty}</h2>
+                    <div className="w-1/4 text-center flex ">
+                      <div className="font-extralight space-x-1 flex">
+                        <span className='border rounded hover:bg-gray-200 active:bg-gray-300 active:scale-90'
+                          onClick={() => handleClick('remove', element)}
+                        >-</span>
+                        <h1>{element.config.qty}</h1>
+                        <span className='border rounded hover:bg-gray-200 active:bg-gray-300 active:scale-90'
+                        onClick={() => handleClick('add', element)}
+                        >+</span>
+                      </div>
                     </div>
                   </div>
                   <hr />
@@ -59,10 +68,14 @@ function NewCart({ currentUser, cart }) {
               ))
             }
             <div className="text-center bg-beige">
-        {cart ? <h2>Total ${cart.total}</h2> : 'Cart Empty'}
+        {cart && cart.items && cart.items.length ? <h2>Total ${cart.total}</h2> : 'Cart Empty'}
       </div>
-            {cart && <div className="text-center my-4"
-            ><Link href="/checkout" className="px-4 py-2 bg-blue-500 text-white rounded">Checkout</Link></div>}
+            {cart && cart.items && cart.items.length ? <div className="text-center my-4"
+                onClick={() => setRenderCart(false)}
+            ><Link href="/checkout" className="px-4 py-2 bg-blue-500 text-white rounded">Checkout</Link></div> 
+              : <div className="text-center my-4"
+                onClick={() => setRenderCart(false)}
+            ><Link href="/shop" className="px-4 py-2 bg-blue-500 text-white rounded">Shop</Link></div>}
             </div> : null
       }
     </div>

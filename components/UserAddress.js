@@ -8,7 +8,7 @@ function UserAddress(props) {
     let [streetNumber, setStreetNumber] = useState('');
     let [streetName, setStreetName] = useState('');
     let [city, setCity] = useState('');
-    let [state, setState] = useState('');
+    let [state, setState] = useState('Alabama');
     let [renderBilling, setRenderBilling] = useState(false);
     let [renderShipping, setRenderShipping] = useState(true);
 
@@ -20,7 +20,6 @@ function UserAddress(props) {
         'true': 'Billing Address',
         'false': 'Where do you receive packages?'
     };
-    console.log(state);
     let handleClick = () => {
         if (streetNumber && streetName && city ) {
             event.target.click();
