@@ -7,7 +7,7 @@ function ExplorePanel({ length }) {
             <div className="space-y-10">
             <img src='/img/explorePhotoSunrise.jpeg' className='w-full h-[10rem] border-t border-b border-black object-center object-cover'/>
             <p className="text-black text-sm px-2 text-center py-5 text-center mx-auto">Youll want to fill out your collection of charities that you like.
-            That way you can come back here and select them to donate to when you make a purchase. Press "Explore" to get started!
+            That way you can come back here and select them to donate to when you make a purchase. Press &quot;Explore&quot; to get started!
                 </p>
             </div>
             <div className="block mx-auto text-center p-4 my-10">
