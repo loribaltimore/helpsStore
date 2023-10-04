@@ -1,5 +1,5 @@
-let Product = require('../../models/productSchema');
-let extractor = require('../functions/extractor');
+import Product from 'models/productSchema';
+import extractor from 'lib/extractor';
 
 export async function POST(req, res, next) {
     let { name, price, cost, lead, img , code} = req.body;

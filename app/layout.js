@@ -13,12 +13,14 @@ import NewCart from 'components/NewCart';
 import User from 'models/userSchema';
 import { SignUpProvider } from '@/components/SignUpContext';
 
+
+export const dynamic = 'force-dynamic';
+const url = process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL;
+
 export const metadata = {
   title: 'Helps',
   description: 'A New Way to Give',
-}
-export const dynamic = 'force-dynamic';
-const url = process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL;
+};
 
 async function getSession(cookie) {
   const response = await fetch(`${url}/api/auth/session`, {
@@ -33,9 +35,6 @@ async function getSession(cookie) {
     return {session, currentUser}
   } else {return null}
 };
-
-
-
 
 export default async function RootLayout({ children }) {
   let session;
@@ -53,6 +52,7 @@ export default async function RootLayout({ children }) {
   }
   return (
     <html lang="en">
+      <link rel="icon" href="/img/logo1.jpeg" sizes="any" />
       <body className={`${inter.className} block p-5 bg-white w-full min-w-full`}>
         <MainProvider currentUser={JSON.stringify(currentUser)} serverCart={session ? session.cart : null}>
           {

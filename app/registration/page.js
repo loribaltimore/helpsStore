@@ -1,4 +1,4 @@
-import AllSignup from 'components/allSignup';
+import AllSignup from 'components/AllSignup';
 
 export default async function page() {
     return (
