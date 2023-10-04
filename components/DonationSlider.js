@@ -25,6 +25,7 @@ function DonationSlider({ donations }) {
                             length={Object.keys(donations).length}
                             index={index}
                             type={'donation'}
+                            key={v4()}
                         />
                     }) :
                     blankSpaces.map(function (element, index) {
