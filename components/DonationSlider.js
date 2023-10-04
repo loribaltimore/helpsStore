@@ -1,16 +1,16 @@
 "use client"
 import NewCharityCard from 'components/NewCharityCard';
 import { useState } from 'react';
-import ChooseCharity from 'components/ChooseCharity';
+import { v4 } from 'uuid';
 
 function DonationSlider({ donations }) {
     let [donationSlice, setDonationSlice] = useState([0, 4]);
-    console.log(donations);
+
     let blankSpaces = [
-        <div className='w-[23%]  h-[27rem] border border-dashed rounded'></div>,
-        <div className='w-[23%]  h-[27rem] border border-dashed rounded'></div>,
-        <div className='w-[23%]  h-[27rem] border border-dashed rounded'></div>,
-        <div className='w-[23%]  h-[27rem]  border border-dashed rounded'></div>,
+        <div key={v4()} className='w-[23%]  h-[27rem] border border-dashed rounded'></div>,
+        <div key={v4()} className='w-[23%]  h-[27rem] border border-dashed rounded'></div>,
+        <div key={v4()} className='w-[23%]  h-[27rem] border border-dashed rounded'></div>,
+        <div key={v4()} className='w-[23%]  h-[27rem]  border border-dashed rounded'></div>,
     ];
 
     return (
@@ -25,7 +25,7 @@ function DonationSlider({ donations }) {
                             length={Object.keys(donations).length}
                             index={index}
                             type={'donation'}
-                            key={index} />
+                        />
                     }) :
                     blankSpaces.map(function (element, index) {
                         return element;

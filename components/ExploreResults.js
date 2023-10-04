@@ -2,6 +2,7 @@ import NewRecommended from './NewRecommended';
 import NewCharityCard from './NewCharityCard';
 import { useContext } from 'react';
 import { ExploreContext } from './ExploreContext';
+import { v4 } from 'uuid';
 
 function ExploreResults({ type, resource, user, likedCharities }) {
     let { pageCalc, setPageCalc, setIsLoading } = useContext(ExploreContext);
@@ -24,10 +25,10 @@ function ExploreResults({ type, resource, user, likedCharities }) {
                         if (likedCharities.indexOf(element.name) > -1) {
                             liked = true;
                         }
-                        return <NewCharityCard org={element} type={'like'} liked={liked} currentUser={user} />
+                        return <NewCharityCard org={element} key={v4()}  type={'like'} liked={liked} currentUser={user} />
                     })
                     : resource.map((element, index) => {
-                        return <NewRecommended recommended={element} currentUser={user} likedCharities={likedCharities} />
+                        return <NewRecommended key={v4()} recommended={element} currentUser={user} likedCharities={likedCharities} />
                     })
             }
             {

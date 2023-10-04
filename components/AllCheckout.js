@@ -6,7 +6,7 @@ import CheckoutBtn from 'components/CheckoutBtn';
 import ExplorePanel from 'components/ExplorePanel';
 import DonationAlert from 'components/DonationAlert';
 import { MainContext } from 'components/MainContext';
-
+import {v4} from 'uuid';
 
 
 function NewCheckout({  }) {
@@ -28,7 +28,7 @@ function NewCheckout({  }) {
 
             <div className="flex mt-10 w-full h-full">
                 {orgs.map((element, index) => (
-                    <NewCharityCard org={element} type={'purchase'} currentUser={currentUser} />
+                    <NewCharityCard key={v4()} org={element} type={'purchase'} currentUser={currentUser} />
                 ))}
 
                 {orgs.length % 4 !== 0 && (

@@ -1,15 +1,16 @@
 "use client"
 import NewCharityCard from 'components/NewCharityCard';
 import { useState } from 'react';
+import { v4 } from 'uuid';
 
 function LikedSlider({ liked }) {
     let [donationSlice, setDonationSlice] = useState([0, 4]);
 
     let blankSpaces = [
-        <div className=' h-[20rem] border border-dashed rounded'></div>,
-        <div className=' h-[20rem] border border-dashed rounded'></div>,
-        <div className=' h-[20rem] border border-dashed rounded'></div>,
-        <div className='c h-[20rem] border border-dashed rounded'></div>,
+        <div key={v4()}  className=' h-[20rem] border border-dashed rounded'></div>,
+        <div key={v4()}  className=' h-[20rem] border border-dashed rounded'></div>,
+        <div key={v4()}  className=' h-[20rem] border border-dashed rounded'></div>,
+        <div key={v4()}  className='c h-[20rem] border border-dashed rounded'></div>,
 
     ];
 

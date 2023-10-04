@@ -16,7 +16,7 @@ function NewRecommended({ recommended, likedCharities }) {
 {
                 recommended[key].map((element, index) => {
                     const liked = JSON.parse(currentUser).charities.liked.orgs.indexOf(element.name) > -1;
-                    return <NewCharityCard org={element} type={'like'} currentUser={currentUser} liked={liked} recommendedCause={key} />
+                    return <NewCharityCard key={index} org={element} type={'like'} currentUser={currentUser} liked={liked} recommendedCause={key} />
                 })
             }
             </div>

@@ -21,7 +21,7 @@ function DonatedTo({currentUser}) {
                         
                     <div className="text-center">
                         <h2 className="text-2xl">No Donations Yet!</h2>
-                        <h5 className="text-lg">See What's Out There</h5>
+                        <h5 className="text-lg">See What&apos;s Out There</h5>
                         <button className="bg-blue-500 text-white py-2 px-4 rounded">Explore</button>
                     </div>
             }

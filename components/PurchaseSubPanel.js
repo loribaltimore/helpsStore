@@ -13,10 +13,10 @@ function PurchaseSubPanel({ donation }) {
             {donation.fulfillment.order.fulfilled === false ? (
                 itemList.map(function (element, index) {
                     if (!element.receiptNo) {
-                        return <ItemToFulfill item={element} donationId={donation._id} key={index} setItemList={setItemList} />;
+                        return <ItemToFulfill key={index*12} item={element} donationId={donation._id} key={index} setItemList={setItemList} />;
                     } else {
                         return (
-                            <div>
+                            <div key={index} >
                                 <h3 className="mb-2">{element.name} x{element.config.qty}</h3>
                                 <Received item={element} setItemList={setItemList} donationId={donation._id} key={index} />
                             </div>

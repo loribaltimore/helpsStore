@@ -35,7 +35,7 @@ function Criteria({ isLength, isStrong, isForbidden }) {
           <div className="flex-grow">
             <h4 className="mt-0">
               cannot contain:{" "}
-              <span className="text-teal-500">// $ * . &lt; \ / | : ; ] [ / &gt;</span>
+              <span className="text-teal-500">{'// $ * .' }&lt; {'\\ / | : ; ] [ /'} &gt;</span>
               <br />
             </h4>
           </div>

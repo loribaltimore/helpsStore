@@ -1,6 +1,7 @@
 import ConfigColor from './ConfigColor';
 import NewAddCart from './NewAddCart';
 import { useState } from 'react';
+import { v4 } from 'uuid';
 
 function NewConfig({ currentUserId, tier, item }) {
     let [front, setFront] = useState(undefined);
@@ -22,7 +23,9 @@ function NewConfig({ currentUserId, tier, item }) {
         <div className="block p-5">
             <div className='flex space-x-3'>
                 {possibleColors.map((element, index) => {
-                    return <div className={`rounded w-[2rem] h-[2rem] border border-black cursor-pointer hover:scale-105`} style={{ backgroundColor: element }}
+                    return <div
+                        key={v4()}
+                        className={`rounded w-[2rem] h-[2rem] border border-black cursor-pointer hover:scale-105`} style={{ backgroundColor: element }}
                         onClick={() => front ? setBack(element) : setFront(element)}
                     ></div>
             })}
@@ -32,7 +35,7 @@ function NewConfig({ currentUserId, tier, item }) {
                 <div className="w-1/12"></div>
                 <div className="w-10/12 flex gap-4">
                     {['S', 'M', 'L', 'XL'].map(sizeOption => (
-                            <h1 className="rounded w-1/4 p-1 border border-black text-center text-xl font-extralight text-black cursor-pointer hover:scale-105" onClick={handleClick}>{sizeOption}</h1>
+                            <h1 key={v4()}  className="rounded w-1/4 p-1 border border-black text-center text-xl font-extralight text-black cursor-pointer hover:scale-105" onClick={handleClick}>{sizeOption}</h1>
                     ))}
                 </div>
             </div>

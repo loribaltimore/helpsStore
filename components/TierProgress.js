@@ -22,7 +22,7 @@ function TierProgress({ totalDonations, tier }) {
                         if (index * 1.25 <= progress) {
                             return element
                         } else {
-                            return <div className="w-[2rem] h-100 border border-black rounded"></div>
+                            return <div key={index*21} className="w-[2rem] h-100 border border-black rounded"></div>
                         }
                 })
                 }
