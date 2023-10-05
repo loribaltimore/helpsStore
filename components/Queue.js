@@ -39,7 +39,7 @@ function Queue({ populatedQueue, setIsQueue, isQueue }) {
         return pages;
     };
     return (
-        <div className='space-y-3'>
+        <div className='space-y-3 p-3'>
             <button 
                     className="text-black rounded border border-black px-3 py-1 focus:outline-none"
                     onClick={() => setIsQueue(!isQueue)}>
@@ -58,7 +58,7 @@ function Queue({ populatedQueue, setIsQueue, isQueue }) {
                     historyAmt={2}
                 /> : null
             ))}
-            <div className="flex justify-center mt-4">{renderPagination()}</div>
+            {/* <div className="flex justify-center mt-4">{renderPagination()}</div> */}
         </div>
     );
 }

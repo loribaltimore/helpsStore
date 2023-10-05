@@ -32,7 +32,7 @@ function NewAddCart({ setAlert, setSize, size, back, front, setBack, setFront, c
     };
 
     return (
-                <button className='w-full mx-auto p-1 border border-black rounded font-extralight text-black' onClick={() => handleClick()}>Add</button>
+                <button className='w-full mx-auto p-1 bg-gray-100 shadow-xl rounded font-extralight text-black hover:scale-105 active:scale-100' onClick={() => handleClick()}>Add</button>
     );
 }
 

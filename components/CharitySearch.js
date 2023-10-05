@@ -26,8 +26,8 @@ function CharitySearch() {
     };
 
     return (
-        <div className="flex w-1/3 justify-between items-center space-x-4">
-            <div className="flex-1">
+        <div className="flex w-1/3 justify-between items-center space-x-4 z-20">
+            <div className="flex-1 z-20">
                 <input 
                     className="border border-black rounded p-2 w-full text-black font-extralight"
                     placeholder="Search By Organization" 

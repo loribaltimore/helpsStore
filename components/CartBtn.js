@@ -12,7 +12,7 @@ function CartBtn({ serverCart }) {
     };
 
     return (
-        <div className="w-full">
+        <div className="w-full my-1">
             {
                 cart && cart.items && cart.items.length > 0 ? (
                     <div className="relative inline-block w-[5rem]">

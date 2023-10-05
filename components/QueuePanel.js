@@ -9,7 +9,7 @@ function QueuePanel({ donation, setCurrentQueue, currentPage, historyAmt }) {
         };
     })
     return (
-        <div className="w-1/2 space-y-5 h-full text-black">
+        <div className="w-1/2 space-y-5 h-full text-black shadow-xl bg-white rounded border mx-auto">
             <div className="h-full">
                 <h1 className="text-3xl font-extralight p-5">{donation.user.firstName + ' ' + donation.user.lastName}</h1>
                 <div className="p-1 h-1/2">

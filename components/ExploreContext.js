@@ -16,7 +16,7 @@ export function ExploreProvider(props) {
     let [allLiked, setAllLiked] = useState(undefined);
 
     return (
-        <ExploreContext.Provider value={{
+        <ExploreContext.Provider  value={{
             search, setSearch, cause, setCause, orgs, setOrgs,
             searchResults, setSearchResults, pageCalc, setPageCalc,
             isLoading, setIsLoading, isExpand, setIsExpand, allLiked, setAllLiked,

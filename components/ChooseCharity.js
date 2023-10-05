@@ -13,7 +13,7 @@ function ChooseCharity({ charity, cart }) {
     };
 
     return (
-        <div className={`w-1/4 ${style[typeof charity !== 'object']}`} 
+        <div className={`w-1/4 z-20 ${style[typeof charity !== 'object']}`} 
              onMouseEnter={() => setIsHover(true)}
              onMouseLeave={() => setIsHover(false)}
              style={typeof charity !== 'object' ? {} : { backgroundImage: `url(${charity.coverImageUrl})` }}>
@@ -37,7 +37,7 @@ function ChooseCharity({ charity, cart }) {
                     ) : null}
                 </div>
 
-                <div className="mt-20 grid grid-cols-3 gap-4">
+                <div className="mt-20 grid grid-cols-3 gap-4 z-20">
                     <div className="col-span-1"></div>
                     <div className="col-span-1">
                         {charity === false ? (

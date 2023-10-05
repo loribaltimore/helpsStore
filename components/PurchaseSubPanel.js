@@ -8,7 +8,7 @@ function PurchaseSubPanel({ donation }) {
     console.log(donation)
     const [itemList, setItemList] = useState(items);
     return (
-        <div className="w-full h-full p-10 border border-black text-black rounded overflow-y-auto font-extralight">
+        <div className="w-full h-full p-10 text-black rounded overflow-y-auto font-extralight">
             <h1>Products</h1>
             {donation.fulfillment.order.fulfilled === false ? (
                 itemList.map(function (element, index) {

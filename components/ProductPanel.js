@@ -10,17 +10,15 @@ function ProductPanel(props) {
     let [isUpdating, setIsUpdating] = useState(false);
 
     return (
-        <div className="border border-black rounded text-black bg-white mb-8 p-3">
+        <div className={`flex w-3/4 mx-auto  mb-4 shadow-xl rounded bg-white z-20`}>
             <div className="grid grid-cols-4 gap-4">
-                <div className="col-span-1">
                     <img src={product.img[0].path} className="rounded"/>
-                </div>
                 <div className="col-span-3">
                     {
                         isUpdating === false ?
-                            <div className='p-5'>
-                                <h1 className="text-4xl font-extralight">{product.name}</h1>
-                                <div className="grid grid-cols-3 gap-4 p-5">
+                            <div className=''>
+                                <h1 className="text-4xl font-extralight pb-3">{product.name}</h1>
+                                <div className="grid grid-cols-3 gap-4 w-3/4">
                                     <div className="col-span-1">
                                         <h3 className="text-xl font-extralight p-1">Cost: {product.cost}</h3>
                                         <h3 className="text-xl font-extralight p-1">Price: {product.price}</h3>
@@ -32,7 +30,7 @@ function ProductPanel(props) {
                                         <h3 className='text-xl font-extralight p-1'>Lead Time: {product.lead} Days</h3>
                                     </div>
                                     </div>
-                                    <div className="col-span-1 flex p-5">
+                                    <div className="col-span-1 flex pt-3">
                                         {
                                             renderDelete && <DeleteBtn product={product} setRenderUpdate={setRenderUpdate} />
                                         }

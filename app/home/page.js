@@ -35,7 +35,7 @@ export default async function page() {
     user = JSON.parse(user);
 
     return (
-        <div className='w-100'>
+        <div className='w-100 z-10 relative'>
     <NewHome user={user} donations={donations} items={items} likedCharities={likedCharities} serverFlash={flash} />
         </div>
     )

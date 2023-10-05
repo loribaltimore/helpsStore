@@ -21,7 +21,7 @@ export default async function page() {
     let { allProducts, currentUserId, coin,  currentMembership } = await getData(session.userId);
     allProducts = JSON.stringify(allProducts);
     return (
-        <div className='w-full p-5'>
+        <div className='w-full p-5 relative z-20'>
             <ItemPage allProducts={allProducts} currentUserId={JSON.stringify(currentUserId)} coin={JSON.stringify(coin)} currentMembership={JSON.stringify(currentMembership)} />
         </div>
     )

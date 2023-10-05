@@ -20,7 +20,7 @@ function DeleteBtn(props) {
             {
                 isSure === false ?
                     <button 
-                        className="bg-white text-black border border-black ring ring-inset ring-red-500 px-4 py-2 rounded ml-12"
+                        className="text-black bg-gray-200 px-4 py-2 shadow-xl rounded ml-12 hover:scale-105 active:scale-100"
                         onClick={() => { setIsSure(!isSure); setRenderUpdate(false) }}>
                         Delete
                     </button>
@@ -28,12 +28,12 @@ function DeleteBtn(props) {
                     <div className="text-center">
                         <h2 className='text-lg mb-2'>Are you Sure</h2>
                         <button 
-                            className="bg-red-500 px-4 py-2 rounded text-white mr-4"
+                            className="text-black bg-gray-200 px-4 py-2 shadow-xl rounded ml-12 hover:scale-105 active:scale-100"
                             onClick={() => { handleClick(); setRenderUpdate(true); setIsSure(!isSure); }}>
                         Yes
                         </button>
                         <button 
-                            className="bg-green-500 px-4 py-2 rounded text-white"
+                            className="text-black bg-gray-200 px-4 py-2 shadow-xl rounded ml-12 hover:scale-105 active:scale-100"
                             onClick={() => { setIsSure(!isSure); setRenderUpdate(true) }}>
                         Back
                         </button>

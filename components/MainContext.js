@@ -12,7 +12,7 @@ export function MainProvider(props) {
     
     return (
         <div>
-            <MainContext.Provider value={{
+            <MainContext.Provider className="z-100" value={{
                currentUser, cart, setCart, setRenderPool, renderPool,
                 setDonators, donators, renderCart, setRenderCart
             }}>

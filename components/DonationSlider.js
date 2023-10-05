@@ -7,15 +7,15 @@ function DonationSlider({ donations }) {
     let [donationSlice, setDonationSlice] = useState([0, 4]);
 
     let blankSpaces = [
-        <div key={v4()} className='w-[23%]  h-[27rem] border border-dashed rounded'></div>,
-        <div key={v4()} className='w-[23%]  h-[27rem] border border-dashed rounded'></div>,
-        <div key={v4()} className='w-[23%]  h-[27rem] border border-dashed rounded'></div>,
-        <div key={v4()} className='w-[23%]  h-[27rem]  border border-dashed rounded'></div>,
+        <div key={v4()} className='w-[23%]  h-[27rem] border border-dashed rounded z-20'></div>,
+        <div key={v4()} className='w-[23%]  h-[27rem] border border-dashed rounded z-20'></div>,
+        <div key={v4()} className='w-[23%]  h-[27rem] border border-dashed rounded z-20'></div>,
+        <div key={v4()} className='w-[23%]  h-[27rem]  border border-dashed rounded z-20'></div>,
     ];
 
     return (
-        <div className=" w-full h-full border border-black p-5 rounded overflow-x-scroll">
-            <div className='flex w-full ml-5 space-x-2'>
+        <div className=" w-full h-full border border-black p-5 rounded overflow-x-scroll z-20">
+            <div className='flex w-full ml-5 space-x-2 z-20'>
             {
                 Object.keys(donations).length ?
                     Object.keys(donations).slice(donationSlice[0], donationSlice[1]).map(function (element, index) {

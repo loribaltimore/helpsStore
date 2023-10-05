@@ -15,7 +15,7 @@ function NewCheckout({  }) {
     let { orgs } = JSON.parse(currentUser).charities.liked;
     totalCoin === undefined ? setTotalCoin(cart.total / 10) : '';
     return (
-        <div className="p-20 h-full font-extralight">
+        <div className="p-20 h-full font-extralight z-20">
             <p>Youre paying ${cart.total}</p>
             <p>Were paying the manufacturer ${cart.total / 4}</p>
             <p>Were paying ourselves ${cart.total / 4}</p>

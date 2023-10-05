@@ -5,7 +5,7 @@ import LikedSlider from 'components/LikedSlider';
 
 function NewHome({ user, donations }) {
     return (
-        <div className="font-extralight p-10 w-full">
+        <div className="font-extralight p-10 w-full z-10000">
             <div className="grid grid-cols-2">
                 <div className="col-span-1">
                     <div className="grid grid-cols-1">

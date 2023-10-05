@@ -26,11 +26,11 @@ console.log(JSON.parse(user))
 
     return (
         <div>
-            <div className="fixed left-1/3 z-10">
+            <div className="fixed left-1/3 z-20">
                 <CartDropdown isFinalStep={true} toPool={toPool} setOpen={setOpen} />
             </div>
 
-            <div className="flex flex-wrap pt-60 z-10 space-y-20">
+            <div className="flex flex-wrap pt-60 z-20 space-y-20">
                 {
                     cart !== undefined ? 
                     JSON.parse(user).charities.liked.orgs.map((element, index) => {

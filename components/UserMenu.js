@@ -14,7 +14,7 @@ export default function UserMenu() {
   };
 
   return (
-    <div className="">
+    <div className="my-1">
       <button
         className="font-extralight text-black font-bold text-2xl focus:outline-none"
         onClick={handleToggle}

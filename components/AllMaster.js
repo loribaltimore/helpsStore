@@ -10,7 +10,7 @@ function MasterPage({ populatedQueue, officialHistory, allProducts }) {
     let [renderForm, setRenderForm] = useState(false);
     
     return (
-        <div>
+        <div className='relative z-20'>
             {
                 isQueue === false ?
                     <div>

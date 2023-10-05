@@ -61,7 +61,7 @@ function ProductPut(props) {
     };
 
     return (
-        <div className="bg-white p-4 font-extralight">
+        <div className="bg-white font-extralight">
             <div className='flex space-x-2'>
             <input type="text" id="name" className="block border p-2 mb-4 rounded" placeholder="Name" name="name" value={name} onChange={(event) => textfieldChange(event)} />
             <input type="text" id="price" className="block border p-2 mb-4 rounded" placeholder="Price" name="price" value={price} onChange={(event) => textfieldChange(event)} />
@@ -80,7 +80,7 @@ function ProductPut(props) {
                     </select>
                     </div>
             </div>
-            <div className="p-5">
+            <div className="">
                 <label htmlFor="img" className="block">Add Image</label>
                 <input type="file" id="img" name="img" multiple className="" onChange={(event) => {  setImg(event.target.files) }} />
             </div>

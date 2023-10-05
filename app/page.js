@@ -3,7 +3,10 @@ import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image';
-import logo from '../public/img/logo1.jpeg';
+import logo from '../public/img/helpsLogoBig.png';
+import helpsLandingPhoto from '../public/img/helpsLandingPhoto.jpeg';
+import Link from 'next/link';
+
 const navigation = [
 
   { name: 'Log in', href: '#' },
@@ -22,7 +25,7 @@ export default function Page() {
                 <span className="sr-only">Your Company</span>
                           <Image
                                   alt="Your Company"
-                                  className="h-20 w-auto z-1"
+                                  className="h-12 w-auto z-1"
                                   src={logo}
                                   width={300}
                                   height={300}
@@ -37,11 +40,9 @@ export default function Page() {
                 <Bars3Icon className="h-6 w-6" aria-hidden="true" />
               </button>
               <div className="hidden text-center lg:ml-12 lg:flex lg:gap-x-14">
-                {navigation.map((item) => (
-                  <a key={item.name} href={item.href} className="text-sm font-semibold text-[#fa5555] w-20">
-                    {item.name}
-                  </a>
-                ))}
+                  <Link href="/auth/signin" className="text-sm font-semibold text-[#fa5555] w-20">
+                    Log In
+                  </Link>
               </div>
                       </nav>
           </div>
@@ -69,24 +70,13 @@ export default function Page() {
             </div>
             <div className="mt-6 flow-root">
               <div className="-my-6 divide-y divide-gray-500/10">
-                <div className="space-y-2 py-6">
-                  {navigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                    >
-                      {item.name}
-                    </a>
-                  ))}
-                </div>
                 <div className="py-6">
-                  <a
-                    href="#"
+                  <Link
+                    href="/auth/signin"
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
                     Log in
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -138,10 +128,12 @@ export default function Page() {
           </div>
         </div>
         <div className="bg-gray-50 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-          <img
+          <Image
             className="aspect-[3/2] object-cover lg:aspect-auto lg:h-full lg:w-full"
-            src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1587&q=80"
-            alt=""
+            src={helpsLandingPhoto}
+            alt="men hanging out"
+            width={500}
+            height={500}
           />
         </div>
       </div>

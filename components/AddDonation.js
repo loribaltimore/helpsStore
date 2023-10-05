@@ -20,7 +20,8 @@ function AddDonation({ cart, org, setCart, pool }) {
             color: 'blue',
             cursor: 'pointer',
             position: 'relative',
-            margin: '0%'
+            margin: '0%',
+            zIndex: '100',
         }}
             onClick={handleClick}
         >

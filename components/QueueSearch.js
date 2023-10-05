@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import FilterBtn from './FilterBtn';
-
 function QueueSearch({ setCurrentQueue }) {
     let [search, setSearch] = useState('');
     let [filter, setFilter] = useState('Name');
@@ -35,9 +33,9 @@ function QueueSearch({ setCurrentQueue }) {
                     placeholder={`Search By ${filter}`}
                     value={search}
                     onChange={(event) => handleChange(event)}
-                    className="p-2 w-full block rounded border border-black"
+                    className="p-2 w-full block rounded shadow-xl"
                 />
-                <button className=' border border-black px-3 py-1 rounded'>Search</button>
+                <button className='shadow-xl bg-gray-100 hover:scale-105 active:scale-100 hover:scale-105 active:scale-100 hover:scale-105 active:scale-100 hover:scale-105 active:scale-100 hover:scale-105 active:scale-100 px-3 py-1 rounded'>Search</button>
                 {/* <FilterBtn setFilter={setFilter} setIsRender={setIsRender} isRender={isRender} /> */}
             </div>
             
@@ -45,7 +43,7 @@ function QueueSearch({ setCurrentQueue }) {
                         <div className='flex p-2 text-center space-x-1'>
                 <div className="w-3/12">
                     <div
-                        className="cursor-pointer border border-black px-2 py-1 rounded"
+                        className="cursor-pointer shadow-xl bg-gray-100 hover:scale-105 active:scale-100 hover:scale-105 active:scale-100 hover:scale-105 active:scale-100 hover:scale-105 active:scale-100 hover:scale-105 active:scale-100px-2 py-1 rounded"
                         id="Name"
                         onClick={(event) => handleClick(event)}
                     >
@@ -54,7 +52,7 @@ function QueueSearch({ setCurrentQueue }) {
                 </div>
                 <div className="w-3/12">
                     <div
-                        className="cursor-pointer border border-black px-2 py-1 rounded"
+                        className="cursor-pointer shadow-xl bg-gray-100 hover:scale-105 active:scale-100 hover:scale-105 active:scale-100 hover:scale-105 active:scale-100 hover:scale-105 active:scale-100 hover:scale-105 active:scale-100px-2 py-1 rounded"
                         id="Receipt"
                         onClick={(event) => handleClick(event)}
                     >
@@ -63,7 +61,7 @@ function QueueSearch({ setCurrentQueue }) {
                 </div>
                 <div className="w-3/12">
                     <div
-                        className="cursor-pointer border border-black px-2 py-1 rounded"
+                        className="cursor-pointer shadow-xl bg-gray-100 hover:scale-105 active:scale-100 hover:scale-105 active:scale-100 hover:scale-105 active:scale-100 hover:scale-105 active:scale-100 hover:scale-105 active:scale-100px-2 py-1 rounded"
                         id="Manufacturer"
                         onClick={(event) => handleClick(event)}
                     >
@@ -72,7 +70,7 @@ function QueueSearch({ setCurrentQueue }) {
                 </div>
                 <div className="w-3/12">
                     <div
-                        className="cursor-pointer border border-black px-2 py-1 rounded"
+                        className="cursor-pointer shadow-xl bg-gray-100 hover:scale-105 active:scale-100 hover:scale-105 active:scale-100 hover:scale-105 active:scale-100 hover:scale-105 active:scale-100 hover:scale-105 active:scale-100px-2 py-1 rounded"
                         id="Tracking"
                         onClick={(event) => handleClick(event)}
                     >
