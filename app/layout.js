@@ -52,7 +52,7 @@ export default async function RootLayout({ children }) {
   }
   return (
     <html lang="en">
-      <link rel="icon" href="/img/logo1.jpeg" sizes="any" />
+      <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon.ico" />
       <body className={`${inter.className} block p-5 bg-white w-full min-w-full`}>
         <MainProvider currentUser={JSON.stringify(currentUser)} serverCart={session ? session.cart : null}>
           {
