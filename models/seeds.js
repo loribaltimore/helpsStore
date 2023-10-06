@@ -177,6 +177,7 @@ let getProducts = async () => {
 // getProducts();
 
 let seedDonationQueue = async () => {
+    await database();
     // let allDonations = await Donation.find({});
     // console.log(allDonations);
     let newQueue = await new DonationQueue({
@@ -191,7 +192,7 @@ let seedDonationQueue = async () => {
     // console.log(newQueue);
 };
 
-// seedDonationQueue();
+seedDonationQueue();
 
 let seedDonation = async () => {
     let cause = 'climate';
@@ -304,7 +305,7 @@ let test = async () => {
     // currentUser.charities.liked.orgs = currentUser.charities.liked.orgs.slice(0, 2);
     // await currentUser.save()
 };
-test()
+// test()
 
 let seedPurchases = async () => {
   

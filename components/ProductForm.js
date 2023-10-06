@@ -37,6 +37,7 @@ function ProductForm({ setRenderForm }) {
             form.append('cost', cost);
         form.append('lead', lead * timeIncrement);
       await fetch('/products', {
+          method: 'post',
             body: form,
              headers: {
                         'Content-Type': 'mulitpart/form-data'
