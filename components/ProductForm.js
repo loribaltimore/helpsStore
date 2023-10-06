@@ -51,7 +51,7 @@ function ProductForm({ setRenderForm }) {
         setLead('');
         setTimeIncrement('');
         setImg('');
-        setFlash({ msg: 'Successfully added product!', type: 'success', render: true })
+        // setFlash({ msg: 'Successfully added product!', type: 'success', render: true })
             setAllProducts(data.data);
                 return data
             }).catch(err => console.log(err));
