@@ -55,7 +55,6 @@ function SelectCauses(props) {
                     >
                         Add Interests
                             </button>
-                   
                 } 
                  </div>
             </div>

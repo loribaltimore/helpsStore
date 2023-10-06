@@ -3,7 +3,7 @@ import { signOut } from "next-auth/react";
 
 export default function Signout(){
     return (
-        <div className="w-3/4 bg-white border border-black text-black rounded m-36 py-24 space-y-10 block">
+        <div className="w-3/4 bg-white border relative x-20 border-black text-black rounded m-36 py-24 space-y-10 block">
             <div className="font-extralight">
                 <h1 className="text-[5rem] text-center">Sign Out?</h1>
             </div>
@@ -20,7 +20,4 @@ export default function Signout(){
     )
 };
 
-
-//want to use Next Image componenet
-//add loading bar and flash?
-//seed more users
+have to make sure registration is rendering in prod

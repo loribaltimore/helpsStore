@@ -3,10 +3,11 @@ import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 export async function middleware(request) {
     const cookie = headers().get('cookie') ?? '';
-    const regex = /_next|\/api\/auth/g;
+    const regex = /_next|\/api\/auth/ig;
     if (request.url !== `${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/auth/signin` && request.url !== `${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/`) {
+        console.log('does match')
         if (request.url !== `${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/api/auth/session`
-            && !request.url.match(regex)) {
+            && !regex.test(request.url)) {
             const response = await fetch(`${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/api/auth/session`, {
                 headers: {
                     cookie
@@ -24,8 +25,12 @@ export async function middleware(request) {
             } else {
                 return NextResponse.redirect(`${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/`);
             }
-        } 
+        } else {
+            return NextResponse.next();
+        }
+        
     } else {
+        console.log('doesnt match')
         const response = await fetch(`${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/api/auth/session`, {
                 headers: {
                     cookie

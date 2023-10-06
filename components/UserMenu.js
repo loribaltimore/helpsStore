@@ -33,7 +33,7 @@ export default function UserMenu() {
               My account
             </button>
             <Link
-              href="/auth/signout'"
+              href="/auth/signout"
               onClick={() => { handleClose(); }}
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left cursor-pointer"
             >
