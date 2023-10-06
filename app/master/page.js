@@ -2,7 +2,6 @@ import AllMaster from 'components/AllMaster';
 import database from 'models/database';
 import Product from 'models/productSchema';
 import DonationQueue from 'models/donationQueueSchema';
-import Donation from 'models/donationSchema';
 
 export async function getData() {
     await database();

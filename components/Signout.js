@@ -20,4 +20,4 @@ export default function Signout(){
     )
 };
 
-have to make sure registration is rendering in prod
+// have to make sure registration is rendering in prod

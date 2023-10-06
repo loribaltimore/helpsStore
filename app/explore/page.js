@@ -1,10 +1,12 @@
 import AllExplore from 'components/AllExplore';
 import User from 'models/userSchema';
 import database from 'models/database';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../api/auth/[...nextauth]/route';
 
-export async function getData() {
+export async function getData(userId) {
     await database();
-            let user = await User.findById("6509cfe69a9593fab11f4e56");
+            let user = await User.findById(userId);
         let likedCharities = user.charities.liked.orgs.map(x => x.name);
         let topInterests = user.sortedInterests.slice(0, 3);
         let recommended = [];
@@ -30,7 +32,10 @@ export async function getData() {
 }
 
 export default async function page() {
-    const { likedCharities, recommended, user, cart} = await getData();
+            const session = await getServerSession(authOptions);
+
+    const { likedCharities, recommended, user, cart } = await getData(session.userId);
+    
     return (
         <AllExplore likedCharities={likedCharities} recommended={recommended} user={user} cart={cart} />
     )
