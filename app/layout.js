@@ -29,7 +29,6 @@ async function getSession(cookie) {
     },
   }).then(async data => { return data}).catch(err => console.log(err));
   const session = await response.json();
-  let currentUser;
   if (Object.keys(session).length > 0) {
   const currentUser = await User.findById(session.userId).then(data => {return data}).catch(err => console.log(err));
     return {session, currentUser}

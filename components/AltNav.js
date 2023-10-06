@@ -25,7 +25,7 @@ function AltNav({cart}) {
     return (
                     <div className="flex space-x-4  bg-white shadow-xl  p-3 mb-5 z-100 relative">
                         {pages.map((page, index) => (
-                            <div key={v4()} className='hover:scale-110 align-bottom'>{page}</div>
+                            <div key={v4()} className={`${index !== 5 ? 'hover:scale-110':null} align-bottom`}>{page}</div>
                         ))}
                     </div>
     );

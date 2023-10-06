@@ -10,7 +10,8 @@ export default function UserMenu() {
   };
 
   const handleClose = () => {
-    setIsOpen(false);
+    console.log('working')
+    // setIsOpen(false);
   };
 
   return (
@@ -23,15 +24,8 @@ export default function UserMenu() {
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+        <div className="absolute z-50 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
           <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-            <Link
-              href="/dashboard"
-              onClick={() => { handleClose() }}
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-            >
-              Profile
-            </Link>
             <button
               onClick={handleClose}
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
@@ -39,9 +33,9 @@ export default function UserMenu() {
               My account
             </button>
             <Link
-              href="'/logout'"
+              href="/auth/signout'"
               onClick={() => { handleClose(); }}
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left cursor-pointer"
             >
               Logout
             </Link>

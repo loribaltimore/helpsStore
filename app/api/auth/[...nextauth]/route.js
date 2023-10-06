@@ -21,6 +21,7 @@ export const authOptions = {
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
+      console.log(user);
       return true
     },
     async redirect({ url, baseUrl }) {
@@ -28,7 +29,6 @@ export const authOptions = {
     },
     async session({ session, user, token, trigger, newSession }) {
       await database();
-
       const currentUser = await User.findOne({ email: user.email }).then(data => {
         {return data}
       }).catch(err => console.log(err));

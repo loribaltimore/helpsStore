@@ -3,6 +3,10 @@ let { Schema, model, models } = mongoose;
 const database = require('./database');
 
 let userSchema = new Schema({
+    email: String,
+    image: String,
+    emailVerified: Boolean,
+    username: String,
     username: {
         type: String,
         required: true

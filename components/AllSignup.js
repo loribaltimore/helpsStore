@@ -3,7 +3,6 @@ import UserInformation from 'components/UserInformation';
 import SelectCauses from 'components/SelectCauses';
 import UserAddress from 'components/UserAddress';
 import UserContact from 'components/UserContact';
-// import JustLoadBar from 'components/JustLoadBar';
 import { useState } from 'react';
 
 
@@ -16,7 +15,7 @@ function SignUp({}) {
     let [renderAuth, setRenderAuth] = useState(false);
     
     return (
-        <div className=''>
+        <div className='relative z-20'>
             {
                 renderInterests === true ?
                     <SelectCauses setRenderBio={setRenderBio} setRenderInterests={setRenderInterests}/>: ''

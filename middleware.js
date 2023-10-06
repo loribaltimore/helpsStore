@@ -35,12 +35,12 @@ export async function middleware(request) {
                 if (Object.keys(session).length > 0) {
                     return true;
                 } else {
-                    console.log('jeepers')
+                    console.log('no session')
                     return false;
                 }
             }).catch(err => console.log(err));
         if (response) {
-            console.log('jeepers')
+            console.log('is session')
             return NextResponse.redirect(`${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/home`)
         };
     }
