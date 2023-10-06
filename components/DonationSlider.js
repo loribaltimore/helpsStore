@@ -14,7 +14,7 @@ function DonationSlider({ donations }) {
     ];
 
     return (
-        <div className=" w-full h-full border border-black p-5 rounded overflow-x-scroll z-20">
+        <div className=" w-full h-full p-5 rounded overflow-x-scroll z-20 ">
             <div className='flex w-full ml-5 space-x-2 z-20'>
             {
                 Object.keys(donations).length ?

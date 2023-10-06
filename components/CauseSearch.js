@@ -37,7 +37,7 @@ function CauseSearch({ setSearchResults, cause }) {
             />
             <button 
                 onClick={handleClick}
-                className="ml-2 px-4 py-2 bg-white text-black border border-black rounded hover:bg-blue-500"
+                className="ml-2 px-4 py-2 bg-gray-100 text-black shadow-xl rounded  hover:scale-105 active:scale-100"
             >
                 Search
             </button>

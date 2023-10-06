@@ -20,9 +20,9 @@ function NewCharityCard({ org, setSlice, slice, type, currentUser, recommendedCa
     };
 
     return (
-        <div className={`min-w-[20rem] max-w-[20rem] w-[20rem] m-1 h-full border border-black font-extralight text-black bg-white rounded`}>
+        <div className={`min-w-[20rem] max-w-[20rem] w-[20rem] m-1 h-full shadow-xl font-extralight text-black bg-white rounded`}>
                         <div className="bg-beige text-sm text-center py-1 ">{currentCause||recommendedCause || 'helps'}</div>
-            <img src={org.coverImageUrl} className='w-full h-[10rem] border-t border-b border-black object-center object-cover'/>
+            <img src={org.coverImageUrl} className='w-full h-[10rem] shadow-xl object-center object-cover'/>
             <CharityDescription org={org} />
             <div className="flex items-center justify-between pt-4">
                 {

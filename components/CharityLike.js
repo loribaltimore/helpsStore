@@ -15,9 +15,7 @@ function CharityLike(props) {
         }).catch(err => console.log(err));
     };
     return (
-        <div className="">
-            <button className="px-2 bg-white text-black rounded border border-black" onClick={handleClick}>Like</button>
-        </div>
+            <button className="px-3 py-1 shadow-xl text-black rounded bg-gray-100 hover:scale-105 active:scale-100" onClick={handleClick}>Like</button>
     );
 }
 

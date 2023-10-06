@@ -14,7 +14,7 @@ function CharityUnlike({ org, recommendedCause }) {
 
     return (
         <div className="text-center cursor-pointer">
-            <button className="px-2 bg-white text-black rounded border border-black">Unlike</button>
+            <button className="px-3 py-1 shadow-xl text-black rounded bg-gray-100 hover:scale-105 active:scale-100">Unlike</button>
         </div>
     )
 };

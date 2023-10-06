@@ -9,7 +9,7 @@ function NewExplore({ likedCharities, user, recommended }) {
     let { orgs, isLoading } = useContext(ExploreContext);
 
     return (
-        <div className='relative z-20'>
+        <div className='relative z-20 p-5'>
             <div className="flex flex-col space-y-4 ">
                 <SearchAccordion />
                 {

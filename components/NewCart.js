@@ -6,7 +6,6 @@ import Link from 'next/link';
 
 function NewCart({}) {
   let { setCart, renderCart, setRenderCart, cart, currentUser } = useContext(MainContext);
-  let [isHover, setIsHover] = useState(false);
 
   let handleClick = async (type, item) => {
     if (type === 'add') {
@@ -19,21 +18,19 @@ function NewCart({}) {
     }
   };
 
-  let handleHover = () => {
-    setIsHover(true);
-  };
-
-  let handleLeave = () => {
-    setIsHover(false);
-  }
   return (
-    <div className="text-black  absolute bg-white w-1/4 mt-32 z-30">
+    <div className="text-black  absolute bg-white w-1/4 mt-32 z-30 shadow-xl rounded ">
       {
         renderCart ?
-          <div className='border border-black rounded '>
+          <div className=''>
+            <div className='w-full h-[2rem] text-right py-1 px-3 font-extralight text-2xl cursor-pointer hover:text-3xl active:text-2xl'
+              onClick={() => setRenderCart(false)}
+            >
+            X
+              </div>
             {
               cart &&  cart.items && cart.items.map((element, index) => (
-                <div key={index} className="p-3 cursor-pointer w-full" onMouseEnter={handleHover} onMouseLeave={handleLeave}>
+                <div key={index} className="p-3 cursor-pointer w-full">
                   <div className="flex space-x-1">
                     <img src={element.img} className="rounded-full w-10 h-10" />
                     <div className="w-3/4 text-center">
