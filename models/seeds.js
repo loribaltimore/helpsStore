@@ -10,9 +10,9 @@ let Session = require('./sessionSchema');
 let casual = require('casual');
 let axios = require('axios');
 
-mongoose.connect('mongodb://localhost:27017/helps', {
-    family: 4
-}).then(console.log('Database is Live')).catch(err => console.log(err));
+// mongoose.connect('mongodb://localhost:27017/helps', {
+//     family: 4
+// }).then(console.log('Database is Live')).catch(err => console.log(err));
 
 let seedUser = async () => {
     await User.deleteMany({});
