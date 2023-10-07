@@ -17,6 +17,9 @@ export default function Page() {
 
   return (
     <div className=" font-extralight">
+      <div className='border absolute z-20 text-black shadow-xl bg-white bg-opacity-30 w-1/4 mx-[20%] mt-20 p-5 font-extralight text-center rounded'>
+                  For a demo, please use  Log In button above
+               </div>
       <header className="absolute inset-x-0 top-0 z-50">
         <div className="mx-auto max-w-7xl">
           <div className="px-6 pt-6 lg:max-w-2xl lg:pl-8 lg:pr-0">
@@ -85,8 +88,11 @@ export default function Page() {
       </header>
 
       <div className="relative ">
+        
         <div className="mx-auto max-w-7xl z-10">
-                  <div className="relative z-10 pt-auto lg:w-full lg:max-w-2xl" >
+          
+          <div className="relative z-10 pt-auto lg:w-full lg:max-w-2xl" >
+            
             <svg
               className="absolute inset-y-0 right-8 hidden h-full w-80 translate-x-1/2 transform fill-white lg:block"
               viewBox="0 0 100 100"
@@ -97,6 +103,7 @@ export default function Page() {
             </svg>
 
             <div className="relative z-10 px-6 py-32 sm:py-40 lg:px-8 lg:py-56 lg:pr-0" style={{backgroundImage: `url(/img/logo.jpeg)`}}>
+              
               <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl">
                 <div className="hidden sm:mb-10 sm:flex">
                   <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-500 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
