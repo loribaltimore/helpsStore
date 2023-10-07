@@ -1,5 +1,6 @@
 import Product from 'models/productSchema';
 import extractor from 'lib/extractor';
+import { NextResponse } from 'next/server';
 
 export async function POST(req, res, next) {
     let { name, price, cost, lead, img , code} = req.body;
@@ -20,7 +21,7 @@ export async function POST(req, res, next) {
     let allProducts = await Product.find({})
         .then(data => { return data }).catch(err => console.log(err));
 
-    return res.send(allProducts);
+    return NextResponse.json({allProducts});
 };
 
 export async function GET(req, res, next) {
@@ -30,7 +31,7 @@ export async function GET(req, res, next) {
         return a.sold - b.sold
     });
 
-    return res.send({ allProducts });
+    return NextResponse.json({ allProducts });
 };
 
 export async function DELETE(req, res, next) {
@@ -48,7 +49,7 @@ export async function PUT(req, res, next) {
     });
     await Product.findByIdAndUpdate(id, { name, price, cost, lead, img: newImg });
     let allProducts = await Product.find({});
-    return res.send(allProducts);
+    return NextResponse.json(allProducts);
 };
 
 // module.exports.addImage = async (req, res, next) => {
