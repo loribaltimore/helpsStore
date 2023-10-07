@@ -36,7 +36,7 @@ function ProductForm({ setRenderForm }) {
             form.append('code', code);
             form.append('cost', cost);
         form.append('lead', lead * timeIncrement);
-      await fetch('/products', {
+      await fetch('/api/products', {
           method: 'post',
             body: form,
              headers: {
