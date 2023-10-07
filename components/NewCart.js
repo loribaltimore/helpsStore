@@ -19,7 +19,7 @@ function NewCart({}) {
   };
 
   return (
-    <div className="text-black  absolute bg-white w-1/4 mt-32 z-30 shadow-xl rounded ">
+    <div className="text-black font-extralight  absolute bg-white w-1/4 mt-32 z-30 shadow-xl rounded ">
       {
         renderCart ?
           <div className=''>
@@ -72,7 +72,7 @@ function NewCart({}) {
             ><Link href="/checkout" className="px-4 py-2 bg-blue-500 text-white rounded">Checkout</Link></div> 
               : <div className="text-center my-4"
                 onClick={() => setRenderCart(false)}
-            ><Link href="/shop" className="px-4 py-2 bg-blue-500 text-white rounded">Shop</Link></div>}
+            ><Link href="/shop" className="px-4 py-2 bg-gray-100 shadow-xl text-white rounded hover:scale-105 active:scale-100">Shop</Link></div>}
             </div> : null
       }
     </div>
