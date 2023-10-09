@@ -6,13 +6,10 @@ function DeleteBtn(props) {
     let [isSure, setIsSure] = useState(false);
 
     let handleClick = async (id) => {
-        let response = await axios({
+        let response = await fetch('/api/products',{
             method: 'delete',
-            url: 'http://localhost:3000/products',
-            data: {
-                id: product._id
-            }
-        }).then(data => { setAllProducts(data.data) }).catch(err => console.log(err));
+            body: JSON.stringify({ id: product._id }),
+        }).then(async data => { data = await data.json(); window.location.reload() }).catch(err => console.log(err));
     };
 
     return (

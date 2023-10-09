@@ -26,22 +26,22 @@ function ProductForm({ setRenderForm }) {
             case 'lead': setLead(event.target.value);
                 break;
             case 'code': setCode(event.target.value);
-        }
+        };
+        console.log(event.target.value);
     };
+    
   let handleClick = async () => {
         let form = new FormData();
-            form.append('img', img[0]);
+            form.append('files[]', img[0]);
             form.append('name', name);
             form.append('price', price);
             form.append('code', code);
             form.append('cost', cost);
-        form.append('lead', lead * timeIncrement);
+      form.append('lead', lead * timeIncrement);
+
       await fetch('/api/products', {
-          method: 'post',
+          method: 'POST',
             body: form,
-             headers: {
-                        'Content-Type': 'mulitpart/form-data'
-                    }
                 }
             ).then(data => {
                 setName('');
@@ -64,19 +64,19 @@ function ProductForm({ setRenderForm }) {
             <h3>Create Product</h3>
             <div className="grid grid-cols-12 gap-4">
                 <div className="col-span-6 px-4">
-                    <input className="border rounded px-3 py-2 w-full" type="text" placeholder="Name" name="name" value={name} onChange={textfieldChange} />
+                    <input className="border rounded px-3 py-2 w-full" type="text" placeholder="Name" name="name" value={name} onChange={(event) => textfieldChange(event)} />
                 </div>
                 <div className="col-span-6 px-4">
-                    <input className="border rounded px-3 py-2 w-full" type="text" placeholder="Price" name="price" value={price} onChange={textfieldChange} />
+                    <input className="border rounded px-3 py-2 w-full" type="text" placeholder="Price" name="price" value={price} onChange={(event) => textfieldChange(event)} />
                 </div>
                 <div className="col-span-6 px-4">
-                    <input className="border rounded px-3 py-2 w-full" type="text" placeholder="Code" name="code" value={code} onChange={textfieldChange} />
+                    <input className="border rounded px-3 py-2 w-full" type="text" placeholder="Code" name="code" value={code} onChange={(event) => textfieldChange(event)} />
                 </div>
                 <div className="col-span-6 px-4">
-                    <input className="border rounded px-3 py-2 w-full" type="text" placeholder="Cost" name="cost" value={cost} onChange={textfieldChange} />
+                    <input className="border rounded px-3 py-2 w-full" type="text" placeholder="Cost" name="cost" value={cost} onChange={(event) => textfieldChange(event)} />
                 </div>
                 <div className="col-span-6 px-4">
-                    <input className="border rounded px-3 py-2 w-full" type="text" placeholder="Lead Time" name="lead" value={lead} onChange={textfieldChange} />
+                    <input className="border rounded px-3 py-2 w-full" type="text" placeholder="Lead Time" name="lead" value={lead} onChange={(event) => textfieldChange(event)} />
                 </div>
                 <div className="col-span-6 px-4">
                     <select className="border rounded px-3 py-2 w-full" value={timeIncrement} onChange={handleChange}>

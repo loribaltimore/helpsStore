@@ -1,10 +1,12 @@
 import database from 'models/database';
 import { GridFSBucket, ObjectId } from 'mongodb';
 
-const dbName = process.env.NODE_ENV === 'development' ? 'datr' : 'myFirstDatabase';
+const dbName = 'helps';
 
 export default async function handler(request, response) {
+    console.log('working in backend')
     const {photoId} = request.query;
+    console.log(photoId, 'sparky')
 
         const client = await database();
         const db = client.useDb(dbName);

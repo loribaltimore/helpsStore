@@ -25,8 +25,6 @@ export const authOptions = {
       return true
     },
     async redirect({ url, baseUrl }) {
-      console.log(url, 'URLS IS');
-      console.log(baseUrl, 'baseURL');
       return baseUrl + '/home'
     },
     async session({ session, user, token, trigger, newSession }) {
@@ -41,7 +39,6 @@ export const authOptions = {
         session.cart = newSession.cart;
        await session.save();
       };
-      console.log(session);
       return  session;
     },
     async jwt({ token, user, account, profile, isNewUser }) {

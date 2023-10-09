@@ -69,10 +69,10 @@ function NewCart({}) {
       </div>
             {cart && cart.items && cart.items.length ? <div className="text-center my-4"
                 onClick={() => setRenderCart(false)}
-            ><Link href="/checkout" className="px-4 py-2 bg-blue-500 text-white rounded">Checkout</Link></div> 
+            ><Link href="/checkout" className="px-4 py-2 bg-gray-200 shadow-xl text-black font-extralight rounded hover:scale-105 active:scale-100">Checkout</Link></div> 
               : <div className="text-center my-4"
                 onClick={() => setRenderCart(false)}
-            ><Link href="/shop" className="px-4 py-2 bg-gray-100 shadow-xl text-white rounded hover:scale-105 active:scale-100">Shop</Link></div>}
+            ><Link href="/shop" className="px-4 py-2 bg-gray-200 shadow-xl text-black font-extralight rounded hover:scale-105 active:scale-100">Shop</Link></div>}
             </div> : null
       }
     </div>

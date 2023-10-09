@@ -10,9 +10,9 @@ function ProductPanel(props) {
     let [isUpdating, setIsUpdating] = useState(false);
 
     return (
-        <div className={`flex w-3/4 mx-auto  mb-4 shadow-xl rounded bg-white z-20`}>
-            <div className="grid grid-cols-4 gap-4">
-                    <img src={product.img[0].path} className="rounded"/>
+        <div className={`flex w-3/4 mx-auto h-[20rem] mb-4 shadow-xl rounded bg-white z-20`}>
+            <div className="grid grid-cols-4 gap-4 h-full w-full">
+                    <img  src={`/api/products/photos/${product.img[0]._id}`} className=" h-[20rem] w-full object-cover text-center rounded border shadow-2xl rounded bg-white"/>
                 <div className="col-span-3">
                     {
                         isUpdating === false ?
