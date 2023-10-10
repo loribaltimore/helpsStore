@@ -80,8 +80,6 @@ export default async function RootLayout({ children }) {
                     <NewCart cart={session ? session.cart : null}/>
                 </div>
                 <SignUpProvider>
-                  
-                  
                         {children}
                 </SignUpProvider>
                 </ExploreProvider>
