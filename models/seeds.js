@@ -340,24 +340,7 @@ let seedPurchases = async () => {
     // console.log(currentUser.purchases);
    
 };
-const seedJenny = async()=> {
-    await database();
-    const jenny = await new User({"name":"Jennifer Collins","email":"datr.demo@gmail.com",
-        "image":"https://lh3.googleusercontent.com/a/ACg8ocIU4G3l3tUMctEz5nAH-zVn7vD6C48VLswQdL_PfHL1=s96-c",
-        "emailVerified":null,"__v":4,
-        "address":{"shipping":{"num":"12","street":"Road Street","city":"Wilhelm","state":"Nebraska","country":"USA"},
-            "billing":{"sameAsShipping":true,"num":"12","street":"Road Street","city":"Wilhelm","state":"Nebraska","country":"USA"}},
-        "admin":{"permissions":["none"]},
-        "bio":{"firstName":"Jenny","lastName":"Collins",
-            "age":28,
-            "charities":{"donatedTo":{},"donations":[],"interests":{"aapi-led":{"score":1,"tags":{}},"athletics":{"score":1,"tags":{}},
-                    "cancer":{"score":1,"tags":{}},
-                    "cats":{"score":1,"tags":{}},"autism":{"score": 1,"tags":{}},"environment":{"score":1,"tags":{"climate": 1,"environment": 1,"conservation":1}}}},"items":[],"liked":{"orgs":[{"description":"the helps Pool will take all user donations and make one large donation to an organization voted on by each user.","name":"helps Pool","profileUrl":"https://www.every.org/lilbubsbigfund","logoUrl":"https://res.cloudinary.com/demgmfow6/image/upload/c_lfill,w_25,h_25,dpr_2/c_crop,ar_25:25/q_auto,f_auto,fl_progressive/v1671644999/helps/vggmorzngbqcniaejrrt.jpg","coverImageUrl":"https://res.cloudinary.com/demgmfow6/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1671562550/helps/ftbgr37eg2nqtv0ydbej.jpg","matchedTerms":[],"slug":"helpspool","location":"BELLEVUE, WA","tags":[],"sort":0},{"description":"Empowers and trains queer, trans and allied youth leaders. GSA Network is a next-generation LGBTQ racial and gender justice organization that empowers and trains queer, trans and allied youth leaders","ein":"205367752","name":"GSA Network","profileUrl":"https://www.every.org/gsa-network","logoUrl":"https://res.cloudinary.com/everydotorg/image/upload/c_lfill,w_24,h_24,dpr_2/c_crop,ar_24:24/q_auto,f_auto,fl_progressive/faja_profile/jmwlfxncuca5l6txtcpg","coverImageUrl":"https://res.cloudinary.com/everydotorg/image/upload/f_auto,c_limit,w_3840,q_80/faja_cover/bhtmslkei7b96omhikr0","logoCloudinaryId":"faja_profile/jmwlfxncuca5l6txtcpg","matchedTerms":[],"slug":"gsa-network","location":"OAKLAND, CA","tags":["justice"],"sort":0},{"description":"Investing in bold leaders & thriving LGBTQ communities. PFund Foundation is a vital resource and community builder for lesbian, gay, bisexual, transgender and allied communities by providing grants and scholarships, developing leaders and inspiring","ein":"363567019","name":"PFund Foundation","profileUrl":"https://www.every.org/pfundonline","logoUrl":"https://res.cloudinary.com/everydotorg/image/upload/c_lfill,w_24,h_24,dpr_2/c_crop,ar_24:24/q_auto,f_auto,fl_progressive/faja_profile/ysjfebuvag7lfdj9cd3l","coverImageUrl":"https://res.cloudinary.com/everydotorg/image/upload/f_auto,c_limit,w_3840,q_80/faja_cover/f0fl87otnuis9dpfy2ix","logoCloudinaryId":"faja_profile/ysjfebuvag7lfdj9cd3l","matchedTerms":[],"slug":"pfundonline","location":"MINNEAPOLIS, MN","tags":["justice"],"sort": 0},{"description":"We're growing a greener future with millions of trees in the ground and planting projects underway worldwide. \n\n#TEAMTREES. Where are these millions of trees being planted? All over the world! Get the latest info on our current projects at teamtrees","name":"#teamtrees","profileUrl":"https://www.every.org/teamtrees","logoUrl":"https://res.cloudinary.com/everydotorg/image/upload/c_lfill,w_24,h_24,dpr_2/c_crop,ar_24:24/q_auto,f_auto,fl_progressive/profile_pics/zqoc2gbtwxbrnrig0xs8","coverImageUrl":"https://res.cloudinary.com/everydotorg/image/upload/f_auto,c_limit,w_3840,q_80/profile_pics/dkxkwkf6btyuo1vacre0","logoCloudinaryId":"profile_pics/zqoc2gbtwxbrnrig0xs8","matchedTerms":[],"slug":"teamtrees","websiteUrl":"https://teamtrees.org","tags":["climate","environment","conservation"],"sort":0}],"tags":{}}},"contact":{"phone":"1234567890","email":"jenny@gmail.com"},"membership":{"tier":"bottom","totalDonations":0,"unlockedColors":["#ff5757","#5ce1e6"]},"purchases":[],"username":"Jenny Collins"})
-    await jenny.save();
-    const allUsers = await User.find({email: "datr.demo@gmail.com"});
-    console.log(allUsers);
-}
-seedJenny();
+
 // seedPurchases();
 
 // seedUser()

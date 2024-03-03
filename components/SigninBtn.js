@@ -8,6 +8,6 @@ export default function SigninBtn({ providerId, providerName }) {
             onClick={() => {
                 signIn(providerId, providerName)
             }}
-            ><span className="">Sign In with {providerName}</span></button>
+            ><span className="">Sign In with Google</span></button>
     )
 };
