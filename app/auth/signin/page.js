@@ -1,4 +1,5 @@
 import { getProviders } from "next-auth/react"
+import DemoForm from 'components/DemoForm'
 import SigninBtn from 'components/SigninBtn';
 import logo from '../../../public/img/helpsLogoBig.png';
 import Image from 'next/image';
@@ -24,15 +25,13 @@ export default async function Signin(props) {
                 <h1 className="text-center text-3xl">Welcome back</h1>
             </div>
             {
-                Object.values(providers).map((provider, index) => (
-                 <SigninBtn providerId={provider.id} providerName={provider.name} key={provider.name} />
-            ))
+                Object.values(providers).map((provider,index) => {
+                    if (provider.name !== "Credentials") {
+                       return <SigninBtn providerId={provider.id} providerName={provider.name} key={provider.name}/>
+                    }
+                })
             }
-              <div className='border text-black drop-shadow-2xl bg-white bg-opacity-30 w-1/2 mx-auto p-5 font-extralight text-center rounded'>
-                <p className="text-2xl">Demo credentials:</p>
-                <p>email: datr.demo@gmail.com</p>
-                <p>password: datrdemo123</p>
-            </div>
+            <DemoForm />
     </div>
     )
 };
