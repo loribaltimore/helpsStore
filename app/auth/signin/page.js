@@ -10,7 +10,7 @@ export default async function Signin(props) {
         .then(data => { return data })
         .catch(err => console.log(err));
     return (
-        <div className="block mx-auto w-1/2 drop-shadow-2xl text-black rounded mt-28 py-24 space-y-10 block">
+        <div className=" mx-auto w-1/2 drop-shadow-2xl text-black rounded mt-28 py-24 space-y-10 block">
             <div className="font-extralight z-10  opacity-100 space-y-7">
                 <Link href="/">
                     <Image
