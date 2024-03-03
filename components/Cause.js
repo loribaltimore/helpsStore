@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { SignUpContext } from '../components/SignUpContext';
+import { SignUpContext } from './SignUpContext';
 
 function Cause(props) {
   const { interests, setInterests } = useContext(SignUpContext);

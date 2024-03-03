@@ -51,7 +51,7 @@ export default async function RootLayout({ children }) {
   }
   return (
     <html lang="en">
-      <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon.ico" />
+      <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon.ico" />
       <body className={`${inter.className} relative block bg-[#fa5555] w-full min-w-full`}>
         <div className='w-1/2 '>
               <svg

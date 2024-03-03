@@ -27,7 +27,7 @@ export async function middleware(request) {
         } else {
             return NextResponse.next();
         }
-        
+
     } else {
         const response = await fetch(`${process.env.NODE_ENV === 'development' ? process.env.LOCAL_URL : process.env.NEXTAUTH_URL}/api/auth/session`, {
                 headers: {

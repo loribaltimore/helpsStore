@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import database from 'models/database';
-import User from 'models/userSchema';
+import database from '@/models/database';
+import User from '@/models/userSchema';
 import { Server } from "socket.io";
 
 

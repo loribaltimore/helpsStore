@@ -2,6 +2,7 @@ import NextAuth from "next-auth"
 import {MongoDBAdapter} from "@next-auth/mongodb-adapter"
 import clientPromise from 'models/clientPromise';
 import GoogleProvider from "next-auth/providers/google";
+import Credentials from "next-auth/providers/credentials";
 import database from 'models/database';
 import User from 'models/userSchema';
 import Session from 'models/sessionSchema';
@@ -18,32 +19,65 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackUrl: url
     }),
+    Credentials({
+      name: 'Credentials',
+      credentials: {
+        username: { label: "username", type: "text", placeholder: "username" },
+      },
+      async authorize(credentials, req) {
+        const {username} = credentials;
+        await database();
+        let user = await User.find({email: username}).then(data => data[0]).catch(err => console.log(err));
+        if (user) {
+          user = { id: user._id, name: user.name, email: user.email };
+          return user;
+        } else {
+          return null
+        }
+      }
+    })
   ],
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+  jwt: {
+    secret: "THISISASECRET",
+    // You can set the max age for the JWT here
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      console.log(user);
       return true
     },
     async redirect({ url, baseUrl }) {
       return baseUrl + '/home'
     },
     async session({ session, user, token, trigger, newSession }) {
+      user = user || session.user;
       await database();
       const currentUser = await User.findOne({ email: user.email }).then(data => {
         {return data}
       }).catch(err => console.log(err));
+      if (session && !session.userId){
+        session.userId = currentUser.id
+      };
+
       const convertedId = new mongoose.Types.ObjectId(currentUser.id);
-      session = await Session.findOne({ userId: convertedId }).then(data => { return data }).catch(err => console.log(err));
+      session = await Session.findOne({ userId: convertedId }).then(data => {
+        return data
+      }).catch(err => console.log(err));
+      const allSessions = await Session.find({});
+      console.log(allSessions.map((element) => {
+        return element.userId;
+      }))
       if (newSession) {
         session.flash = newSession.flash;
-        session.cart = newSession.cart;
-       await session.save();
+        await session.save();
       };
+      console.log(session);
       return  session;
     },
-    async jwt({ token, user, account, profile, isNewUser }) {
-      return token
-    }
   },
   pages: {
     signIn: '/auth/signin',
@@ -51,7 +85,7 @@ export const authOptions = {
     error: '/auth/error', // Error code passed in query string as ?error=
     newUser: '/registration'
   },
-  // debug: true,
+  debug: true,
 }
 
 // export NextAuth object with options as parameter

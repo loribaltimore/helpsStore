@@ -8,6 +8,5 @@ export async function POST(request) {
     const currentSession = await Session.findOne({userId: userId}).then(data => {return data}).catch(err => console.log(err));
     currentSession[value] = item;
     await currentSession.save();
-    console.log(currentSession);
     return NextResponse.json(currentSession);
 }
