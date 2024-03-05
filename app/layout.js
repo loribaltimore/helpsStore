@@ -55,7 +55,7 @@ export default async function RootLayout({ children }) {
       <body className={`${inter.className} relative block bg-[#fa5555] w-full min-w-full`}>
         <div className='w-1/2 '>
               <svg
-              className="absolute -z-100 w-[70%] inset-y-0 hidden h-full fill-white lg:block"
+              className="absolute -z-100 w-[70%] inset-y-0  h-full fill-white lg:block"
               viewBox="0 0 100 100"
               preserveAspectRatio="none"
               aria-hidden="true"
