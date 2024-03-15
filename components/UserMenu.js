@@ -17,7 +17,7 @@ export default function UserMenu() {
   return (
     <div className="my-1">
       <button
-        className="font-extralight text-black font-bold text-2xl focus:outline-none"
+        className="font-extralight text-black font-bold sm:text-md md:text-2xl focus:outline-none"
         onClick={handleToggle}
       >
         Profile

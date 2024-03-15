@@ -26,16 +26,16 @@ function AltCause(props) {
     }
 
     return (
-        <div className="bg-white bg-opacity-50">
-            {/* <div>
+        <div className="bg-white h-[10rem] overflow-scroll rounded-b p-3 shadow-lg">
+             <div>
                 <CauseSearch setIsExpand={setIsExpand} setCause={setCause} setSearchResults={setSearchResults} />
-            </div> */}
+            </div>
             {[[0, 16], [17, 33], [34, 49], [50, 66]].map((range, idx) => (
                 <div key={idx} className="text-center w-1/4 inline-block  ">
-                    {charityCauses.slice(...range).map((element, index) => {
+                    {(searchResults.length ? searchResults : charityCauses).slice(...range).map((element, index) => {
                         let fontColor = searchResults.includes(element);
                         return (
-                            <h4 key={index} className={`m-2 shadow-md rounded bg-white cursor-pointer text-black font-extralight hover:scale-105`} onClick={(event) => handleClick(event)}>
+                            <h4 key={index} className={`m-2 shadow-lg rounded bg-gray-300 text-xs md:text-lg cursor-pointer text-black font-extralight hover:scale-105`} onClick={(event) => handleClick(event)}>
                                 {element}
                             </h4>
                         );

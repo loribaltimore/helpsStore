@@ -18,15 +18,15 @@ function CharitySearch() {
                             'Content-Type': 'application/json',
                             'Accept': 'application/json'
                         }
-                    }).then(async data => { 
+                    }).then(async data => {
                         data = await data.json();
-                        setOrgs(data.searchResults);
+                        console.log()
+                        setOrgs(data.nonProfits);
                     }).catch(err => console.log(err));
         }
     };
-    console.log(orgs)
     return (
-        <div className="flex w-1/3 justify-between items-center space-x-4 z-20 ">
+        <div className="flex  justify-between items-center space-x-4 z-20 ">
             <div className="flex-1 z-20 bg-opacity-50 bg-white">
                 <input 
                     className="shadow-xl border  rounded p-2 w-full text-black font-extralight"

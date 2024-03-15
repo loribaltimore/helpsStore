@@ -15,23 +15,26 @@ function NewCheckout({  }) {
     let { orgs } = JSON.parse(currentUser).charities.liked;
     totalCoin === undefined ? setTotalCoin(cart.total / 10) : '';
     return (
-        <div className="p-20 h-full font-extralight z-20">
+        <div className="p-10 md:p-20 h-full font-extralight z-100 relative">
+            <div className={"z-100"}>
             <p>Youre paying ${cart.total}</p>
             <p>Were paying the manufacturer ${cart.total / 4}</p>
             <p>Were paying ourselves ${cart.total / 4}</p>
             <p>Were helping you donate ${cart.total / 2}</p>
             {open === true && <DonationAlert />}
 
-            <div className="flex justify-center items-center space-x-4">
-                <h1 className="text-[10rem] text-center">{totalCoin} donations left</h1>
             </div>
 
-            <div className="flex mt-10 w-full h-full">
+            <div className="flex justify-center items-center space-x-4">
+                <h1 className="text-[2.5rem] md:text-[3rem] lg:text-[6rem] text-center">{totalCoin} donations left</h1>
+            </div>
+
+            <div className="flex mt-10 w-full h-full overflow-scroll">
                 {orgs.map((element, index) => (
                     <NewCharityCard key={v4()} org={element} type={'purchase'} currentUser={currentUser} />
                 ))}
 
-                {orgs.length % 4 !== 0 && (
+                {orgs.length < 4  && (
                     <ExplorePanel length={(4 - (orgs.length % 4))} />
                 )}
             </div>

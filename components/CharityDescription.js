@@ -9,7 +9,7 @@ function CharityDescription({ org }) {
                 </div>
             </div>
             <div className="flex justify-center">
-                <img src={org.logoUrl} alt="Charity Logo" className="w-auto h-auto rounded-full object-cover object-center" />
+                <img src={org.logoUrl} alt="Charity Logo" className={`${org.logoUrl ? "w-auto h-auto" : "h-12 w-12" } rounded-full object-cover object-center`} />
             </div>
         </div>
     );

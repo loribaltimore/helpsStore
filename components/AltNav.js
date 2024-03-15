@@ -15,9 +15,9 @@ function AltNav({cart}) {
                 height={40}
             />
         </Link>,
-        <Link key={v4()} href="/explore" className=" font-extralight text-black text-2xl z-20 my-4 text-center cursor-pointer"><p className='my-1'>Explore</p></Link>,
-        <Link key={v4()} href="/master" className="font-extralight text-black text-2xl z-20 my-4 text-center cursor-pointer"><p className='my-1'>Orders</p></Link>,
-        <Link key={v4()} href="/shop" className="font-extralight text-black text-2xl z-20 my-4 text-center cursor-pointer"><p className='my-1'>Shop</p></Link>,
+        <Link key={v4()} href="/explore" className=" font-extralight text-black sm:text-md md:text-2xl z-20 my-4 text-center cursor-pointer"><p className='my-1'>Explore</p></Link>,
+        <Link key={v4()} href="/master" className="font-extralight text-black sm:text-md  md:text-2xl z-20 my-4 text-center cursor-pointer"><p className='my-1'>Orders</p></Link>,
+        <Link key={v4()} href="/shop" className="font-extralight text-black sm:text-md md:text-2xl z-20 my-4 text-center cursor-pointer"><p className='my-1'>Shop</p></Link>,
         <CartBtn serverCart={cart} key={v4()} />,
         <UserMenu key={v4()} />
     ];

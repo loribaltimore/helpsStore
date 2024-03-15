@@ -52,15 +52,15 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon.ico" />
-      <body className={`${inter.className} relative block bg-[#fa5555] w-full min-w-full`}>
-        <div className='w-1/2 '>
+      <body className={`${inter.className} relative block bg-[#fa5555] w-full min-w-full `}>
+        <div className='w-1/2 -z-100'>
               <svg
               className="absolute -z-100 w-[70%] inset-y-0  h-full fill-white lg:block"
               viewBox="0 0 100 100"
               preserveAspectRatio="none"
               aria-hidden="true"
             >
-              <polygon className=''  points="0,0 90,0 50,100 0,100" />
+              <polygon className='-z-100'  points="0,0 90,0 50,100 0,100" />
             </svg>
                   </div>
         <MainProvider currentUser={JSON.stringify(currentUser)} serverCart={session ? session.cart : null}>

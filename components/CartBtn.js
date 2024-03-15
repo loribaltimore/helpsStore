@@ -15,19 +15,18 @@ function CartBtn({ serverCart }) {
         <div className="w-full my-1">
             {
                 cart && cart.items && cart.items.length > 0 ? (
-                    <div className="relative inline-block w-[5rem]">
+                    <div className="relative inline-block w-[3.25rem] md:w-[5rem]">
                         <h4 
                             onClick={handleClick} 
-                            className="font-extralight text-black text-2xl cursor-pointer"
+                            className="font-extralight text-black sm:text-md md:text-2xl cursor-pointer"
                         >
                             Cart
                         <span 
-                            className="absolute top-0 right-0 border border-black text-black text-xs font-extralight rounded-full h-5 w-5 flex items-center justify-center"
+                            className="absolute top-0 right-0 border border-black text-black text-xs font-extralight rounded-full h-[1rem] w-[1rem] md:h-5 md:w-5 flex items-center justify-center"
                         >
                             {cart.items.length}
                         </span>
                         </h4>
-                        
                     </div>
                 ) : (
                     <h4 

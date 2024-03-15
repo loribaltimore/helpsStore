@@ -33,9 +33,9 @@ function NewHome({ user, donations }) {
                 <div className="w-full p-5">
                 <div className="col-span-10 p-5">
 
-                    <h1 className='text-4xl'>Donation History</h1> 
+                    {/*<h1 className='text-4xl'>Donation History</h1> */}
                 </div>
-                    <DonationSlider donations={donations} />
+                    {/*<DonationSlider donations={donations} />*/}
                     </div>
                     </div>
             </div>

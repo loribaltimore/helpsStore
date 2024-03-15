@@ -16,7 +16,7 @@ function MasterPage({ populatedQueue, officialHistory, allProducts }) {
                     <div>
                         {   
                             renderForm === true ?
-                                <ProductForm setRenderForm={setRenderForm} />: ''
+                                <div className={"z-30"}><ProductForm setRenderForm={setRenderForm} /></div>  : ''
                         }
                         
                         <AllProducts products={products} setProducts={setProducts}

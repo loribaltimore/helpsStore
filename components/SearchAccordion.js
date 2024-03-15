@@ -22,7 +22,7 @@ function SearchAccordion({}) {
         Clear
       </button>
 
-      <div className="rounded shadow-xl w-3/4">
+      <div className="rounded shadow-xl md:w-3/4">
         <button 
           className="flex rounded justify-between items-center w-full px-4 py-2 bg-white text-black font-extralight hover:bg-gray-200 focus:outline-none"
           onClick={() => {
@@ -35,7 +35,7 @@ function SearchAccordion({}) {
         {expandCharity && <div className="p-4"><CharitySearch /></div>}
       </div>
 
-      <div className="shadow-xl rounded shadow-xl w-3/4">
+      <div className="shadow-xl rounded shadow-xl md:w-3/4">
         <button 
           className="flex rounded shadow-xl justify-between items-center w-full px-4 py-2 bg-white text-black font-extralight hover:bg-gray-200 focus:outline-none"
           onClick={() => setIsExpand(!isExpand)}

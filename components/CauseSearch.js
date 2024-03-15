@@ -11,7 +11,9 @@ function CauseSearch({ setSearchResults, cause }) {
     let filterCauses = () => {
         let searchTerm = new RegExp(`^${searchFor}`, 'ig');
         setSearchResults(charityCauses.filter(function (element) {
-            return searchTerm.test(element);
+            if (searchTerm.test(element)){
+                return element;
+            }
         }));
     };
 
@@ -33,7 +35,7 @@ function CauseSearch({ setSearchResults, cause }) {
                 placeholder="Search By Causes" 
                 value={cause} 
                 onChange={handleChange} 
-                className="flex-grow p-2 border border-black rounded font-extralight text-black" 
+                className="flex-grow p-2 border border-black rounded font-extralight text-black"
             />
             <button 
                 onClick={handleClick}

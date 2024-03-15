@@ -16,13 +16,13 @@ function TierProgress({ totalDonations, tier }) {
    
     return (
         <div className='block w-3/4 mx-auto'>
-        <div className="w-full flex relative mx-auto h-8 rounded my-2">
+        <div className="w-full flex relative mx-auto h-8 rounded my-2 border bg-green-100">
             {
                     percentage.map((element, index) => {
                         if (index * 1.25 <= progress) {
                             return element
                         } else {
-                            return <div key={index*21} className="w-[2rem] h-100 border border-black rounded"></div>
+                            return <div key={index*21} className="w-[2rem] h-100  rounded"></div>
                         }
                 })
                 }

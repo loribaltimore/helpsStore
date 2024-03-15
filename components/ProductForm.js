@@ -60,7 +60,7 @@ function ProductForm({ setRenderForm }) {
         
 
     return (
-        <div className="bg-white z-10 w-1/2 p-4 items mx-96 absolute rounded font-extralight border border-black text-center">
+        <div className="bg-white z-30 w-full md:w-1/2 p-4 md:mx-52 my-20 lg:mx-64 shadow-lg items absolute rounded font-extralight border border-black text-center">
             <h3>Create Product</h3>
             <div className="grid grid-cols-12 gap-4">
                 <div className="col-span-6 px-4">

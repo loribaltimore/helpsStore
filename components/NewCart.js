@@ -1,6 +1,7 @@
 "use client"
 import { addToCart, removeFromCart } from 'lib/updateCart';
 import { useState, useContext } from 'react';
+import {useEffect} from 'react';
 import { MainContext } from 'components/MainContext';
 import Link from 'next/link';
 
@@ -17,22 +18,22 @@ function NewCart({}) {
         setCart({total: 0}) : setCart(response.cart);
     }
   };
-
+  useEffect(() => {
+    if (cart && cart.items && cart.items.length) {
+      console.log(cart.items)
+    }
+  }, []);
   return (
-    <div className="text-black font-extralight  absolute bg-white w-1/4 mt-32 z-30 shadow-xl rounded ">
+    <div className="text-black font-extralight left-[25%] absolute bg-white w-1/2 md:w-1/4 mt-32 z-30 shadow-xl rounded ">
       {
         renderCart ?
           <div className=''>
-            <div className='w-full h-[2rem] text-right py-1 px-3 font-extralight text-2xl cursor-pointer hover:text-3xl active:text-2xl'
-              onClick={() => setRenderCart(false)}
-            >
-            X
-              </div>
             {
-              cart &&  cart.items && cart.items.map((element, index) => (
-                <div key={index} className="p-3 cursor-pointer w-full">
+              cart && cart.items && cart.items.map((element, index) => (
+                <div key={index} className="cursor-pointer w-full flex">
+                  <img src={element.img} className="rounded-full w-1/4" />
+                  <div className={'pt-2'}>
                   <div className="flex space-x-1">
-                    <img src={element.img} className="rounded-full w-10 h-10" />
                     <div className="w-3/4 text-center">
                       <h2 className="text-md font-extralight">{element.name}</h2>
                     </div>
@@ -62,6 +63,7 @@ function NewCart({}) {
                   </div>
                   <hr />
                 </div>
+                </div>
               ))
             }
             <div className="text-center bg-beige">
@@ -69,7 +71,11 @@ function NewCart({}) {
       </div>
             {cart && cart.items && cart.items.length ? <div className="text-center my-4"
                 onClick={() => setRenderCart(false)}
-            ><Link href="/checkout" className="px-4 py-2 bg-gray-200 shadow-xl text-black font-extralight rounded hover:scale-105 active:scale-100">Checkout</Link></div> 
+            > <div className={'w-full space-x-2'}>
+                  <Link href="/checkout" className="w-3/4 px-2 py-2 bg-gray-200 shadow-xl text-black font-extralight rounded hover:scale-105 active:scale-100">Checkout</Link>
+                  <button className="w-1/4 px-1 py-1 bg-gray-200 shadow-xl text-black font-extralight rounded hover:scale-105 active:scale-100">Close</button>
+            </div>
+            </div>
               : <div className="text-center my-4"
                 onClick={() => setRenderCart(false)}
             ><Link href="/shop" className="px-4 py-2 bg-gray-200 shadow-xl text-black font-extralight rounded hover:scale-105 active:scale-100">Shop</Link></div>}

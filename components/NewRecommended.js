@@ -12,7 +12,7 @@ function NewRecommended({ recommended, likedCharities }) {
             <div>
                 <h2 className="text-3xl p-3">Based on your interests in {key}</h2>
             </div>
-            <div className='flex'>
+            <div className='flex overflow-scroll'>
 {
                 recommended[key].map((element, index) => {
                     const liked = JSON.parse(currentUser).charities.liked.orgs.indexOf(element.name) > -1;
