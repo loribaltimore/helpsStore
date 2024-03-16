@@ -17,7 +17,7 @@ function AllProducts({ products, setRenderForm, renderForm, setIsQueue, isQueue 
                 </button>
             <div className=' md:grid md:grid-rows-2 md:gap-2 md:grid-flow-col space-y-3'>
             {products.map((element, index) => (
-                    <ProductPanel product={element} />
+                    <ProductPanel product={element} key={index}/>
             ))}
             </div>
         </div>
