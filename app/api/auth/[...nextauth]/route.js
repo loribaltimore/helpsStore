@@ -68,14 +68,11 @@ export const authOptions = {
         return data
       }).catch(err => console.log(err));
       const allSessions = await Session.find({});
-      console.log(allSessions.map((element) => {
-        return element.userId;
-      }))
+
       if (newSession) {
         session.flash = newSession.flash;
         await session.save();
       };
-      console.log(session);
       return  session;
     },
   },

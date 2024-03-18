@@ -13,7 +13,8 @@ function TierProgress({ totalDonations, tier }) {
     const nextTier = tiers[allTiers[allTiers.indexOf(tier) + 1]];
 
     const progress = Math.floor((totalDonations / nextTier) * 100);
-   
+   console.log(progress, nextTier, tier, nextTier);
+   console.log(allTiers.indexOf(tier) + 1)
     return (
         <div className='block w-3/4 mx-auto'>
         <div className="w-full flex relative mx-auto h-8 rounded my-2 border bg-green-100">
@@ -22,7 +23,7 @@ function TierProgress({ totalDonations, tier }) {
                         if (index * 1.25 <= progress) {
                             return element
                         } else {
-                            return <div key={index*21} className="w-[2rem] h-100  rounded"></div>
+                            return <div key={index*21} className="w-[2rem] h-100"></div>
                         }
                 })
                 }
@@ -30,7 +31,7 @@ function TierProgress({ totalDonations, tier }) {
             <div className='mx-auto w-1/4'>
                 {nextTier &&
                     <h2 className="">
-                        ${nextTier - (totalDonations * 5)} until {allTiers[tierIndex + 1]} tier
+                        ${nextTier - (totalDonations)} until {allTiers[tierIndex + 1]} tier
                     </h2>
                 }
             </div>

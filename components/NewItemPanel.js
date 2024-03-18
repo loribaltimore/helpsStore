@@ -3,10 +3,6 @@ import React from 'react';
 import NewConfig from './NewConfig';
 
  function NewItemPanel({ item, currentUserId, coin, currentMembership, }) {
-    // if (item.name === 'Classic Tee 2') {
-    // console.log(item.img[0]._id)
-    // }
-     console.log(item.img[0]._id);
     const direction = {
         true: 'left-20',
         false: 'right-20'
@@ -15,7 +11,7 @@ import NewConfig from './NewConfig';
         <div className={`flex w-full lg:w-3/4 mx-auto border border-gray-300 shadow-2xl rounded bg-white z-20 h-[21rem]`}>
             <div className='block w-1/2'>
             <img
-                // src={`/api/products/photos/${item.img[0]._id}`}
+                src={`/api/products/photos/${item.img[0]._id}`}
                 className="bg-center h-full w-full  object-cover text-center rounded border shadow-2xl rounded bg-white"
            
                 />  

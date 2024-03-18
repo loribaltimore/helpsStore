@@ -18,27 +18,22 @@ function NewCart({}) {
         setCart({total: 0}) : setCart(response.cart);
     }
   };
-  useEffect(() => {
-    if (cart && cart.items && cart.items.length) {
-      console.log(cart.items)
-    }
-  }, []);
   return (
-    <div className="text-black font-extralight left-[25%] absolute bg-white w-1/2 md:w-1/4 mt-32 z-30 shadow-xl rounded ">
+    <div className="text-black font-extralight left-[10%] bg-gray-100 absolute  w-3/4 md:w-1/2 md:left-[25%] mt-32 z-30 shadow-xl rounded ">
       {
         renderCart ?
-          <div className=''>
+          <div className='w-full'>
             {
               cart && cart.items && cart.items.map((element, index) => (
                 <div key={index} className="cursor-pointer w-full flex">
-                  <img src={element.img} className="rounded-full w-1/4" />
-                  <div className={'pt-2'}>
+                  <img src={`/api/products/photos/${element.img}`} className="rounded max-w-[3rem] max-h-[5rem] aspect-auto" />
+                  <div className={'pt-2 w-3/4'}>
                   <div className="flex space-x-1">
                     <div className="w-3/4 text-center">
                       <h2 className="text-md font-extralight">{element.name}</h2>
                     </div>
                   </div>
-                  <div className="flex p-3 space-x-3">
+                  <div className="flex p-3 space-x-3 ">
                     <div className="w-full flex space-x-1">
                       <div className="w-full rounded border border-black" style={{ backgroundColor: element.config.colors[0] }}></div>
                       <div className="w-full  rounded border border-black" style={{ backgroundColor: element.config.colors[1] }}></div>

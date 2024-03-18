@@ -18,8 +18,7 @@ function NewAddCart({ setAlert, setSize, size, back, front, setBack, setFront, c
         if (canAdd === true) {
             const config = { size: size, colors: [front, back], qty: 1 };
             item.config = config;
-            console.log(cart);
-            console.log(JSON.parse(currentUserId));
+            item.img = item.img[0]._id;
             await addToCart(JSON.parse(currentUserId), cart, item)
                 .then((data) => {
                     setCart(data);
@@ -29,6 +28,7 @@ function NewAddCart({ setAlert, setSize, size, back, front, setBack, setFront, c
         } else {
             setAlert(true);
         }
+        window.location.reload();
     };
 
     return (

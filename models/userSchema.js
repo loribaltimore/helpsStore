@@ -230,6 +230,13 @@ userSchema.method('addDonation', async (val, id) => {
     let currentUser = await User.findById(id);
     
     currentUser.membership.totalDonations += val;
+    if (currentUser.membership.totalDonations >= 250) {
+        currentUser.membership.tier = 'top';
+    } else if (currentUser.membership.totalDonations >= 150){
+        currentUser.membership.tier = 'middle';
+    } else if (currentUser.membership.totalDonations >= 50){
+        currentUser.membership.tier = 'low';
+    }
     await currentUser.save();
     console.log(currentUser.membership.tier);
 });

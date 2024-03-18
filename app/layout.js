@@ -48,6 +48,9 @@ export default async function RootLayout({ children }) {
   if (sessionObj) {
     session = sessionObj.session;
     currentUser = sessionObj.currentUser;
+  };
+  if (session){
+      console.log(session.cart);
   }
   return (
     <html lang="en">

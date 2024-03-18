@@ -36,11 +36,14 @@ const findCoin = (toDonate, org, coinTotal) => {
 function CharityDonate({ org }) {
     let { totalCoin, setTotalCoin, chosenCharities, setChosenCharities } = useContext(CheckoutContext);
     const { cart } = useContext(MainContext);
-    const [amt, setAmt] = useState(0);
+    let [amt, setAmt] = useState(0);
     const charitiesObj = convertArrToObj(chosenCharities);
     console.log(charitiesObj);
     const handleClick = async () => {
         console.log('CHARITY DONATE IS CLICKED');
+        console.log(setAmt);
+        setAmt(prev => prev + 1);
+        console.log("AMT", amt)
         const {coin, charities}= findCoin(chosenCharities, org, totalCoin);
         setTotalCoin(coin);
         setChosenCharities(charities);
@@ -55,8 +58,9 @@ function CharityDonate({ org }) {
         <button
                     className='block m-2 px-2 bg-white text-black rounded border border-black text-2xl hover:scale-110 transform transition-all active:scale-100 disabled:opacity-50 disabled:cursor-not-allowed'
                     onClick={() => {
+                        console.log("IS TOTAL COIN", totalCoin);
+
                         if (totalCoin > 0) {
-                            setAmt(amt + 1);
                         handleClick();
                         }
                     }}

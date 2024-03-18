@@ -35,10 +35,9 @@ function NewConfig({ currentUserId, tier, item }) {
             </div>
 
             <div className="w-full mt-4">
-
                 <div className="w-10/12 flex gap-1 ">
                     {['S', 'M', 'L', 'XL'].map(sizeOption => (
-                            <h1 key={v4()}  className={`rounded w-[2rem] h-[2rem] px-2 ${size === sizeOption? "border-blue-400 border-[2.5px]" : "border-gray-100"} border rounded border border-gray-100 shadow-xl rounded bg-white bg-opacity-30 text-center text-md md:text-lg font-extralight text-black cursor-pointer hover:scale-110`} onClick={handleClick}>{sizeOption}</h1>
+                            <h1 key={v4()}  className={`rounded w-[2rem] h-[2rem] px-2 ${size === sizeOption? "border-blue-400 border-[2.5px]" : "border-gray-100"} border rounded border shadow-xl rounded bg-white bg-opacity-30 text-center text-md md:text-lg font-extralight text-black cursor-pointer hover:scale-110`} onClick={handleClick}>{sizeOption}</h1>
                     ))}
                 </div>
             </div>
